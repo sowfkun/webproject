@@ -1,0 +1,74 @@
+@charset "utf-8";
+
+
+@font-face{
+    font-family: balootamma2;
+    src: url(../../Resources/font/BalooTamma2-Regular.ttf);
+}
+
+@font-face {
+    font-family: audiowide;
+    src: url(../../Resources/font/Audiowide-Regular.ttf);
+}
+
+
+#admin_menu{
+
+    width: 300px;
+    height: 800px;
+    margin: 0px;
+    padding: 0px;
+    background-color: #3b5064;
+}
+
+#admin_menu a{
+    text-decoration: none;
+}
+
+#admin_menu li {
+
+    margin: 0px;
+    padding: 0px 30px 0 30px;
+    list-style: none;
+    min-height: 50px;
+    font-weight: bold;
+    color: white;
+    line-height: 50px;
+    border-bottom: 1px solid #638aac;
+    font-family: balootamma2;
+    font-size: 15px;
+}
+
+#admin_menu li img{
+    margin-right: 20px;
+}
+
+#admin_menu li span{
+    margin-top: 3px;
+}
+
+#admin_menu li:hover{
+    cursor: pointer;
+    background-color: #1f384e ;
+}
+
+#admin_menu .sub_menu{
+    margin: 0px;
+    padding: 0px;
+   
+}
+
+#admin_menu .sub_menu a li{
+   
+    margin: 0px;
+    padding: 0px;
+    padding: 0 40px 0 40px;
+    font-size: 13px;
+    border: none;
+    border-top: 1px solid #638aac;
+}
+
+#admin_menu .sub_menu a li:hover{
+    background-color: #3b5064 ;
+}
+

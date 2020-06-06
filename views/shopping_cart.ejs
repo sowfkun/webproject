@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <link rel="stylesheet" type="text/css" href="CSS/project.css">
+    <link rel="stylesheet" type="text/css" href="CSS/shopping.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <title> Giỏ hàng của bạn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+    <!-- Phần hình nền, menu-->
+        <div id="top-field" class="top-field">
+            <div id="menu-bar"> 
+               
+                <ul id="submenu">
+                    <li> <a href="/" title="Trang chủ"> Trang chủ</a> </li>
+                    <li> <a href="/about_us" title="Giới thiệu"> Giới thiệu</a> </li>
+                    <li> <a href="/event" title="Khuyến mãi"> Khuyến mãi</a> </li>
+                    <li> <a href="/contact" title="Liên hệ"> Liên hệ</a> </li>
+                </ul>
+           
+               
+                <div id="sign-in" > 
+                    <%- include('module/user_info'); -%>
+                </div> 
+
+                </div>
+                        <div id="logo"> LapCity</div>
+                <div>
+                
+            </div>
+
+
+
+        </div> 
+<!--Hết phần hình nền menu-->
+
+<!-- phần hiển thị nội dung và phần chân trang-->
+               
+            <% if(mess.length) {%>
+                <p id="check_order" style="display: none;"><%= mess %> </p>
+            <% } %> 
+
+            <script>   // xóa giỏ hàng khi mua xong
+                var mess=document.getElementById("check_order").textContent;
+
+                if(mess.length > 0){
+                    localStorage.removeItem('cart');
+                }
+            </script>
+
+        <div id="bottom-field" class="bottom-container">
+
+            <div style="margin-top:5px">
+                <a style="text-decoration: none;" href="/shopping">
+                    <button class="cart-menu active" id="btn_cart"> Giỏ hàng</button>
+                 </a>
+                <a style="text-decoration: none; margin-left: -5px;" href="/shopping/history"><button class="cart-menu" id="btn_history"> Lịch sử mua hàng</button> </a>
+                <a style="text-decoration: none; margin-left: -5px;" href="/shopping/dealing"><button class="cart-menu" id="btn_dealing"> Đang giao dịch</button> </a>
+            </div>
+            
+            <h2 id="mess" > </h2>
+
+            <table id="cart">
+
+                <tr>
+                    <th > Hình ảnh</th>
+                    <th style="width : 30%;"> Tên sản phẩm </th>
+                    <th style="width : 15%;"> Đơn giá</th>
+                    <th style="width : 10%;"> Số lượng </th>
+                    <th style="width : 15%;"> Thành tiền</th>
+                    <th style="width : 10%;"> Xóa </th>
+                </tr>
+            </table>
+
+            <div style=" margin-top: 30px; margin-bottom: 50px;  width: 100%; font-family: balootamma2;"> 
+                <a href="/product"><button id="btn_mua_tiep"> Tiếp tục mua hàng</button> </a>
+
+
+                <label style="float: right; color: tomato; font-size: 25px; font-weight: bold;"  id="final_price_value"> 
+                    0 đ
+                </label> 
+                <label style="float: right; font-size: 25px; font-weight: bold; margin-right: 20px;" > 
+                    Tổng tiền: 
+                </label> 
+               
+            </div>
+            
+
+            <%# hiển thị list item trng giở hàng %> 
+
+            <script>
+
+                var item = JSON.parse(window.localStorage.getItem('cart')) || []; 
+                show_cart(item);
+                cart_check(item);
+              
+                // kiểm tra xem giỏ hàng có sản phẩm hay không
+                function cart_check(item){
+                    if(item.length === 0){
+                        $("#mess").text('Giỏ hàng của bạn chưa có sản phẩm');
+                        $("#btn_mua_tiep").text('Tìm sản phẩm');
+                    } else{
+                        $("#mess").text('Kiểm tra giỏ hàng của bạn');
+                        $("#btn_mua_tiep").text('Tiếp tục mua hàng');
+                    }
+                }
+                
+                // hiển thị sản phẩm từ localstorage
+                function show_cart(item){
+                        var newitem = "";
+                        var final_price = 0;
+                        for(var i=0; i< item.length; i++){ 
+                            var price = item[i].price;
+                            var price_format = Number(price).toLocaleString() + ' đ';
+
+                            var total = item[i].price * item[i].quantity ;
+                            var total_format = Number(total).toLocaleString() + ' đ';
+
+                            newitem += ` 
+                            
+                            <tr class = "addItem">
+                                <td id="pic"> 
+                                    <div style="margin: auto; width: 150px; height: 150px;" > 
+                                        <img src="${item[i].img}" height="100%" width="100%"> 
+                                    </div>
+                                </td>
+                                <td id="name">
+                                    <a href="/product/${item[i].brand}/${item[i].serie}/${item[i].ma_may}" 
+                                    style="text-decoration: none; color: #4b4b4b;">
+                                        ${item[i].brand} | ${item[i].serie} | ${item[i].ma_may} | 
+                                        ${item[i].cpu} | ${item[i].gpu} |${item[i].ram} | ${item[i].ssd} | ${item[i].hdd}
+                                    </a>  
+                                </td>1
+                                <td id="price" style=" color: tomato;"> ${price_format} </td>
+                                <td > 
+                                    <input id="quantity_${i}" type="number" name="quantity_${i}" style="border-radius: 5px; text-align: center;" 
+                                    min="1" value="${item[i].quantity}" onchange="update(${i})" >     
+                                </td>
+                                <td id="total"  style=" color: tomato;"> ${total_format} </td>
+                                <td > 
+                                    <div style="width: 30px; height: 30px; margin: auto;">
+                                        <img id="xoa" src="Resources/Icon/trash.svg" width="100%" height="100%," onclick= "delete_item(${i})">
+                                    </div>    
+                                </td>
+                            </tr> `;
+                            
+                            final_price += total;
+                        }
+                        $(".addItem").remove();
+                        $("#cart").append(newitem);
+                        $("#final_price_value").text(final_price.toLocaleString() + ' ' + 'đ');
+                        
+                }
+                
+                 //update khi thay đổi số lượng
+               
+
+                //xóa sản phẩm khỏi giỏ hàng
+                function delete_item(id){
+                    item.splice(id,1);
+                    show_cart(item);
+                    cart_check(item)
+                    localStorage.setItem('cart', JSON.stringify(item));
+                }
+            </script>
+
+
+            <h2 style="color: tomato; text-align: center; padding: 40px 0 30px 0; border-top: 1px dotted #bb77bb; font-family: balootamma2;">Thông tin giao hàng</h2>
+            <form id="cart_submit" method="POST" >
+
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="name"><b>#Họ và tên:</b></label>
+                    </div>
+                    <div class="input">
+                        <input id="name" type="text" placeholder="Nhập họ và tên" name="name" value>
+                    </div>
+                </div>
+
+                <div class="row">       <!--số điện thoại-->
+                    <div class="label">
+                        <label for="phone"><b>#Số điện thoại:</b></label>
+                    </div>
+                    <div class="input">
+                        <input id="phone" type="number" placeholder="Nhập số điện thoại" name="phone" value>
+                    </div>
+                </div>
+
+                <div class="row">       <!--email-->
+                    <div class="label">
+                        <label for="email"><b>#Email</b></label>
+                    </div>
+                    <div class="input">
+                        <input id="email" type="text" placeholder="Nhập email" name="email" value>
+                    </div>
+                </div>
+
+                <div class="row">       
+                    <div class="label">
+                        <label for="address"><b>#Địa chỉ:</b></label>
+                    </div>
+                    <div class="input">
+                        <input id="address" type="text" placeholder="Nhập địa chỉ giao hàng" name="address" value>
+                    </div>
+                </div>
+                
+                <div class="row">          
+                    <div class="label">
+                        <label for="note"><b>#Ghi chú:</b></label>
+                    </div>    
+                    <div class="input">
+                        <textarea id="note" type="text" name="note" placeholder="Thêm ghi chú"></textarea>
+                    </div>
+                </div>
+                
+                <input type="hidden" id="input_item" name="item" value>
+                
+                <div style=" width: 100%;">
+                    <div style="margin: auto; width: fit-content;">
+                        <button  id="btn_mua" type="submit" >Xác nhận mua hàng</button>
+                    </div>
+               
+                </div>
+                    
+            </form>
+
+            <script>
+                var final_item = window.localStorage.getItem('cart') || []; 
+                document.getElementById("input_item").value = final_item; 
+            </script> 
+
+            
+            <script>    //set item và số lượng vào iput item
+                    function update(id){
+                        new_quantity = $("#quantity_"+id).val();
+                        
+                        if(new_quantity<=0){
+                        alert('Số lượng sản phẩm tối thiểu là 1');
+                        new_quantity = 1;
+                        }
+
+                        item[id].quantity = new_quantity;
+                        localStorage.setItem('cart', JSON.stringify(item));
+                        show_cart(item);
+                        
+                        var final_item = window.localStorage.getItem('cart') || []; 
+                        document.getElementById("input_item").value = final_item; 
+                    }
+                               
+            </script>
+
+
+            <script>    //validate thông tin khách hàng
+
+            $(document).ready(function() {      //validate
+               
+                $("#cart_submit").validate({
+                    rules: {
+                        name:{
+                            required:true,
+                        },
+                        phone:{
+                            required:true,
+                            rangelength: [10, 10],
+                            digits:true
+                        },
+                        email:{
+                            required:true,
+                            email:true
+                        },
+                        address:{
+                            required:true
+                        },
+                    },
+                    messages: {
+                        name:{
+                            required: "Vui lòng không bỏ trống họ và tên"
+                            },
+                        phone:{
+                            required: "Số điện thoại không thể bỏ trống",
+                            rangelength: "Số điện thoại không hợp lệ",
+                            digits: "Số điện thoại không hợp lệ"
+                            },
+                        email:{
+                            required: "Email không thể bỏ trống",
+                            email: "Email không hợp lệ"
+                        },
+                        address:{
+                                required: "Địa chỉ không thể bỏ trống"
+                        },
+                    },
+                    success: function(){
+                        $("#note").addClass("valid");
+                    }
+                     
+                });
+
+            });  
+            
+            </script>
+
+
+             <!--liên kết đến các trang facebook, instagram...-->
+             <div id="follow-us" > 
+               
+                <ul>
+                    <li> Follow us:</li>
+                    <li><a href="http://www.facebook.com" target="blank">
+                        <img src="Resources/Icon/facebook.png" alt="facebook" width="25" height="25">
+                        </a>
+                    </li>
+                    <li><a href="http://www.instagram.com" target="blank">
+                        <img src="Resources/Icon/instagram.png" alt="instagram" width="25" height="25">
+                        </a>
+                    </li>
+                    <li><a href="http://www.twitter.com" target="blank">
+                        <img src="Resources/Icon/twitter.png" alt="twitter" width="25" height="25">
+                        </a>
+                    </li>
+                </ul>
+             
+               
+            </div>
+
+            <!--hết phần liên kết đến các trang facebook, instagram...-->
+
+            <!--Phần footer để hiện thị địa chỉ của hàng, hotline ....-->
+
+            <div id="footer" class="footer-container">
+
+                <div id="left">
+                    <h2>
+                        CÔNG TY TNHH TM DV VVT <br>
+                        MST: 150577 <br>
+                        Ngày thành lập: 07/07/2020
+                    </h2>
+                  
+                    <h3>Danh sách cửa hàng:</h3>
+                    <ul>
+                        <li>
+                            <a href="https://goo.gl/maps/5WiwroZAmKAwU4jE9" target="blank">
+                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
+                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
+                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
+                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <h3 id="contact">
+                        <a href="tel:+84981234567">Hotline: 0981234567</a> <br>
+                        <a href="mailto:17521184@gm.uit.edu.vn" target="_top">Mail: 17521184@gm.uit.edu.vn</a></h3>
+                </div>
+
+                <div id="middle">
+
+                    <h2>Hỗ trợ khách hàng</h2>
+                    <ul>
+                        <li><a href="/tragop" title="Trả góp">Chính sách trả góp</a> </li>
+                        <li><a href="/thanhtoan" title="Thanh toán">Phương thức thanh toán</a> </li>
+                        <li><a href="/baohanh" title=" Bảo hành">Chính sách bảo hành</a> </li>
+                        <li><a href="/vanchuyen" title="Vận chuyển">Chính sách vận chuyển</a> </li>
+                    </ul>
+                </div>
+
+                <div id="right">
+                    <div id="logo"> LapCity</div>
+                    <div id="cong-thuong">
+                            <a href="https://www.moit.gov.vn/" target="blank">
+                                 <img src="Resources/Icon/bo-cong-thuong.png" width="200" height="auto">
+                            </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+   
+</body>
+</html>

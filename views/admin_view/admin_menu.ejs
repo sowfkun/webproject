@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/admin_css/admin_menu.css">
+    <title> LapCity Admin </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+   <nav>
+        <ul id="admin_menu">
+            <li style="height: 100px; font-size: 40px; font-family: audiowide; line-height: 100px; color: #d4d3d3; text-align: center;"> Lapcity</li>
+                <li>   
+                    <img src="Resources/Icon/dashboard.png" width="20px" height="20px"> 
+                    <span>Dashboard</span>
+                </li>  
+                <li>   
+                    <img src="Resources/Icon/product.png" width="20px" height="20px"> 
+                    <span>Sản phẩm</span>
+                    <ul class="sub_menu">
+                        <a href="/admin/product_create"><li> <span>>&emsp;</span> Thêm sản phẩm</li> </a>
+                        <a href="/admin/product/"><li> <span>>&emsp;</span> Danh sách sản phẩm</li> </a>
+                    </ul>
+                </li>  
+                <li>   
+                    <img src="Resources/Icon/transaction.png" width="20px" height="20px"> 
+                    <span>Giao dịch</span>
+                    <ul class="sub_menu">
+                        <a href="/admin/transact/new" onclick="active('new')">
+                            <li> 
+                                <span>>&emsp;</span> Giao dịch mới 
+                                <span>&emsp;</span> 
+                                <span style="padding: 0 5px 0 5px; background-color: tomato; 
+                                color: rgb(255, 255, 255); font-weight: bold; border-radius: 5px;"><%=count%></span> 
+                            </li> 
+                        </a>
+                        <a href="/admin/transact/confirm" onclick="active('confirm')"><li> <span>>&emsp;</span> Giao dịch được xác nhận</li> </a>
+                        <a href="/admin/transact/complete" onclick="active('complete')"><li> <span>>&emsp;</span> Giao dịch hoàn tất</li> </a>
+                        <a href="/admin/transact/cancel" onclick="active('cancel')"><li> <span>>&emsp;</span> Giao dịch bị hủy</li> </a>
+                    </ul>
+                    <script>    
+                        function active(transact){
+                           localStorage.setItem('active', transact);
+                        }
+                        
+                        var id =   "#"+ localStorage.getItem('active');
+                        $(id).addClass('active');
+            
+                    </script>
+                </li>  
+                <li>   
+                    <img src="Resources/Icon/event.png" width="20px" height="20px"> 
+                    <span>Sự kiện</span>
+                    <ul class="sub_menu">
+                        <a href=""><li> <span>>&emsp;</span> Thêm sự kiện</li> </a>
+                        <a href=""><li> <span>>&emsp;</span> Danh sách sự kiện</li> </a>
+                    </ul>
+                </li>  
+                <li>   
+                    <img src="Resources/Icon/cskh.png" width="20px" height="20px"> 
+                    <span>Hổ trợ khách hàng</span>
+
+                    <ul class="sub_menu">
+                        <a href=""><li> <span>>&emsp;</span> Chính sách trả góp</li> </a>
+                        <a href=""><li> <span>>&emsp;</span> Phương thức thanh toán</li> </a>
+                        <a href=""><li> <span>>&emsp;</span> Chính sách bảo hành</li> </a>
+                        <a href=""><li> <span>>&emsp;</span> Chính sách vận chuyển</li> </a>
+                    </ul>
+                </li>  
+                <li>   
+                    <img src="Resources/Icon/info.png" width="20px" height="20px"> 
+                    <span>Thông tin cửa hàng</span>
+                    <ul class="sub_menu">
+                        <a href=""><li> <span>>&emsp;</span> Giới thiệu</li> </a>
+                        <a href=""><li> <span>>&emsp;</span> Liên hệ</li> </a>
+                    </ul>
+                   
+                </li>  
+            </a>
+        </ul>
+   </nav>
+                <script>
+
+                    //hiển thị submenu  
+                    $(".sub_menu").hide();           
+                    $(document).ready(function () {
+                        $("ul#admin_menu li").on('click',function () {
+                        if($(this).children("ul.sub_menu").is(":hidden")){
+                                $(this).children("ul.sub_menu").show();
+                        } else {
+                                $(this).children("ul.sub_menu").hide();
+                        }
+                        });
+                    })
+                </script>
+              
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/admin_css/admin_transact.css">
+    <title> LapCity: Quản lí giao dịch </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+  
+                <%# menu %> 
+    <div id="menu">
+        <%- include('admin_menu'); -%>
+    </div>
+  
+
+    <%# content %>  
+
+    <div id="display-content">
+
+        <div id="transact_menu">
+            <ul>
+                <li id="new" onclick="active('new')"> 
+                    <a href="/admin/transact/new" style="text-decoration: none;" >
+                        <span> GD mới </span>
+                    </a>
+                </li>
+                <li id="confirm" onclick="active('confirm')"> 
+                    <a href="/admin/transact/confirm" style="text-decoration: none;" >
+                        <span> GD được xác nhận </span>
+                    </a>
+                </li>
+                <li id="complete" onclick="active('complete')"> 
+                    <a href="/admin/transact/complete" style="text-decoration: none;" >
+                        <span> GD hoàn tất </span>
+                    </a>
+                </li>
+                <li id="cancel" onclick="active('cancel')"> 
+                    <a href="/admin/transact/cancel" style="text-decoration: none;" >
+                        <span> GD bị hủy </span>
+                    </a>
+                </li>
+            </ul>
+
+            <script>    
+                function active(transact){
+                   localStorage.setItem('active', transact);
+                }
+                
+                var id =   "#"+ localStorage.getItem('active');
+                $(id).addClass('active');
+    
+            </script>
+
+            <%# thanh tìm kiếm %> 
+            <div id="search-bar">
+                <form action="admin/product_search" method="GET">
+                    <button></button>
+                    <input type="text" placeholder="Tìm kiếm..." name="keyword" value="">
+                </form>
+            </div>
+    
+        </div>
+       
+        <div id="list_transact">
+            <ul id="transact">
+                <% for(let i=0; i<transact.length; i++) { %>
+                   
+                    <li class="order_row" >
+                        <table>
+                            <tr>
+                                <td style="width: 20%;" class="label"> Mã đơn hàng: </td>
+                                <td style="width: 80%;"> <%- transact[i].order_id _%> </td>
+                            </tr>
+                                <tr>
+                                    <td  class="label"> Mã khách hàng:</td>
+                                    <td> <%- transact[i].user_id _%> </td>
+                                </tr>
+                                    <tr>
+                                        <td  class="label"> Thời gian đặt hàng:</td>
+                                        <td> <%- transact[i].orderdate _%> </td>
+                                    </tr>
+                                    <tr>
+                                        <td  class="label"> Thời gian xác nhận:</td>
+                                        <td> <%- transact[i].finishdate _%> </td>
+                                    </tr>
+                                        <tr>
+                                            <td  class="label"> Họ tên:</td>
+                                            <td> <%- transact[i].fullname _%> </td>
+                                        </tr>
+                                            <tr>
+                                                <td class="label"> Số điện thoại:</td>
+                                                <td> <%- transact[i].phone _%> </td>
+                                            </tr>
+                                    <tr>
+                                        <td class="label"> Email:</td>
+                                        <td> <%- transact[i].email _%> </td>
+                                    </tr>
+                                <tr>
+                                    <td class="label"> Địa chỉ:</td>
+                                    <td> <%- transact[i].address _%> </td>
+                                </tr>
+                           
+                            <tr>
+                                <td class="label"> Tổng tiền:</td>
+                                <td style="color: tomato;"> <%- transact[i].total_price.toLocaleString() _%> &ensp;đồng</td>
+                            </tr>
+                    <tr>
+                        <td class="label"> Ghi chú:</td>
+                        <td> <%- transact[i].note _%></td>
+                    </tr>
+            </table>
+                       
+        <div style="width: 100%; padding: 20px; box-shadow: 0 0 40px rgb(235, 233, 233); border-radius: 10px;">
+            <div class="sub_transact" id="sub_<%=transact[i].order_id%>">
+
+                <ul >
+                    <% for(let j=0; j<transact_item.length; j++) { %>
+                        <% if(transact_item[j].order_id == transact[i].order_id){ %>
+                            <li style="height: fit-content; margin-bottom: 15px; list-style: circle;">
+                               
+                                <% for(let z = 0; z < item_info.length; z++){ %> 
+                                    <% if((item_info[z].id == transact_item[j].id)) { %> 
+                                        <h2><%=item_info[z].brand_name%>&ensp;<%=item_info[z].serie%>&ensp;<%=item_info[z].ma_sku%></h2>
+                                        <% break; %> 
+                                    <% } %> 
+                                <% } %>    
+                               
+                                <div style="font-family: balootamma2; font-size: 20px; display: flex; flex-direction: row;">
+                                    <div style="width: 15%"><b > Số lượng: &ensp;</b></div>
+                                    <div style="width: 75%;"><b style="color: tomato;"><%=transact_item[j].quantity%>&ensp;máy</b></div>
+                                </div>
+                                 
+                               
+                                <ul>
+                                    <% for(let z = 0; z < item_info.length; z++){ %> 
+                                        <% if((item_info[z].order_id == transact[i].order_id) && (item_info[z].id == transact_item[j].id)) { %> 
+                                            <li>
+                                                <div class="label">
+                                                    <div style="font-family: balootamma2; font-size: 20px; display: flex; flex-direction: row;">
+                                                        <div style="width: 15%"><b>ID máy: &ensp;</b></div>
+                                                        <div style="width: 75%;"><b style="color: tomato; font-weight: bold;"><%= item_info[z].product_id %> </b></div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        <% } %> 
+                                    <% } %> 
+                                </ul>
+                                <div style="font-family: balootamma2; font-size: 20px;">
+                                    <div style="display: flex; flex-direction: row;">
+                                        <div style="width: 15%"> <b> Đơn giá: &ensp;</b> </div>
+                                        <div style="width: 75%;"> <b style="color: tomato;"><%=(transact_item[j].price/transact_item[j].quantity).toLocaleString()%> &ensp;đồng</b></div>
+                                    </div>
+
+                                    <div style="display: flex; flex-direction: row;">
+                                        <div style="width: 15%"> <b> Thành tiền: &ensp;</b> </div>
+                                        <div style="width: 75%;"> <b style="color: tomato;"><%=(transact_item[j].price).toLocaleString()%> &ensp;đồng</b></div>
+                                    </div>
+                                        
+                                </div>
+                              
+                            </li>
+                        <% } %> 
+                    <% } %> 
+                </ul>
+                                 
+                    <div style="width: fit-content; margin: auto; ">
+                        <form action="" method="POST">
+                            <input type="hidden" name="order_id" value="<%-transact[i].order_id_%> ">
+                            <button class="btn_confirm"> Xác nhận đã giao hàng</button>
+                        </form>
+                       
+                    </div>
+            </div>
+        </div>             
+
+                </li>
+                
+                <% } %>  
+            </ul>
+        </div>
+ 
+
+    </div>
+              
+</body>
+</html>

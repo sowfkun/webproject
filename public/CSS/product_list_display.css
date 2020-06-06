@@ -1,0 +1,114 @@
+@charset "utf-8";
+
+@font-face{
+    font-family: balootamma2;
+    src: url(../Resources/font/BalooTamma2-Regular.ttf);
+}
+#display-content{
+    
+    overflow: scroll;
+    overflow-x: hidden;
+    width: 1000px;
+    min-height: 1400px;
+    border-top: solid #d7d3dc ;
+    border-width: 2px;
+    font-family: balootamma2;
+}
+#display-content ul a{
+    text-decoration: none;
+    color: black;
+}
+#display-content ul{
+    margin: 0px;
+    padding: 0px;
+    margin-top: 10px;
+}
+
+#display-content ul li{
+
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    margin: 0 50px 20px 50px;
+    min-height: 300px;
+    width: 91%;
+    border: dotted #d7d3dc 1px;
+}
+
+    /*hình ảnh*/
+#pic{
+    width: 300px;
+    height: 100%;
+}
+#pic div{
+    padding: 30px;
+    margin-top: 40px;
+}
+#pic img{
+
+    height: 100%;
+    width: 100%;
+}
+
+    /*thông tin cơ bản*/
+#product-info{
+
+    height: 100%;
+    width: 60%;
+    padding: 30px 0 30px 20px;
+
+}
+#product-info h2{
+    margin-top: 0px;
+    color: tomato;
+}
+#basic_config{
+    font-size: 15px;
+}
+#basic_config td{
+
+    height: 15px;
+}
+.lable{
+    width: 20%;
+    font-weight: bold;
+}
+#gia .value{
+    color: tomato;
+    font-size: 20px;
+}
+/* hiển thị Tip khi rê chuột vào*/
+.tooltip {
+
+    position: relative;
+    display: block;
+    border: solid rgb(207, 45, 45) 1px;
+    width: fit-content;
+    text-align: center;
+    font-family: balootamma2;
+    font-size: 15px;
+    font-weight: bold;
+    color: red;
+    float: right;
+    visibility: hidden;
+    background-color: white;
+    padding: 0px 10px 0 10px;
+    margin-top: -40px;
+}
+ 
+#display-content ul li:hover{
+    background-color: #e1e1e1;
+    cursor: pointer;
+
+}
+#display-content ul li:hover .tooltip{
+    visibility: visible;
+
+}
+
+/* ảnh và giá mỗi item*/
+
+/*thông tin sản phẩm*/
+
+
+/*nội dung chính*/

@@ -1,0 +1,181 @@
+@charset "utf-8";
+
+@font-face{
+    font-family: balootamma2;
+    src: url(../Resources/font/BalooTamma2-Regular.ttf);
+}
+
+#top-field{
+    height: 300px;
+}
+#cart_submit{
+
+    
+    border-bottom: 1px dotted #bb77bb;
+    width: 100%;
+    padding-bottom: 40px;
+    font-family: balootamma2;
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+}
+#cart_submit .row{
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    padding-bottom: 30px;
+    
+}
+
+.label{
+    width: 25%;
+    font-size: 18px; 
+    color: #555353;
+    
+}
+
+.input{
+    width: 70%;
+}
+
+.input input{
+    width: 100%;
+    text-indent: 10px;
+    font-size: 18px;
+    font-family: balootamma2;
+    word-wrap: break-word;
+}
+
+.input #note{
+    width: 100%; 
+    height: 70px;
+    font-size: 18px; 
+    line-height: 20px;
+    color: #6e6a6a; 
+    font-family: balootamma2; 
+    text-indent: 10px;
+    padding-top: 5px;
+    text-align: left
+}
+#mess {
+
+    font-size: 30px;
+    color: tomato;
+    font-weight: bold;
+    position: relative;
+    text-align: center;
+    font-family: balootamma2;
+    
+}
+
+#bottom-field{
+    padding: 50px;
+    padding-top: 0px;
+    min-height: 800px;
+}
+
+#cart{
+    width: 100%;
+    min-height: 200px;
+    border-spacing: 0px;
+    border: 1px solid #727171;
+    color: #555353;
+    font-family: balootamma2;
+    text-align: center;
+}
+
+#cart th,td{
+    border: 1px solid #b7b7b7;
+}
+
+#cart th{
+    height: 30px;
+  
+}
+#cart td{
+    height: 200px;
+    padding: 10px;
+}
+
+
+#xoa:hover{
+    cursor: pointer;
+}
+
+#bottom-field #btn_mua_tiep, .cart-menu{
+    font-family: balootamma2;
+    border:none;
+    padding: 0 20px 0 20px;
+    font-weight: bold;
+    color: #ffffff;
+    width: fit-content;
+    height: 44px;
+    font-size: 15px;
+    background-color: #7f7fc7;
+    
+        
+}
+
+#bottom-field #btn_mua_tiep{
+    background-color: #6666b9;
+}
+#bottom-field .cart-menu:hover{
+    cursor: pointer;
+    transform: scale(1.1,1.1);
+    background-color: #2d2d7e;
+}
+
+#bottom-field .active{
+    transform: scale(1.1,1.1);
+    background-color: #32328d;
+}
+
+#bottom-field #btn_mua_tiep:hover{
+    cursor: pointer;
+    transform: scale(1.1,1.1);
+    background-color: #46469c;
+}
+
+
+#btn_mua{
+    
+    font-family: balootamma2;
+    border: none;
+    font-weight: bold;
+    color: #ffffff;
+    padding: 0 50px 0 50px;
+    height: 44px;
+    font-size: 15px;
+    background-color: tomato;
+    margin: 0 auto;
+  
+}
+ #btn_mua:hover{
+    cursor: pointer;
+    font-weight: bold;
+    color: tomato;
+    background-color: rgb(255, 255, 255);
+    border: solid 1px tomato;
+}
+
+
+#bottom-field #follow-us{
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+
+label.error{
+
+    color: tomato;
+    padding-top: 10px;
+    font-weight: bold;
+}
+
+.valid{
+    background-color: rgb(240, 243, 250);
+}
+
+
+

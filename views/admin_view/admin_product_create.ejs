@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/admin_css/admin_product.css">
+    <link rel="stylesheet" type="text/css" href="CSS/admin_css/admin_product_create.css">
+    <title> LapCity: <%=title%> </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head> 
+<body>
+
+    <%# menu %> 
+    <div id="menu">
+        <%- include('admin_menu'); -%>
+    </div>
+  
+
+    <%# content %>  
+
+    <div id="display-content">
+
+        <script>
+            // hiển thị thông báo thêm thành công
+
+            if('<%-mess%>'.length !== 0){
+                alert('<%-mess%>');
+            }
+        </script>
+        <%# hiển thị tên đang chọn %> 
+
+        <form action="/admin/create_exist" id="exist" method="POST">
+            <div id="header" style="width:100%; height: 40px;">
+                <h2> Thêm sản phẩm đã tồn tại</h2>
+                <button type="submit"> Thêm</button>
+            </div>
+
+            <div id="input">
+                <div class="row">
+                    <div class="label"> 
+                        <label for="product"><b>#Chọn sản phẩm:</b></label>
+                    </div>
+                    <div class="input">
+                        <select id="product" name="product" required>
+                            <% for(var i = 0; i < product.length; i++){ %>
+                                <option value="<%-product[i].ma_sku%>"><%-product[i].brand_name%>&ensp;<%-product[i].serie%>&ensp;<%-product[i].ma_sku%></option>
+                            <% } %>  
+                        </select>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="quantity"><b>#Số lượng:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="quantity" type="number" name="quantity" min="1" value="" onchange="update()" required>
+                    </div>
+                </div>
+            </div>
+            <script>    //set item và số lượng vào iput item
+                function update(){
+                    new_quantity = $("#quantity").val();
+                    
+                    if(new_quantity<=0){
+                    new_quantity = 1;
+                    }
+                }
+                           
+        </script>
+        </form>
+
+
+
+        <%# list product %>
+        <form id="create_form" action="/admin/product_create" method="POST" enctype="multipart/form-data">
+            <div id="header" style="width:100%; height: 40px;">
+                <h2> Điền thông tin sản phẩm mới</h2>
+                <button type="submit"> Thêm</button>
+            </div>
+
+            <div id="item_configure">
+
+                <div style="margin-top: 20px; margin-bottom: 20px;">
+                    <div class="row">       
+                        <div class="label" style="margin-top: 40px;"> 
+                            <label for="img"><b>#Hình ảnh:</b></label>
+                        </div>
+                        
+                        <div class="input" >
+                            <input id="img" type="file" name="img" style="text-indent: 0; padding-top: 40px;"
+                             onchange="loadimg(event)">
+                        </div>
+                    </div>
+                    <img id="choosen_img" src="upload/images/" height="150px" width="150px"
+                    style="margin-top: -115px; margin-left: 500px; border: solid 1px #aaaa;">
+
+                    <script>
+                       function loadimg(event){
+                          var reader = new FileReader();
+                          reader.onload = function(){
+                            var img = document.getElementById('choosen_img');
+                            img.src = reader.result;
+                          };
+                          reader.readAsDataURL(event.target.files[0]);
+                        };
+                      </script>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="catalog"><b>#Danh mục:</b></label>
+                    </div>
+                    <div class="input">
+                        <select id="catalog" name="catalog" required>
+                            <% for(var z = 0; z < catalog.length; z++){ %>
+                                <option value="<%-catalog[z].catalog_id%>"><%-catalog[z].name%></option>
+                            <% } %>  
+                        </select>
+                    </div>
+                </div>
+                <div class="row">     
+                    <div class="label"> 
+                        <label for="brand"><b>#Thương hiệu:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="brand" type="text" name="brand" value="" required>
+                    </div>
+                </div>
+                <div class="row">       <!--serie-->
+                    <div class="label"> 
+                        <label for="serie"><b>#Serie:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="serie" type="text" name="serie" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="ma_sku"><b>#Mã máy:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="ma_sku" type="text" name="ma_sku" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="price"><b>#Giá gốc:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="price" type="text" name="price" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="dis_price"><b>#Giá khuyến mại:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="dis_price" type="text" name="dis_price" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="cpu"><b>#CPU:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="cpu" type="text" name="cpu" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="gpu"><b>#GPU:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="gpu" type="text" name="gpu" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="ram"><b>#RAM:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="ram" type="text" name="ram" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="ssd"><b>#SSD:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="ssd" type="text" name="ssd" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="hdd"><b>#HDD:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="hdd" type="text" name="hdd" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="monitor"><b>#Màn hình:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="monitor" type="text" name="monitor" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="webcam"><b>#Webcam:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="webcam" type="text" name="webcam" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="interface"><b>#Cổng kết nối:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="interface" type="text" name="interface" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="bluetooth"><b>#Bluetooth:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="bluetooth" type="text" name="bluetooth" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="connect"><b>#Kết nối:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="connect" type="text" name="connect" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="os"><b>#Hệ điều hành:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="os" type="text" name="os" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="pin"><b>#Pin:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="pin" type="text" name="pin" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="color"><b>#Màu sắc:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="color" type="text" name="color" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="weight"><b>#Trọng lượng:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="weight" type="number" step="any" name="weight" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="size"><b>#Kích thước:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="size" type="text" name="size" value="" required>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="status"><b>#status:</b></label>
+                    </div>
+                    <div class="input" >
+                        <select id="status" name="status" required>
+                            <option>inactive</option>
+                            <option>active</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">       
+                    <div class="label"> 
+                        <label for="tinh_trang"><b>#Tình trạng:</b></label>
+                    </div>
+                    <div class="input" >
+                        <input id="tinh_trang" type="text" name="tinh_trang" value="chưa bán" required>
+                    </div>
+                </div>
+            </div>
+        
+        </form>
+    </div>
+    
+</body>
+</html>

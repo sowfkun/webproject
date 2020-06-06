@@ -1,0 +1,63 @@
+@charset "utf-8";
+
+
+@font-face{
+    font-family: balootamma2;
+    src: url(../../Resources/font/BalooTamma2-Regular.ttf);
+}
+
+@font-face {
+    font-family: audiowide;
+    src: url(../../Resources/font/Audiowide-Regular.ttf);
+}
+
+form{
+    width: 100%;
+    height: fit-content;
+    margin-top: 30px;
+    box-shadow: 0 0 40px #d1cfcf;
+}
+
+
+#exist h2{
+   
+    margin: 0;
+    color: tomato;
+    font-family: balootamma2;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#input {
+    padding: 20px 30px 10px 30px;
+}
+
+#header{
+    padding: 10px 30px 10px 30px;
+    border-bottom: solid 1px rgb(163, 162, 162);
+}
+h2{
+    line-height: 25px;
+}
+#header button{
+    height: 30px;
+    margin-top: -5px;
+}
+.row{
+    margin-top: 0px;
+    margin-bottom: 25px;
+}
+.label{
+    font-size: 20px;
+    font-family: balootamma2;
+    color: rgb(165, 153, 153);
+}
+
+#item_configure{
+    margin-top: 25px;
+    height: 430px;
+}
+
+input#img{
+    text-indent: 0px;
+}

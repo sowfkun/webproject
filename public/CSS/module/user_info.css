@@ -1,0 +1,129 @@
+@charset "utf-8";
+
+@font-face{
+    font-family: balootamma2;
+    src: url(../Resources/font/BalooTamma2-Regular.ttf);
+}
+
+#username{
+    float: right;
+    text-decoration: none;
+    font-size: 25px;
+    display: flex;
+    flex-direction: row;
+    font-family: balootamma2;
+    color: #a2a1a1;
+    margin-top: 5px;
+    
+}
+
+ul#user_menu ul li{
+ 
+    width: 100%;
+    margin: 0 10px 0 10px;
+    
+}
+#username:hover{
+    cursor: pointer;
+    color: rosybrown;
+}
+#hidden{
+    
+    font-family: balootamma2;   
+    position: absolute;
+    top: 10px;
+    right: 70px;
+    background-color: white;
+    box-shadow: 0 0 40px rgb(160, 160, 160);
+    height: fit-content;
+    width: 400px;
+    padding: 20px;
+    border-radius: 15px;
+    z-index: 10;
+}
+
+/* thông tin*/
+
+#info ul{
+    width: 100%;
+    height: fit-content;
+}
+#info ul li{
+  margin-bottom: 15px;
+  clear: left;
+  width: 100%;
+}
+
+#info ul li input{
+    border: none;
+    border-bottom: 1px dotted rgb(134, 133, 133) ;
+    width: 90%;
+    color: black;
+}
+
+
+/* mật khẩu*/
+#change_pass{
+    display: none;
+    height: fit-content;
+    width: 100%;
+}
+#change_pass ul{
+
+    width: 100%;
+    height: fit-content;
+}
+#change_pass ul li{
+    margin-bottom: 15px;
+    clear: left;
+    width: 100%;
+}
+
+#change_pass ul li input{
+    color: black;
+    width: 90%;
+    border: none;
+    border-bottom: 1px dotted rgb(134, 133, 133) ;
+}
+
+.row{
+    box-shadow: 0 0 15px rgb(218, 218, 218);
+    padding: 10px 0 10px 0;
+    color: #696969;
+}
+
+.btn{
+    border: none;
+    padding: 5px 15px 5px 15px;
+    background-color: rgb(8, 219, 8);
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+    margin-top: 10px ;
+}
+.btn:hover{
+    cursor: pointer;
+    transform: scale(1.1,1.1);
+}
+#btn_close:hover{
+    cursor: pointer;
+   
+}
+
+#user_menu li:hover{
+   
+    background-color: #ebebeb;
+    border-radius: 4px;
+    cursor: pointer;
+    color: rosybrown;
+    opacity: 100%;
+}
+.user_active{
+    color: rgb(148, 117, 117);
+    border-radius: 4px;
+    opacity: 100%;
+}
+
+.user_inactive{
+    opacity: 30%;
+}

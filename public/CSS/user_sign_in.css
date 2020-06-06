@@ -1,0 +1,78 @@
+@charset "utf-8";
+
+@font-face{
+    font-family: balootamma2;
+    src: url(../Resources/font/BalooTamma2-Regular.ttf);
+}
+
+
+html{
+    
+    background-image: url("../Resources/images/background_sign_in.png");
+    
+    height: 100%;
+}
+body{
+
+    margin: auto;
+    max-width: 480px;
+    padding: 20px;
+    font-family: balootamma2;
+    color: #f7f7f7;
+}
+
+.row{
+
+    width: 100%;
+    margin-bottom: 30px;
+  
+}
+.label{
+
+    font-size: 20px;
+}
+.input input{
+
+    text-indent: 10px;
+    width: 100%;
+    height: 30px;
+    font-size: 18px;
+    color: #6e6a6a;
+    margin-top: 10px;
+    font-family: balootamma2;
+}
+
+.btn{
+
+    font-family: balootamma2;
+    border:none;
+    padding: 0 10px 0 10px;
+    font-weight: bold;
+    color: #ffffff;
+    width: fit-content;
+    height: 40px;
+    font-size: 15px;
+    background-color: #5e5ea7;
+    margin-bottom: 20px;
+}
+
+.btn:hover{
+    transform: scale(1.1,1.1);
+    background-color: #46469c;
+    cursor: pointer;
+}
+
+#sign-in a{
+
+    text-decoration: none;
+    font-size: 20px;
+    color: #ffffff;
+}
+
+#social{
+    width: 100%;
+    margin: auto;
+    margin-top: 20px ;
+    border-top: 1px solid white;
+    padding-top: 20px;
+}

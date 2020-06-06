@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/user_sign_up.css">
+    <title> Đăng kí tài khoản </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    
+    <div class=".container">
+        <form id="sign-up" method="POST" >
+            <h2>Đăng kí tài khoản</h2>
+            <ul>
+                <% for(var i=0; i< error.length;i++){ %> 
+                    <li style="font-weight: bold; color: antiquewhite;"> <%- error[i] %> </li>
+                <%}%>
+            </ul>
+           
+
+            <div class="row">       <!--username-->
+                <div class="label"> 
+                    <label for="name"><b>Tên</b></label>
+                </div>
+                <div class="input">
+                    <input id="name" type="text" placeholder="Nhập tên của bạn" name="name" value=<%- values.name_%>>
+                </div>
+            </div>
+
+            <div class="row">       <!--số điện thoại-->
+                <div class="label">
+                    <label for="phone"><b>Số điện thoại</b></label>
+                </div>
+                <div class="input">
+                    <input id="phone" type="number" placeholder="Nhập số điện thoại của bạn" name="phone" value=<%- values.phone_%> >
+                </div>
+             </div>
+
+             <div class="row">       <!--email-->
+                <div class="label">
+                    <label for="email"><b>Email</b></label>
+                </div>
+                <div class="input">
+                    <input id="email" type="text" placeholder="Nhập email" name="email" value=<%- values.email_%>>
+                </div>
+            </div>
+                
+            <div class="row">           <!--mật khẩu-->
+                <div class="label">
+                    <label for="password"><b>Nhập mật khẩu </b></label>
+                </div>               
+                <div class="input">
+                    <input id="password" type="password" placeholder="Nhập password" name="password" value=<%- values.password_%>>
+                </div>
+            </div>
+            
+            <div class="row">           <!--nhập lại mật khẩu-->
+                <div class="label">
+                    <label for="re-password"><b>Nhập lại mật khẩu </b></label>
+                </div>    
+                <div class="input">
+                    <input id="re-password" type="password" placeholder="Nhập lại password" name="re_password" value=<%- values.re_password_%>>
+                </div>
+            </div>
+
+            <div >
+                <button  id="btn_sign_up" type="submit" >Đăng kí</button>
+                <a href="/user/sign-in"> Hoặc đăng nhập! </a>
+            </div>
+                
+          </form>
+
+          <script>
+            $(document).ready(function() {      //validate
+               
+                $("#sign-up").validate({
+                    rules: {
+                        name:{
+                            required:true
+                        },
+                        phone:{
+                            required:true,
+                            rangelength: [10, 10],
+                            digits:true
+                        },
+                        email:{
+                            required:true,
+                            email:true
+                        },
+                        password:{
+                            required:true,
+                            minlength:4
+                        },
+                        re_password:{
+                            required:true,
+                            equalTo: "#password"
+                        }
+                    },
+                    messages: {
+                         name:{
+                            required: "Tên đăng nhập không thể bỏ trống"                            },
+                        phone:{
+                            required: "Số điện thoại không thể bỏ trống",
+                            rangelength: "Số điện thoại không hợp lệ",
+                            digits: "Số điện thoại không hợp lệ"
+                            },
+                        email:{
+                                required: "Email không thể bỏ trống",
+                                email: "Email không hợp lệ"
+                        },  
+                        password:{
+                                required: "Password không thể bỏ trống",
+                                minlength: "Password phải từ 4 kí tự trở lên"
+                        },
+                        re_password:{
+                            required: "Nhập lại password",
+                            equalTo: "Password không trùng khớp"
+                        }
+                    },
+                     success: function(label) {
+                        label.addClass("valid");
+                     }
+                     
+                });
+
+            });  
+            </script>
+
+    </div>
+   
+</body>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <link rel="stylesheet" type="text/css" href="CSS/user_sign_in.css">
+    <title> Đăng nhập </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    
+    <div class=".container">
+        <form id="sign-in" method="POST">
+            <h2>Đăng nhập</h2>
+            <% if (mess.length) { %> 
+                <li style="font-weight: bold; color: antiquewhite; margin-bottom: 10px;"> <%- mess %> </li>  
+            <% } %> 
+            
+                 <div class="row">       <!--username-->
+                      <div class="label">
+                          <label for="email"><b>Email:</b></label>
+                      </div>
+    
+                      <div class="input">
+                          <input id="email" type="email" placeholder="Nhập email của bạn" name="email" value="<%-values.email_%>" required>
+                      </div>
+                </div>
+    
+                <div class="row">       <!--password-->
+                    <div class="label">
+                        <label for="password"><b>Mật khẩu:</b></label>
+                    </div>
+    
+                    <div class="input">
+                        <input id="password" type="password" placeholder="Nhập password của bạn" name="password" required>
+                    </div>
+                </div>
+    
+                  <div>
+                      <button class="btn" id="btn_sign_in" type="submit">Đăng nhập</button>
+                 </div>
+                 <a href="/user/sign-up"> Hoặc đăng kí</a>
+          </form>
+          <div id="social">
+            <a href="user/auth/fb">
+                <button class="btn" style="background-color: rgb(42, 42, 197); margin-left: 30px;"> Đăng nhập với Facebook</button>
+            </a>
+         
+            <button class="btn" style="background-color: rgb(216, 32, 32); float: right; margin-right: 30px;"> Đăng nhập với Google</button>
+        </div>
+    </div>
+   
+</body>

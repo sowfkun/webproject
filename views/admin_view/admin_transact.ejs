@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/admin_css/admin_transact.css">
+    <title> LapCity: Quản lí giao dịch </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+  
+                <%# menu %> 
+    <div id="menu">
+        <%- include('admin_menu'); -%>
+    </div>
+  
+
+    <%# content %>  
+
+    <div id="display-content">
+
+        <div id="transact_menu">
+            <ul>
+                <li id="new" onclick="active('new')"> 
+                    <a href="/admin/transact/new" style="text-decoration: none;" >
+                        <span> GD mới </span>
+                    </a>
+                </li>
+                <li id="confirm" onclick="active('confirm')"> 
+                    <a href="/admin/transact/confirm" style="text-decoration: none;" >
+                        <span> GD được xác nhận </span>
+                    </a>
+                </li>
+                <li id="complete" onclick="active('complete')"> 
+                    <a href="/admin/transact/complete" style="text-decoration: none;" >
+                        <span> GD hoàn tất </span>
+                    </a>
+                </li>
+                <li id="cancel" onclick="active('cancel')"> 
+                    <a href="/admin/transact/cancel" style="text-decoration: none;" >
+                        <span> GD bị hủy </span>
+                    </a>
+                </li>
+            </ul>
+
+            <script>    
+                function active(transact){
+                   localStorage.setItem('active', transact);
+                }
+                
+                var id =   "#"+ localStorage.getItem('active');
+                $(id).addClass('active');
+    
+            </script>
+
+            <%# thanh tìm kiếm %> 
+            <div id="search-bar">
+                <form action="admin/product_search" method="GET">
+                    <button></button>
+                    <input type="text" placeholder="Tìm kiếm..." name="keyword" value="">
+                </form>
+            </div>
+    
+        </div>
+       
+        <div id="list_transact">
+            <ul id="transact">
+                <% for(let i=0; i<transact.length; i++) { %>
+                   
+                    <li class="order_row" >
+                        <table>
+                            <tr>
+                                <td style="width: 20%;" class="label"> Mã đơn hàng: </td>
+                                <td style="width: 80%;"> <%- transact[i].order_id _%> </td>
+                            </tr>
+                            <tr>
+                                <td  class="label"> Mã khách hàng:</td>
+                                <td> <%- transact[i].user_id _%> </td>
+                            </tr>
+                            <tr>
+                                <td  class="label"> Thời gian đặt hàng:</td>
+                                <td> <%- transact[i].orderdate _%> </td>
+                            </tr>
+                            <tr>
+                                <td  class="label"> Họ tên:</td>
+                                <td> <%- transact[i].fullname _%> </td>
+                            </tr>
+                            <tr>
+                                <td class="label"> Số điện thoại:</td>
+                                <td> <%- transact[i].phone _%> </td>
+                            </tr>
+                            <tr>
+                                <td class="label"> Email:</td>
+                                <td> <%- transact[i].email _%> </td>
+                            </tr>
+                            <tr>
+                                <td class="label"> Địa chỉ:</td>
+                                <td> <%- transact[i].address _%> </td>
+                            </tr>
+                            <tr>
+                                <td class="label"> Sản phẩm: </td>
+
+
+                    <td>
+                        <ul>
+                            <% for(let j=0; j<transact_item.length; j++) { %>
+                                <% if(transact_item[j].order_id == transact[i].order_id) {%>
+                                        <li> <div style="width: 260px; float: left;">Tên sản phẩm: &ensp;  <span style="color: tomato;"><%- transact_item[j].ma_may_%> </span></div>       
+                                            &emsp;&emsp; Số lượng: &ensp; <span style="color: tomato;"> <%- transact_item[j].quantity_%></span>
+                                            &emsp;&emsp; Thành tiền: &ensp; <span style="color: tomato;"> <%- transact_item[j].price.toLocaleString()_%></span> &ensp; đồng
+                                        </li>
+                                        <% } %>  
+                                <% } %>  
+                        </ul>
+                    </td>         
+                    
+                    
+                            </tr>
+                            <tr>
+                                <td class="label"> Tổng tiền:</td>
+                                <td style="color: tomato;"> <%- transact[i].total_price.toLocaleString() _%> &ensp;đồng</td>
+                            </tr>
+                            <tr>
+                                <td class="label"> Ghi chú:</td>
+                                <td> <%- transact[i].note _%></td>
+                            </tr>
+                        </table>
+                       
+                        <div style="width: fit-content; margin: auto">
+                            <div style="width: fit-content; margin: auto;">
+                                <button class="btn_confirm" id="btn_show_<%=transact[i].order_id%>" onclick="show('<%=transact[i].order_id%>')" > Xác nhận đơn hàng</button>
+                            </div>
+
+                            <div class="sub_transact" id="sub_<%=transact[i].order_id%>">
+                                <form action="" method="POST" id="form">
+                                    <ul >
+                                        <% for(let j=0; j<transact_item.length; j++) { %>
+                                        <% if(transact_item[j].order_id == transact[i].order_id){ %>
+                                            <li style="height: fit-content; margin-bottom: 15px; list-style: circle;">
+
+                                               
+
+                                                <% for(let y=0; y < product_info.length; y++) { %>
+                                                    <% if(transact_item[j].ma_may == product_info[y].ma_sku){ %>
+                                                        <h2><%=product_info[y].brand_name %> <%=product_info[y].serie %> <%=product_info[y].ma_sku %></h2>
+                                                    <% } %> 
+                                                <% } %> 
+                                                <h2> Số lượng: <%=transact_item[j].quantity%></h2>
+                                                <ul>
+                                                    <% for(let z=1; z <= transact_item[j].quantity; z++) { %>
+                                                        <div class="row">       <!--username-->
+                                                            <div class="label">
+                                                                <label style="font-family: balootamma2;"><b>Nhập id máy <%=z%>:</b></label>
+                                                            </div>
+                                                            <div class="input">
+                                                                <input class="not_submit" id="order_id_<%=transact_item[j].id%>_<%=z%>" type="hidden" name="order_id" value="<%=transact[i].order_id%>">
+                                                                <input class="not_submit" id="orItem_<%=transact_item[j].id%>_<%=z%>" type="hidden" name="orderitem_id" value="<%=transact_item[j].id%>">
+                                                                <input class="not_submit" id="input_<%=transact_item[j].id%>_<%=z%>" style="width: 100%;" 
+                                                                type="text" name="prod_id" onchange="prod_id_input('<%=transact[i].order_id%>','<%=transact_item[j].id%>','<%=z%>')" required>
+
+                                                                <input class="not_submit <%=transact[i].order_id%>" id="submit_<%=transact_item[j].id%>_<%=z%>" type="hidden" value="" name="input">
+                                                                
+                                                                <script>    
+
+                                                                    function prod_id_input(id,o,z){
+                                                                        var order_id = $("#order_id_" + o +"_" + z).val();
+                                                                        var orItem_id = $("#orItem_" + o +"_" + z).val();
+                                                                        var prod_id = $("#input_" + o +"_" + z).val();
+                                                                        var value = {'order_id' : order_id,'orderitem_id' : orItem_id , 'product_id' : prod_id};
+                                                                        document.getElementById("submit_" + o +"_" + z).value = JSON.stringify(value); 
+
+                                                                        setFinalinput(id);
+                                                                    }
+
+                                                                </script>
+                                                            </div>
+                                                      </div>
+                                                    <% } %> 
+                                                </ul>
+                                            </li>
+                                        <% } %> 
+                                        <% } %> 
+                                    </ul>
+
+                                    <input  id="final_input_<%=transact[i].order_id%>" type="hidden"  name="final_input" value>
+                                                                
+                                    <script>
+                                        function setFinalinput(id){
+                                            var item_input = document.getElementsByClassName(id);
+                                            var final_input = [];
+                                            for (let i = 0; i< item_input.length; i++) {
+                                             final_input.push(item_input[i].value);
+                                            
+                                           }
+                                           document.getElementById("final_input_" + id).value = JSON.stringify(final_input); 
+                                        }
+                                    </script>
+                                    <div style="width: fit-content; margin: auto; ">
+                                        <button class="btn_confirm" onclick="confirm('<%=transact[i].order_id%>')"> Xác nhận đơn hàng</button>
+                                    </div>
+                                    <script>
+                                        function confirm(id){
+                                           var not_submit = document.getElementsByClassName("not_submit");
+                                           for(let i = 0; i < not_submit.length; i++){
+                                               not_submit[i].removeAttribute("name");
+                                           }
+    
+                                          
+                                        };
+                                    </script>
+                                </form>
+                            </div>
+                        </div>
+
+                    </li>
+                       
+                    <% } %>  
+
+                    <script>
+                        $(".sub_transact").hide();
+                        function show(id){
+
+                            var sub_id = "#"+ "sub_" + id;
+                            $(sub_id).show();
+                            var btn_id = "#" + "btn_show_" + id;
+                            $(btn_id).hide();
+                        }
+                    </script>
+            </ul>
+        </div>
+ 
+
+    </div>
+              
+</body>
+</html>

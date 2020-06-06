@@ -1,0 +1,208 @@
+@charset "utf-8";
+
+
+@font-face{
+    font-family: balootamma2;
+    src: url(../Resources/font/BalooTamma2-Regular.ttf);
+}
+#top-field #search-bar button{
+
+    height: 20px;
+    width: 20px;
+}
+#bottom-field{
+
+    height: fit-content;
+}
+#content-field{
+ 
+    height: fit-content;
+}
+#display-content{
+    
+    width: 1000px;
+    height: fit-content;
+    border-top: solid #d7d3dc ;
+    border-width: 2px;
+    font-family: balootamma2;
+}
+#display-content a{
+
+    text-decoration: none;
+}
+#top-bar #brand-name ul li button{
+    height: 49px;
+    border-bottom: 1px solid  #d7d3dc;
+}
+
+/*banner quảng cáo*/
+.slide_banner{
+
+    height: 300px;
+    width: fit-content;
+    margin: 0 auto;
+    margin-top: 20px;
+ 
+
+}
+
+
+/*hiển thị list laptop danh mục*/
+
+.show_laptop{
+
+    height: 450px;
+    margin: 20px;
+    border: 2px solid #b7b7b7;
+    padding: 10px;
+    display: flex;
+    flex-direction: column  ;
+
+}
+
+.show_laptop h2{
+    font-family: balootamma2;
+    margin: 0px;
+    color: tomato;
+    font-weight: bold;
+ 
+}
+
+.show_laptop div{
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.show_laptop ul{
+    
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.show_laptop ul li{
+
+
+    width: 33.333%;
+    padding: 0px 30px 0 30px;
+    list-style: none;
+ 
+    border-bottom:1px dotted #b7b7b7 ;
+    border-right:1px dotted #b7b7b7 ;
+}
+.show_laptop ul li img{
+
+    width: 150px;
+}
+.show_laptop ul li p{
+
+    font-family: balootamma2;
+    margin-top: -15px;
+    text-align: center;
+}
+.show_laptop ul li:hover{
+    background-color: #e9e9e9;
+    cursor: pointer;
+}
+
+/*khuyến mại*/
+
+#event{
+    
+    overflow: scroll;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    height: 360px;
+    border-width: 2px;
+    font-family: balootamma2;
+}
+#event ul{
+   
+    margin: 0px;
+    padding: 0px 20px 20px 20px;
+}
+#event ul li{
+
+    height: fit-content;
+    border: solid 2px #b7b7b7;
+    display: flex;
+    flex-direction: column;
+   
+}
+
+#status{
+
+    text-align: center;
+    height: 30px;
+    color: tomato;
+    line-height: 30px;
+    border-bottom: 2px solid #b7b7b7;
+    font-weight: bold;
+}
+
+#khuyen_mai{
+    height: 300px;
+    display: flex;
+    flex-direction: row;
+    
+    
+}
+#image{
+
+    width: 50%;
+    display: block;
+    
+}
+#image div{
+
+    margin: 0px auto;
+    padding: 50px;
+}
+#image img{
+    height: 200px;
+    width: 100%;
+}
+#khuyenmai_info{
+   
+    width: 50%;
+    height: 200px;
+    margin: 50px 20px 0 0;
+    border: 1px dotted #b7b7b7;
+}
+#title{
+    height: 30%;
+    color: tomato;
+    font-size: 20px;
+    line-height: 25px;
+    padding: 10px 10px 0 10px;
+    font-weight: bold;
+    text-align: justify;
+}
+#content{
+    height: 50%;
+    padding: 10px 10px 0 10px;
+    text-align: justify;
+}
+#viewmore{
+    height: 30%;
+    padding: 0px 10px 0 10px;
+}
+#viewmore a{
+    text-decoration: none;
+    font-size: 20px;
+    color: tomato;
+}
+/*reponsive*/
+
+@media only screen and (max-width: 1024px) and (min-width:769px){
+
+#display-content{
+    max-width: 1024px;
+    min-height: 1730px;
+}
+    
+
+
+
+}

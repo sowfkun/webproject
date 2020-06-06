@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="vie">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/module/user_info.css">
+    <title>  </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    
+        <div>
+            <% if(user_id === 0) {%>
+                <a style="margin-top: 5px;" href="/user/sign-in"> Đăng nhập</a>
+                <%} else {%>
+                        <div>
+                            <p id="username"><%- user.name %></p>
+                        </div>
+
+                        <div id="hidden">
+
+                            <div  style="margin-top: -18px;">
+                                <img id="btn_close" style="margin-bottom: 10px; opacity: 50%;" src="Resources/Icon/close.svg" height="20px" width="20px">
+                            </div>
+                            
+                            <div>
+                                <ul id="user_menu" style="width: 100%; height: 30px; font-size: 18px;">
+                                    <li style="margin-right: 15px; ;" id="show_info" class="user_active">Thông tin</li>
+                                    <li id="show_pass_change" class="user_inactive" >Đổi mật khẩu</li>
+                                    <li style="float: right; opacity: 100%;">
+                                        <a style="font-size: 18px; color: rgb(241, 83, 83); line-height: 1.5; margin-top: 0; padding: 0px; " href="/sign-out">Đăng xuất</a>
+                                    </li>
+                                </ul>
+                            </div> 
+                            <form action="/user/update_pass" method="POST" id="change_pass">
+                                <ul>
+                                    <input type="hidden" name="user_id" value="<%-user.user_id_%>">
+                                   
+                                    <% if(user.password !== null){ %>
+                                        <li>
+                                            <div class="row">      
+                                                <div class="label"> 
+                                                    <label for="old_pass"><b>Mật khẩu cũ:</b></label>
+                                                </div>
+                                                <div class="input">
+                                                    <input id="old_pass" type="password" name="old_pass" onchange="updatePass()">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    <% } %>  
+                                    <li>
+                                        <div class="row">      
+                                            <div class="label"> 
+                                                <label for="new_pass"><b>Mật khẩu mới:</b></label>
+                                            </div>
+                                            <div class="input">
+                                                <input id="new_pass" type="password" name="new_pass" onchange="updatePass()">
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">      
+                                            <div class="label"> 
+                                                <label for="confirm"><b>Nhập lại mật khẩu mới:</b></label>
+                                            </div>
+                                            <div class="input">
+                                                <input id="confirm" type="password" name="confirm" onchange="updatePass()">
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                               
+                                <button class="btn" id="update_password" disabled> Cập nhật</button>
+                            </form>
+
+                            <script>
+                                function updatePass(){
+                                    $("#update_password").attr("disabled",false);
+                                }
+                            </script>
+
+                            <form action="/user/update_user" id="info" method="POST">
+                                <ul>
+                                    <li>
+                                        <input type="hidden" name="user_id" value="<%-user.user_id_%>">
+                                        <div class="row">      
+                                            <div class="label"> 
+                                                <label for="name"><b>Tên:</b></label>
+                                            </div>
+                                            <div class="input">
+                                                <input id="name" type="text" name="name" value= "<%- user.name_%>" onchange="updateInfo()">
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">      
+                                            <div class="label"> 
+                                                <label for="phone"><b>Số điện thoại:</b></label>
+                                            </div>
+                                            <div class="input">
+                                                <input id="phone" type="number" name="phone" onchange="updateInfo()" value="<%- user.phone_%>" >
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">      
+                                            <div class="label"> 
+                                                <label for="email"><b>Email:</b></label>
+                                            </div>
+                                            <div class="input">
+                                                <input id="email" type="email"  name="email" value="<%- user.email_%>" onchange="updateInfo()">
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">      
+                                            <div class="label"> 
+                                                <label for="address"><b>Địa chỉ:</b></label>
+                                            </div>
+                                            <div class="input">
+                                                <input id="address" type="text" name="address" value="<%- user.address%>" onchange="updateInfo()">
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                        <button class="btn" id="update_info" disabled> Cập nhật</button>
+                                </ul>   
+                            </form>
+
+                            <script>
+                                function updateInfo(){
+
+                                    $("#update_info").attr("disabled",false);
+                                }
+                            </script>
+                            
+                        </div>
+                <%}%> 
+        </div>
+
+
+        <script>
+            $(document).ready(function(){
+                $("#hidden").hide();
+                $("#username").on("click",function(){
+                    $("#hidden").show();
+                    $("#bottom-field").css("filter","blur(1px)");
+                    $("#submenu").css("filter","blur(1px)");
+                    $("#logo").css("filter","blur(1px)");
+                    $("#search-bar").css("filter","blur(1px)");
+                });
+
+                $("#btn_close").on("click",function(){
+                    $("#hidden").hide();
+                    
+                    $("#bottom-field").css("filter","blur(0)");
+                    $("#submenu").css("filter","blur(0)");
+                    $("#logo").css("filter","blur(0)");
+                    $("#search-bar").css("filter","blur(0)");
+                });
+
+                $("#user_menu li").on("click",function(){
+                    $("#user_menu li").removeClass("user_active").addClass("user_inactive");
+                    $(this).addClass("user_active").removeClass("user_inactive");
+                });
+
+                $("#show_info").on("click",function(){
+                    $("#info").show();
+                    $("#change_pass").hide();
+                });
+                $("#show_pass_change").on("click",function(){
+                    $("#change_pass").show();
+                    $("#info").hide();
+                });
+
+               
+            });
+
+         
+        </script>
+        <script>
+            function sign_out(){
+                localStorage.removeItem('cart');
+            }
+        </script>
+
+</body>
+
+</html>
+    

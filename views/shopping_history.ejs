@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <link rel="stylesheet" type="text/css" href="CSS/project.css">
+    <link rel="stylesheet" type="text/css" href="CSS/shopping_history.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <title> Giỏ hàng của bạn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+    <!-- Phần hình nền, menu-->
+        <div id="top-field" class="top-field">
+            <div id="menu-bar"> 
+               
+                <ul id="submenu">
+                    <li> <a href="/" title="Trang chủ"> Trang chủ</a> </li>
+                    <li> <a href="/about_us" title="Giới thiệu"> Giới thiệu</a> </li>
+                    <li> <a href="/event" title="Khuyến mãi"> Khuyến mãi</a> </li>
+                    <li> <a href="/contact" title="Liên hệ"> Liên hệ</a> </li>
+                </ul>
+           
+               
+                <div id="sign-in" > 
+                    <%- include('module/user_info'); -%>
+                </div> 
+
+                </div>
+                        <div id="logo"> LapCity</div>
+                <div>
+               
+            </div>
+
+
+        </div> 
+<!--Hết phần hình nền menu-->
+
+<!-- phần hiển thị nội dung và phần chân trang-->
+               
+
+        <div id="bottom-field" class="bottom-container">
+            <div style="margin-top:5px">
+
+                <a style="text-decoration: none;" href="/shopping">
+                    <button class="cart-menu" id="btn_cart"> Giỏ hàng</button>
+                 </a>
+                <a style="text-decoration: none;" href="/shopping/history">
+                    <button style="margin-left: -5px;" class="cart-menu" id="btn_history"> Lịch sử mua hàng</button> 
+                </a>
+                <a style="text-decoration: none;" href="/shopping/dealing">
+                    <button style="margin-left: -5px;" class="cart-menu" id="btn_dealing"> Đang giao dịch</button>
+                </a>
+            </div>
+
+                <ul id="history">
+                   
+                    <% if (user_id == 0 ) {%> 
+                        <h2 id="mess"> <%=mess%> </h2>
+
+                        <script>
+                            $("#btn_<%-whichBtn_%>").addClass('active');
+                        </script>
+
+                    <%}%>
+
+                    <% if (orders.length == 0 && user_id !=0 ) {%> 
+                        <h2 id="mess"> <%=mess%> </h2>
+                        <script>
+                            $("#btn_<%-whichBtn_%>").addClass('active');
+                        </script>
+                        <div style="width: fit-content; margin: auto;">
+                            <a href="/product"><button id="btn_mua_tiep"> Tìm sản phẩm </button></a>
+                        </div>
+                        
+                    <%}%>
+
+                        <% for( let i = 0; i< orders.length; i++){ %>
+                        <li>
+                            <% if(orders[i].order_status.toLowerCase() !== 'giao dịch hoàn tất') {%>
+                                <h2 id="mess"> <%= orders[i].status %> </h2>
+                                <script>
+                                    $("#btn_dealing").addClass('active');
+                                </script>
+                            <%} else {%>
+                                    <h2 id="mess"> <%= orders[i].status %> vào lúc <%= orders[i].finishdate%> </h2>
+                                    <script>
+                                        $("#btn_history").addClass('active');
+                                    </script>
+                                    
+                            <% } %>
+                        
+                            <table id="cart">
+                                <% if(orders[i].order_status.toLowerCase() == 'chờ xét duyệt'){ %>    <%# có thể hủy đơn hàng khi chưa xá nhận %> 
+                                    <div style="width: 100%;">
+                                        <form action="", method="POST">
+                                            <input type="hidden" name="orderid" value="<%=orders[i].order_id%>">
+                                            <button id="btn_cancel" type="submit"> Hủy đơn hàng</button>
+                                        </form>
+                                       
+                                    </div>
+                                <% } %> 
+
+                                <% if(orders[i].order_status.toLowerCase() == 'Đang giao hàng'){ %>  <%# Không thể hủy dơn hàng khi đã xác nhận %> 
+                                    <div style="width: 100%;">
+                                        <button id="btn_huy" type="submit"> 
+                                            <span> Hủy đơn hàng </span> 
+                                            <div id="cancel_mess"> Đơn hàng đã được xác nhận. Vui lòng liên hệ Hotline: 098xxxxxxx để hủy đơn hàng</div>
+                                        </button>   
+                                    </div>
+                                <% } %> 
+                                <tr>
+                                    <th > Hình ảnh</th>
+                                    <th style="width : 35%;"> Tên sản phẩm </th>
+                                    <th style="width : 25%;"> Đơn giá</th>
+                                    <th style="width : 20%;"> Số lượng </th>
+                                    <th style="width : 15%;"> Thành tiền</th>
+                                </tr>
+                                    <ul >
+                                        <% for( let j = 0; j< item.length; j++){ %>
+                                            <% if(orders[i].order_id == item[j].order_id){ %>
+                                                <li>
+                                                    <tr class = "addItem">
+                                                        <td id="pic"> 
+                                                            <div style="margin: auto; width: 150px; height: 150px;" > 
+                                                                <img src="upload/images/<%-item[j].img_%>" height="100%" width="100%"> 
+                                                            </div>
+                                                        </td>
+                                                        <td id="name">
+                                                            <a href="/product/<%-item[j].brand_name_%>/<%-item[j].serie_%>/<%-item[j].ma_sku_%>" 
+                                                            style="text-decoration: none; color: #4b4b4b;">
+                                                                <%-item[j].brand_name_%> | <%-item[j].serie_%> | <%-item[j].ma_sku_%> | 
+                                                                <%-item[j].cpu_%> | <%-item[j].gpu_%> | <%-item[j].ram_%> | <%-item[j].ssd_%>| <%-item[j].hdd_%>
+                                                            </a>  
+                                                        </td>
+                                                        <td id="price" style=" color: tomato;"> <%-item[j].price.toLocaleString() %> đ</td>
+                                                        <td > 
+                                                           <span style="color: #6d4343; text-decoration: underline;"> <%-item[j].quantity%> </span>   
+                                                        </td>
+                                                        <td id="total"  style=" color: tomato;"> <%-(item[j].price * item[j].quantity).toLocaleString() %> đ </td>
+                                                    </tr> 
+                                                </li>   
+                                            <% } %>  
+                                        <% } %>  
+                                    </ul>
+                            </table>
+
+                            <div style=" margin-top: 30px; margin-bottom: 200px;  width: 100%; font-family: balootamma2;"> 
+                                <label style="float: right; color: tomato; font-size: 25px; font-weight: bold;"  id="final_price_value"> <%=orders[i].total_price.toLocaleString() %> đ
+                                </label> 
+                                <label style="float: right; font-size: 25px; font-weight: bold; margin-right: 20px;" > 
+                                    Tổng tiền: 
+                                </label> 
+                            </div>
+                        </li>
+                        <% } %>  
+                   
+                </ul>
+           
+
+             <!--liên kết đến các trang facebook, instagram...-->
+             <div id="follow-us" > 
+               
+                <ul>
+                    <li> Follow us:</li>
+                    <li><a href="http://www.facebook.com" target="blank">
+                        <img src="Resources/Icon/facebook.png" alt="facebook" width="25" height="25">
+                        </a>
+                    </li>
+                    <li><a href="http://www.instagram.com" target="blank">
+                        <img src="Resources/Icon/instagram.png" alt="instagram" width="25" height="25">
+                        </a>
+                    </li>
+                    <li><a href="http://www.twitter.com" target="blank">
+                        <img src="Resources/Icon/twitter.png" alt="twitter" width="25" height="25">
+                        </a>
+                    </li>
+                </ul>
+             
+               
+            </div>
+
+            <!--hết phần liên kết đến các trang facebook, instagram...-->
+
+            <!--Phần footer để hiện thị địa chỉ của hàng, hotline ....-->
+
+            <div id="footer" class="footer-container">
+
+                <div id="left">
+                    <h2>
+                        CÔNG TY TNHH TM DV VVT <br>
+                        MST: 150577 <br>
+                        Ngày thành lập: 07/07/2020
+                    </h2>
+                  
+                    <h3>Danh sách cửa hàng:</h3>
+                    <ul>
+                        <li>
+                            <a href="https://goo.gl/maps/5WiwroZAmKAwU4jE9" target="blank">
+                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
+                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
+                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
+                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <h3 id="contact">
+                        <a href="tel:+84981234567">Hotline: 0981234567</a> <br>
+                        <a href="mailto:17521184@gm.uit.edu.vn" target="_top">Mail: 17521184@gm.uit.edu.vn</a></h3>
+                </div>
+
+                <div id="middle">
+
+                    <h2>Hỗ trợ khách hàng</h2>
+                    <ul>
+                        <li><a href="/tragop" title="Trả góp">Chính sách trả góp</a> </li>
+                        <li><a href="/thanhtoan" title="Thanh toán">Phương thức thanh toán</a> </li>
+                        <li><a href="/baohanh" title=" Bảo hành">Chính sách bảo hành</a> </li>
+                        <li><a href="/vanchuyen" title="Vận chuyển">Chính sách vận chuyển</a> </li>
+                    </ul>
+                </div>
+
+                <div id="right">
+                    <div id="logo"> LapCity</div>
+                    <div id="cong-thuong">
+                            <a href="https://www.moit.gov.vn/" target="blank">
+                                 <img src="Resources/Icon/bo-cong-thuong.png" width="200" height="auto">
+                            </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+   
+</body>
+</html>

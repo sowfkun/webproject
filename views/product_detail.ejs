@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="CSS/Project.css">
+    <link rel="stylesheet" type="text/css" href="CSS/product_detail_display.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      
+    <title> <%=title%> </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+    <!-- Phần hình nền, menu-->
+        <div id="top-field" class="top-field">
+            <div id="menu-bar"> 
+               
+                <ul id="submenu">
+
+                    <li> <a href="/" title="Trang chủ"> Trang chủ</a> </li>
+                    <li> <a href="/about_us" title="Giới thiệu"> Giới thiệu</a> </li>
+                    <li> <a href="/event" title="Khuyến mãi"> Khuyến mãi</a> </li>
+                    <li> <a href="/contact" title="Liên hệ"> Liên hệ</a> </li>
+                </ul>
+           
+               
+                <div id="sign-in" > 
+                    <%- include('module/user_info'); -%>
+                </div> 
+                
+            </div>
+
+                    <div id="logo"> LapCity</div>
+
+                    <div id="search-bar">
+                        <form action="/search" method="GET">
+                            <button></button>
+                            <input type="text" placeholder="Tìm kiếm..." name="keyword">
+                        </form>
+                    </div>
+          
+
+        </div> 
+<!--Hết phần hình nền menu-->
+
+<!-- phần hiển thị nội dung và phần chân trang-->
+        <div id="bottom-field" class="bottom-container">
+
+
+            
+            <div id="content-field" class="content-field-container">
+
+                <div id="top-bar" class="top-bar-container">
+
+                    <div id="list_brand">
+                        <ul>
+                            <% for(var i=0; i<menu.length;i++) { %> 
+                                <li id="<%- menu[i].brand_name _%>" onclick="active('<%- menu[i].brand_name _%>')"> 
+                                    <a href="/product/<%- menu[i].brand_name%>" style="text-decoration: none;" >
+                                        <span> <%= menu[i].brand_name %> </span>
+                                    </a>
+                                    <ul class="sub_menu">
+                                        <% for(var j=0; j<serie.length; j++) { %> 
+                                          <%if (serie[j].brand_name == menu[i].brand_name) { %>
+                                             <a href="/product/<%- serie[j].serie%>"> <li> <%= serie[j].serie%></li> </a> 
+                                          <%}%>
+                                        <% } %>
+                                    </ul>    
+                                </li>
+                            <% } %> 
+                        </ul>
+            
+                        <script>
+            
+                            function active(brand_name){
+                               localStorage.setItem('active', brand_name);
+                            }
+                            
+                            var brand =   "#"+ localStorage.getItem('active');
+                            $(brand).addClass('active');
+            
+                        </script>
+            
+                        <script>
+            
+                            //hiển thị submenu  
+                            $(".sub_menu").hide();           
+                            $(document).ready(function () {
+                                $("#list_brand li").hover(function () {
+                                        $(this).children("ul.sub_menu").fadeIn({duration:200});
+                                    }, function () {
+                                        $(this).children("ul.sub_menu").fadeOut({duration:200});
+                                    });
+                                    });
+                        </script>
+            
+                    </div>
+                    
+
+                    <div id="filter"> 
+                        <!--drop down các dòng máy Acer-->
+                    <div id="image-filter">
+                        <img src="Resources/Icon/filter.png">
+                    </div>
+                    <ul class="sub_menu">
+                        <a href="/giagiam"><li> Giá giảm dần</li></a>
+                        <a href="/giagiam"><li> Giá tăng dần</li></a>
+                    </ul>
+                    <script>
+                        //hiển thị submenu  
+                        $(".sub_menu").hide();           
+                    </script>
+                </div>
+
+                    <div id="shopping-cart">
+                        <a href="/shopping">
+                            <div>
+                                <img src="/Resources/Icon/shopping-cart.png">
+                            </div>
+                        </a>
+                        <p id="cart-num" style="top: -50px; height: 20px;">  </p>
+                        
+                    </div>
+
+                    <div id="page-name">   
+                        <p> <%= pagename%> </p>
+                    </div>
+                </div>
+
+                <div id="display-content">     <!-- phần hiển thị nội dung-->
+
+                   <div class="price-gift">     <!--hình ảnh giá bán, quà tặng-->
+
+                        <div id="picture" class=" w3-animate-top">
+                            <div>
+                                <img src="upload/images/<%-product[0].img _%>" >
+                            </div>
+                            
+                        </div>
+                        <div id="price-field" class=" w3-animate-right">
+
+                            <h2 id="ma_sku"> #<%= product[0].ma_sku %></h2>
+
+                            <div class="price">
+                                <p id="price"> #Giá niêm yết:</p>
+                                <p id="price-value"><%= product[0].price.toLocaleString() %> đ</p>
+                                <p id="dis-price"> #Giá khuyến mãi:</p>
+                                <p id="dis-price-value"><%= product[0].discount_price.toLocaleString() %> đ</p>
+                            </div>
+
+                             <button id="cartAdd" >Thêm vào giỏ</button>
+                    </div>
+                    
+
+
+                    <div id="gift" class=" w3-animate-left">
+                        <h2> Quà tặng từ nhà sản xuất</h2>
+                        <div>
+                            <p id="1"> - Balo Acer SUV trị giá 1.500.000đ</p>   
+                            <p id="2"> - Gói bảo hành Acer 3S1</p>   
+                            <p id="3"> - Khuyến mãi Acer Nitro 5: Code Game PUBG và áo Intel trong game</p>   
+                            <p id="4"> </p> 
+                        </div>
+                                        
+                      </div>
+                    <div id="ex-gift" class=" w3-animate-bottom">
+                        <h2> Quà tặng từ cửa hàng</h2>
+                        <div>
+                            <p id="1"> - Chuột Logitech G102 RGB trị giá 400.000đ</p>   
+                            <p id="2"> - Mua kèm Office 365 Business chỉ còn 650.000đ. (Giá thị trường: 3.350.000đ)</p>    
+                            <p id="3"> - Túi chống sốc Laptop</p>        
+                            <p id="4"> - Bộ vệ sinh Laptop</p>       
+                        </div>
+                        <div>
+                            <ul>
+                                <% if(event.length>0) {%>
+                                    <h2> Event:</h2>
+                                    <% for(var i=0; i< event.length; i++) {%>
+                                        <a href="/event/<%=event[i].url%>" style="text-decoration: none;"> <li>- <%=event[i].title.toUpperCase() %>  </li></a>
+                                    <%}%> 
+                                <%}%> 
+                                
+                            </ul>
+                        </div>
+                        
+                    </div>
+
+                   </div>
+
+                   <div id="product-conf">        <!--cấu hình sản phẩm-->
+
+                    <h2> Thông số cấu hình</h2>
+
+                    <table id="configuration">
+                        <tr >
+                          <td class="lable">Thương hiệu</td>
+                          <td id="brand" class="value"><%- product[0].brand_name _%></td>
+                        </tr>
+                        <tr>
+                            <td class="lable">Serie</td>
+                            <td  id="serie" class="value"><%- product[0].serie_%></td>
+                          </tr>
+
+                          <tr >
+                            <td class="lable">Mã máy</td>
+                            <td id="ma_may" class="value"><%- product[0].ma_sku _%></td>
+                          </tr>
+
+                          <tr >
+                            <td class="lable">CPU</td>
+                            <td id="cpu"class="value"><%= product[0].cpu %></td>
+                          </tr>
+
+                          <tr>
+                            <td class="lable">GPU</td>
+                            <td  id="gpu" class="value"><%- product[0].gpu _%></td>
+                          </tr>
+
+                          <tr >
+                            <td class="lable">RAM</td>
+                            <td id="ram" class="value"><%= product[0].ram %></td>
+                          </tr>
+
+                          <tr>
+                            <td class="lable">SSD</td>
+                            <td  id="ssd" class="value"><%= product[0].ssd %></td>
+                          </tr>
+
+                          <tr >
+                            <td class="lable">HDD</td>
+                            <td id="hdd" class="value"><%= product[0].hdd %></td>
+                          </tr>
+                          <tr>
+                            <td class="lable">Màn hình</td>
+                            <td id="monitor"  class="value"><%= product[0].monitor %></td>
+                          </tr>
+                          <tr >
+                            <td class="lable">Webcam</td>
+                            <td class="value"><%= product[0].webcam %></td>
+                          </tr>
+                          <tr id="interface">
+                            <td class="lable">Cổng kết nối</td>
+                            <td id="webcam" class="value"><%= product[0].interface %></td>
+                          </tr>
+                          <tr >
+                            <td class="lable">bluetooth</td>
+                            <td id="bluetooth" class="value"><%= product[0].bluetooth %></td>
+                          </tr>
+                          <tr >
+                            <td class="lable">Kết nối</td>
+                            <td id="connect" class="value"><%= product[0].connect %></td>
+                          </tr>
+                          <tr >
+                            <td class="lable">Hệ điều hành</td>
+                            <td id="os" class="value"><%= product[0].os%></td>
+                          </tr>
+                          <tr>
+                            <td class="lable">Pin</td>
+                            <td id="pin" class="value"><%= product[0].pin%></td>
+                          </tr>
+                          <tr>
+                            <td class="lable">Màu sắc</td>
+                            <td id="color" class="value"><%= product[0].color%></td>
+                          </tr>
+                          <tr>
+                            <td class="lable">Trọng lượng</td>
+                            <td  id="weight" class="value"><%= product[0].weight%></td>
+                          </tr>
+                          <tr>
+                            <td class="lable">Kích thước</td>
+                            <td id="size" class="value"><%= product[0].size %></td>
+                          </tr>
+                      </table>
+
+
+                  
+                      <p id="discount_price" style="display:none"><%- product[0].discount_price_%></p>
+                      <%# script thêm vào giỏ hàng%>
+                      <script>
+
+                        var img = $("#picture").find('img').attr('src');
+                        var brand = document.getElementById('brand').textContent;
+                        var serie = document.getElementById('serie').textContent;
+                        var ma_may = document.getElementById('ma_may').textContent;
+                        var cpu = document.getElementById('cpu').textContent;
+                        var gpu = document.getElementById('gpu').textContent;
+                        var ram = document.getElementById('ram').textContent;
+                        var ssd = document.getElementById('ssd').textContent;
+                        var hdd = document.getElementById('hdd').textContent;
+                        var price = document.getElementById('discount_price').textContent;
+                        var quntity=1;
+
+                        var item = {
+                            'img':img,
+                            'brand': brand,
+                            'serie':serie,
+                            'ma_may':ma_may,
+                            'cpu':cpu,
+                            'gpu':gpu,
+                            'ram':ram,
+                            'ssd': ssd,
+                            'hdd': hdd,
+                            'price':price,
+                            'quantity': quntity
+                        }
+
+                        var array = JSON.parse(window.localStorage.getItem('cart')) || []; 
+                        var num = array.length;
+                        $("#cart-num").text(num.toString());
+                        $("#cartAdd").click(function(){
+                           
+                            if(array.length === 0){         // khi chưa có sản phẩm thì thêm vào
+                                array.push(item);
+                            } else{
+                                for(let i= 0; i< array.length; i++){        //khi có rồi thì kiểm tra xem có bị trùng không
+                                    if(array[i].ma_may === item.ma_may){
+                                        alert('Thêm vào giỏ thành công');   //nếu có thì return
+                                        return;
+                                    } 
+                                }
+                                array.push(item);           //không trùng thì add vào array và thêm vào local storage
+                            }
+                            window.localStorage.setItem("cart", JSON.stringify(array));
+                            num +=1;
+                            $("#cart-num").text(num.toString());
+                            alert('Thêm vào giỏ thành công');
+                        });
+
+
+                      </script>
+
+                   </div>
+                   <div id="product-khac">   <!--sản phẩm liên quan-->
+                    <h2> Sản phẩm liên quan</h2>
+                    <div>
+                        <ul>
+                            <% for(var i=0; i< productSame.length; i++) { %>
+                                <li class=" w3-center w3-animate-right">
+                                    <a href="/product/<%- productSame[i].brand_name_%>/<%- productSame[i].serie_%>/<%- productSame[i].ma_sku _%>" >
+                                        <img src="upload/images/<%=productSame[i].img%>">
+                                        <p id="ma_sku"><%= productSame[i].ma_sku%></p>
+                                        <p id="cpu"><%= productSame[i].cpu%></p>
+                                        <p id="gpu"><%= productSame[i].gpu%></p>
+                                        <p id="ram"><%= productSame[i].ram%></p>
+                                        <p id="ssd"><%= productSame[i].ssd%></p>
+                                        <p id="hdd"><%= productSame[i].hdd%></p>
+                                        <p id="gia"><span style="color: tomato; font-weight: bold;"><%= productSame[i].discount_price.toLocaleString()%> đ</span></p>
+                                    </a>
+                                </li >
+                            <% } %> 
+                         </ul>    
+                      
+                    </div>
+               
+
+                </div>
+
+
+
+                </div>
+              
+            </div>
+            <!-- hết phần hiển thị nội dung-->
+
+            <!--liên kết đến các trang facebook, instagram...-->
+            <div id="follow-us" > 
+                <ul>
+
+                    <li> Follow us:</li>
+                    <li><a href="http://www.facebook.com" target="blank">
+                        <img src="Resources/Icon/facebook.png" alt="facebook" width="25" height="25">
+                        </a>
+                    </li>
+                    <li><a href="http://www.instagram.com" target="blank">
+                        <img src="Resources/Icon/instagram.png" alt="instagram" width="25" height="25">
+                        </a>
+                    </li>
+                    <li><a href="http://www.twitter.com" target="blank">
+                        <img src="Resources/Icon/twitter.png" alt="twitter" width="25" height="25">
+                        </a>
+                    </li>
+                  
+                </ul>
+            </div>
+
+            <!--hết phần liên kết đến các trang facebook, instagram...-->
+
+            <!--Phần footer để hiện thị địa chỉ của hàng, hotline ....-->
+
+            <div id="footer" class="footer-container">
+
+                <div id="left">
+                    <h2>
+                        CÔNG TY TNHH TM DV VVT <br>
+                        MST: 150577 <br>
+                        Ngày thành lập: 07/07/2020
+                    </h2>
+                    <h3>Danh sách cửa hàng:</h3>
+                    <ul>
+                        <li>
+                            <a href="https://goo.gl/maps/5WiwroZAmKAwU4jE9" target="blank">
+                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
+                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
+                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
+                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <h3 id="contact">
+                        <a href="tel:+84981234567">Hotline: 0981234567</a> <br>
+                        <a href="mailto:17521184@gm.uit.edu.vn" target="_top">Mail: 17521184@gm.uit.edu.vn</a></h3>
+                </div>
+
+                <div id="middle">
+                    <h2>Hỗ trợ khách hàng</h2>
+                    <ul>
+                        <li><a href="/tra_gop" title="Trả góp">Chính sách trả góp</a> </li>
+                        <li><a href="/thanh_toan" title="Thanh toán">Phương thức thanh toán</a> </li>
+                        <li><a href="/bao_hanh" title=" Bảo hành">Chính sách bảo hành</a> </li>
+                        <li><a href="/van_chuyen" title="Vận chuyển">Chính sách vận chuyển</a> </li>
+                    </ul>
+                </div>
+
+                <div id="right">
+
+                    <div id="logo"> LapCity</div>
+                    <div id="cong-thuong">
+                            <a href="https://www.moit.gov.vn/" target="blank">
+                                 <img src="Resources/Icon/bo-cong-thuong.png" width="200" height="auto">
+                            </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+</html>

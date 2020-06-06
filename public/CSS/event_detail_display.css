@@ -1,0 +1,115 @@
+@charset "utf-8";
+
+@font-face{
+    font-family: balootamma2;
+    src: url(../Resources/font/BalooTamma2-Regular.ttf);
+}
+
+#content-field{
+
+    height: fit-content;
+}
+#display-content{
+    
+    width: 1000px;
+    min-height: fit-content;
+    border-top: solid #d7d3dc ;
+    border-width: 2px;
+    font-family: balootamma2;
+
+}
+
+#tieu_de{
+
+    min-height: 300px;
+    padding: 20px;
+    margin: 20px;
+    border: solid 2px #b7b7b7;
+}
+
+#hinh{
+    height: 270px;
+    width: fit-content;
+    margin: 15px auto;
+}
+
+#hinh img{
+    height: 100%;
+    
+}
+
+#tieu_de h2{
+    height: 30px;
+    color: tomato;
+    text-align: center;
+}
+
+
+#noi_dung{
+
+    min-height:  200px;
+    margin: 20px;
+    border: solid 2px #b7b7b7;
+    padding: 20px;
+}
+
+#noi_dung p{
+
+    font-family: balootamma2;
+    font-size: 20px;
+
+}
+
+
+/*khuyenes mai khac*/
+#khac{
+
+    min-height: 300px;
+    margin: 20px;
+    border: 2px solid #b7b7b7;
+    padding: 10px;
+    padding-right: 30px;
+    display: flex;
+    flex-direction: column  ;
+}
+#khac h2{
+    font-family: balootamma2;
+    margin: 0px;
+    color: tomato;
+    font-weight: bold;
+ 
+}
+#khac ul{
+    
+    margin: 0px;
+    padding: 0px;
+    height: 250px;
+    margin-top: 10px;
+    margin-left: 10px;
+    overflow: scroll;
+    overflow-x: hidden;
+  
+}
+
+    
+#khac ul li{
+
+    list-style: none;
+    padding-right: 40px;
+    padding-left: 40px;
+    width: 200px;
+    float: left;
+    margin-top: 35px;
+
+}
+
+#khac ul li img{
+
+    width: 200px;
+}
+
+#khac ul li h2{
+
+    text-align: center;
+    font-size: 15px;
+}

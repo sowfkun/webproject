@@ -1,0 +1,136 @@
+@charset "utf-8";
+
+@font-face{
+    font-family: balootamma2;
+    src: url(../Resources/font/BalooTamma2-Regular.ttf);
+}
+#bottom-field {
+    min-height: 1400px;
+}
+#content-field{
+
+    max-height: 1100px ;;
+}
+
+#top-bar #brand-name ul li button {
+
+    height: 50px;
+}
+
+.drop-down-content{
+
+    margin-top: -2px;
+}
+#display-content{
+    
+    overflow: scroll;
+    width: 1000px;
+    height: 1000px;
+    border-top: solid #d7d3dc ;
+    border-width: 2px;
+    font-family: balootamma2;
+}
+#display-content ul{
+   
+    margin: 0px;
+    padding: 20px;
+}
+#display-content ul li{
+
+    height: fit-content;
+    border: solid 2px #b7b7b7;
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+#status{
+
+    text-align: center;
+    height: 30px;
+    color: tomato;
+    line-height: 30px;
+    border-bottom: 2px solid #b7b7b7;
+    font-weight: bold;
+}
+
+#khuyen_mai{
+    height: 300px;
+    display: flex;
+    flex-direction: row;
+    
+    
+}
+#image{
+
+    width: 50%;
+    display: block;
+    
+}
+#image div{
+
+    margin: 0px auto;
+    padding: 50px;
+}
+#image img{
+    height: 200px;
+    width: 100%;
+}
+#khuyenmai_info{
+   
+    width: 50%;
+    height: 200px;
+    margin: 50px 20px 0 0;
+    border: 1px dotted #b7b7b7;
+}
+#title{
+    height: 30%;
+    color: tomato;
+    font-size: 20px;
+    line-height: 25px;
+    padding: 10px 10px 0 10px;
+    font-weight: bold;
+    text-align: justify;
+}
+#content{
+    height: 50%;
+    padding: 0px 10px 0 10px;
+    text-align: justify;
+}
+#viewmore{
+    height: 30%;
+    padding: 0px 10px 0 10px;
+}
+#viewmore a{
+    text-decoration: none;
+    font-size: 20px;
+    color: tomato;
+}
+
+.tooltip {
+
+    position: relative;
+    display: block;
+    border: solid rgb(207, 45, 45) 1px;
+    width: fit-content;
+    text-align: center;
+    font-family: balootamma2;
+    font-size: 15px;
+    font-weight: bold;
+    color: red;
+    float: right;
+    visibility: hidden;
+    background-color: white;
+    padding: 0px 40px 0 40px;
+    margin-top: -30px;
+  
+}
+ 
+#display-content ul li:hover{
+    background-color: #e1e1e1;
+
+}
+#display-content ul li:hover .tooltip{
+    visibility: visible;
+}
+

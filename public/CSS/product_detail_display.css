@@ -1,0 +1,282 @@
+@charset "utf-8";
+
+@font-face{
+    font-family: balootamma2;
+    src: url(../Resources/font/BalooTamma2-Regular.ttf);
+}
+
+#top-field #search-bar button{
+
+    height: 20px;
+    width: 20px;
+}
+#bottom-field{
+
+    height: fit-content;
+}
+#content-field{
+
+    height: fit-content;
+}
+#display-content{
+    
+    width: 1000px;
+    min-height: 1730px;
+    border-top: solid #d7d3dc ;
+    border-width: 2px;
+    font-family: balootamma2;
+
+}
+#top-bar #brand-name ul li button{
+    height: 49px;
+    border-bottom: 1px solid  #d7d3dc;
+}
+
+/*hình ảnh , giá bán, thông tin quà tăng*/
+.price-gift{
+
+    margin: 20px;
+    margin-top: 0px;
+    min-height: 600px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/*hình ảnh*/
+#picture{
+    height: 50%;
+    width: 50%;
+    padding: 20px;
+}
+#picture div{
+
+    height: 250px;
+    width: 250px;
+    margin:  auto;
+    
+}
+#picture img{
+    height: 100%;
+    width: 100%;
+}
+
+
+/*giá bán*/
+#price-field{
+    height: 50%;
+    width: 50%;
+    padding: 35px;
+   
+}
+#price-field h2{
+    font-family: balootamma2;
+    font-weight: bold;
+    color: tomato;
+    margin-bottom: 30px;
+}
+.price{
+
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.price p{
+    font-family: balootamma2;
+    font-size: 20px;
+    margin: 0px;
+}
+#price{
+    width: 50%;
+    
+}
+
+#price-value{
+    width: 50%;
+    font-weight: bold;
+    color: tomato;
+    text-decoration: line-through;
+}
+#dis-price{
+    width: 50%;
+}
+#dis-price-value{
+    width: 50%;
+  font-weight: bold;
+    color: tomato;
+}
+
+#price-field button{
+    border: none;
+    height: 45px;
+    width: 50%;
+    background-color: tomato;
+    font-size: 20px;
+    font-family: balootamma2;
+    color: white;
+}
+
+#price-field button:hover{
+    cursor: pointer;
+    background-color: rgb(255, 255, 255);
+    color: tomato;
+    font-weight: bold;
+    border: 1px solid tomato;
+    transform: scale(1.1,1.1);
+}
+
+/*quà tặng*/
+#gift{
+    min-height: 50%;
+    width: 50%;
+    padding: 20px;
+    border: 2px solid #b7b7b7;
+}
+
+#gift h2{
+    font-family: balootamma2;
+    font-weight: bold;
+    color: tomato;
+}
+#gift p{
+    font-family: balootamma2;
+    margin-top: 25px;
+    font-size: 20px;
+}
+/*quà tặng thêm*/
+#ex-gift{
+    min-height: 50%;    
+    width: 50%;
+    padding: 20px;
+    border: 2px solid #b7b7b7;
+    border-left:none ;
+}
+
+#ex-gift h2{
+    font-family: balootamma2;
+    font-weight: bold;
+    color: tomato;
+}
+#ex-gift p{
+    font-family: balootamma2;
+    margin-top: 25px;
+    font-size: 20px;
+}
+
+#ex-gift ul{
+    margin: 0px;
+    padding: 0px;
+}
+#ex-gift li{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    font-size: 20px;
+    color: tomato;
+    
+}
+#ex-gift li:hover{
+    cursor: pointer;
+    color: black;
+}
+/*cấu hình sản phẩm*/
+
+#product-conf{
+
+    margin: 20px;
+    min-height: 600px;
+
+}
+
+#product-conf h2{
+
+    font-family: balootamma2;
+    font-weight: bold;
+    color: tomato;
+}
+
+
+/*bảng thông số*/
+#configuration{
+    border: 1px solid #b7b7b7;
+    font-size: 20px;
+    border-spacing: 0px;
+    width: 100%;
+}
+#product-conf td{
+    height: 40px;
+}
+
+.lable{
+    border: 1px solid #b7b7b7;
+    text-align: center;
+    width: 20%;
+}
+
+.value{
+    border: 1px solid #b7b7b7;
+    padding-left: 10px;
+}
+
+#product-conf tr:hover {background-color: #ddd;}
+
+/*sản phẩm liên quan*/
+
+#product-khac{
+
+    height: 420px;
+    margin: 20px;
+    border: 2px solid #b7b7b7;
+    padding: 10px;
+    display: flex;
+    flex-direction: column  ;
+    
+}
+
+#product-khac h2{
+
+    font-family: balootamma2;
+    margin: 0px;
+    color: tomato;
+    font-weight: bold;
+ 
+}
+
+#product-khac div{
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+#product-khac ul{
+    
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-wrap: wrap;
+}
+#product-khac ul li{
+
+    width: 33.333%;
+    height: 330px;
+    list-style: none;
+    margin-bottom: 10px;
+}
+#product-khac ul li a{
+    text-decoration: none;
+}
+#product-khac ul li img{
+
+    width: 150px;
+}
+#product-khac ul li p{
+
+    font-family: balootamma2;
+    margin-top: -15px;
+    text-align: center;
+}
+#product-khac ul li:hover{
+    background-color: #e9e9e9;
+    cursor: pointer;
+}
+
+

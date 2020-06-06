@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/admin_css/admin_product.css">
+    <title> LapCity: <%=title%> </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head> 
+<body>
+
+    <%# menu %> 
+    <div id="menu">
+        <%- include('admin_menu'); -%>
+    </div>
+  
+
+    <%# content %>  
+
+    <div id="display-content">
+
+        <%# hiển thị các thuong hieu %> 
+        <div id="list_brand">
+            <ul>
+                <% for(var i=0; i<brand.length;i++) { %> 
+                    <li id="<%- brand[i].brand_name _%>" onclick="active('<%- brand[i].brand_name _%>')"> 
+                        <a href="/admin/product/<%- brand[i].brand_name%>" style="text-decoration: none;" >
+                            <span> <%= brand[i].brand_name %> </span>
+                        </a>
+                        <ul class="sub_menu">
+                            <% for(var j=0; j<serie.length; j++) { %> 
+                              <%if (serie[j].brand_name == brand[i].brand_name) { %>
+                                 <a href="/admin/product/<%- serie[j].serie%>"> <li> <%= serie[j].serie%></li> </a> 
+                              <%}%>
+                            <% } %>
+                        </ul>    
+                    </li>
+                <% } %> 
+            </ul>
+
+            <script>
+                function active(brand_name){
+                   localStorage.setItem('active', brand_name);
+                }
+                
+                var brand =   "#"+ localStorage.getItem('active');
+                $(brand).addClass('active');
+
+            </script>
+
+            <script>
+
+                //hiển thị submenu  
+                $(".sub_menu").hide();           
+                $(document).ready(function () {
+                    $("#list_brand li").hover(function () {
+                            $(this).children("ul.sub_menu").fadeIn({duration:200});
+                        }, function () {
+                            $(this).children("ul.sub_menu").fadeOut({duration:200});
+                        });
+                        });
+            </script>
+
+
+            <%# thanh tìm kiếm %> 
+            <div id="search-bar">
+                <form action="admin/product_search" method="GET">
+                    <button></button>
+                    <input type="text" placeholder="Tìm kiếm..." name="keyword" value="<%=keyword.toLowerCase()%>">
+                </form>
+            </div>
+        </div>
+
+        <%# hiển thị tên đang chọn %> 
+
+        <div id="name">
+            <%-name%>
+        </div>
+
+        <%# list product %>
+        <div  id="list_product">
+            <table >
+                <tr>
+                  <td>
+                     <table style="border-spacing: 0px;" >
+                       <tr>
+                        <th style="width: 150px;"> Hình ảnh</th>
+                        <th style="width: 15%;"> Thương hiệu</th>
+                        <th style="width: 15%;"> Serie</th>
+                        <th style="width: 17%;"> Mã máy </th>
+                        <th style="width: 10%;"> Đã bán</th>
+                        <th style="width: 10%;"> Còn lại</th>
+                        <th style="width: 10%;"> status </th>
+                        <th style="width: 10%;"> Xóa</th>
+                       </tr>
+                     </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                     <div id="item" >
+                       <table style="border-spacing: 0px;">
+                        <% for(var i=0; i<product.length; i++) { %> 
+                            <tr onclick="show_info('<%-product[i].ma_sku%>')" id="item_<%-product[i].ma_sku%>">
+                                <td style="width: 150px; height: 150px; padding: 20px;"> 
+                                    <img src="upload/images/<%-product[i].img%>" height="100%" width="100%">
+                                </td>
+                                <td style="width: 15%;"> <%-product[i].brand_name%> </td>
+                                <td style="width: 15%;"> <%-product[i].serie%> </td>
+                                <td style="width: 17%;"> <%-product[i].ma_sku%> </td>
+                                
+                                <%# lấy số lượng đã bán %> 
+                                 
+                                <% var flag = 0; %>
+                                <% var index = 0; %>
+                                <% for(var j=0; j<daban.length; j++) { %> 
+                                    <%if (product[i].ma_sku == daban[j].ma_sku) { %>   
+                                        <% flag = 1 %>          <%# bật flag lên 1 khi tìm thấy %> 
+                                        <% index = j %>         <%# lấy index của giá trị cần tìm %> 
+                                    <% }  %>
+                                <% } %>
+
+                                <%if (flag == 0) { %>           <%# flag = 0 tức là chưa có sản phẩm được bán %> 
+                                    <td style="width: 10%;"> 0 </td>
+                                <% } else { %>
+                                    <td style="width: 10%;"> <%-daban[index].soluong%></td>    <%# show số lượng %> 
+                                <% } %> 
+
+                                <%# lấy số lượng chưa bán (tương tự đã bán) %> 
+                                <% var flag1 = 0; %>
+                                <% var index1 = 0; %>
+                                <% for(var j=0; j<conlai.length; j++) { %> 
+                                    <%if (product[i].ma_sku == conlai[j].ma_sku) { %>
+                                        <% flag1 = 1 %> 
+                                        <% index1 = j %> 
+                                    <% } %>
+                                <% } %>
+
+                                <%if (flag1 == 0) { %>
+                                    <td style="width: 10%;"> 0 </td>
+                                <% } else { %>
+                                    <td style="width: 10%;"> <%-conlai[index1].soluong%> </td>
+                                <% } %> 
+
+                                <td style="width: 10%;"> <%-product[i].product_status%> </td>
+
+
+                                <td style="width: 10%;"> 
+                                   
+                                    <% var flag3 = 0; %> 
+                                    <% for(let j = 0; j < inOrder.length; j++){ %>
+                                        <%if (inOrder[j].ma_may == product[i].ma_sku) { %>
+                                            <% flag3 = 1 %> 
+                                        <% } %>  
+                                    <% } %>  
+
+                                    <%if (flag3 == 0) { %>        
+                                        <form action="/admin/product_delete" method="POST">
+                                            <input type="hidden" name="ma_sku" value="<%-product[i].ma_sku%>">
+                                            <button id="btn_xoa" style="border: none;">
+                                                <img  src="Resources/Icon/trash.svg"  width="20px" height="20px"> 
+                                            </button>
+                                        </form>
+                                    <% } else { %>
+                                        <button class="have_alert" style="border: none;" disabled >
+                                            <img  src="Resources/Icon/trash.svg"  width="20px" height="20px"> 
+                                            <div  class="alert"> Sản phẩm thuộc đơn hàng, bạn không thể xóa</div>
+                                        </button>
+                                       
+                                    <% } %>    
+                                </td>
+                                
+                                <script>
+                                    $(document).ready(function(){
+                                    $('#btn_xoa').click(function(event){
+                                        // your stuff here
+                                        event.stopPropagation();
+                                    });
+                                    });
+                                </script>
+                            </tr>
+
+                            <!-- Hiển thị thông tin sản phẩm--> 
+                            <div class="product-info" id="info_<%-product[i].ma_sku%>" style="height: 550px; width: 76.5%; display: none;">
+                               
+                                <img title="Close" id="close" src="Resources/Icon/close.svg" onclick="close_info('<%-product[i].ma_sku%>')">
+
+                                <form action="/admin/product_update" method="POST" style="width: 100%;" enctype="multipart/form-data">
+                                    <div id="header" style="width:100%; height: 40px; overflow: unset;">
+                                        <h2> Cấu hình <%-product[i].brand_name.toUpperCase()%> <%-product[i].serie.toUpperCase()%> (<%-product[i].ma_sku%>)</h2>
+                                        <button class="btn_update" type="submit" disabled> Cập nhật</button>
+                                    </div>
+
+                                    <div id="item_configure">
+                                       
+                                        <div class="row">       
+                                            <div class="input" >
+                                                <input id="change" type="hidden" name="change" value="<%-product[i].ma_sku%>" required>
+                                            </div>
+                                        </div>
+                                        <div style=" margin-bottom: 10px; display: flex; flex-direction: row;">
+                                            <div class="row" >       
+                                                <div class="label" style="margin-top: 40px;"> 
+                                                    <label for="img"><b>#Hình ảnh:</b></label>
+                                                </div>
+                                                
+                                                <div class="input" >
+                                                    <input id="img" type="file" name="img" style="text-indent: 0; margin-top: 40px; margin-left: 46px;"
+                                                    onchange="loadimg(event), update()">
+                                                </div>
+                                                <input  type="hidden" name="old_img" value="<%-product[i].img%>">  <%# không có ảnh mới thì dùng ảnh cũ %> 
+                                            </div>
+                                            <div  style= "left: -300px; position: relative;">
+                                                <div style=" border: solid 1px #aaaa;" >
+                                                    <img id="old_img" src="upload/images/<%- product[i].img%>" height="150px" width="150px">
+                                                </div>
+                                               
+                                                <div style="padding-top: 10px;" >
+                                                    <span >Ảnh cũ</span>
+                                                </div>
+                                            </div>
+                                     
+                                            <div style= "left: -250px; position: relative;" >
+                                                <div style= "border: solid 1px #aaaa;" >
+                                                    <img id="new_img" height="150px" width="150px" >
+                                                </div>
+                                                <div style="padding-top: 10px;">
+                                                    <span  >Ảnh mới</span>
+                                                </div>
+                                            </div>
+
+                                            <script>
+                                                function loadimg(event){
+                                                   var reader = new FileReader();
+                                                   reader.onload = function(){
+                                                     var img = document.getElementById('new_img');
+                                                     img.src = reader.result;
+                                                   };
+                                                   reader.readAsDataURL(event.target.files[0]);
+                                                 };
+                                               </script>
+
+                                        </div>
+                                        
+                                        <div class="row">       <!--Thương hiệu-->
+                                            <div class="label"> 
+                                                <label for="catalog"><b>#Danh mục:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <select id="catalog" name="catalog" value="" onchange="update()" required>
+                                                    <option value="<%-product[i].catalog_id%>"><%-product[i].name%></option>
+                                                    <% for(var z = 0; z < catalog.length; z++){ %>
+                                                        <% if (product[i].catalog_id !== catalog[z].catalog_id) { %>
+                                                             <option value="<%-catalog[z].catalog_id%>"><%-catalog[z].name%></option>
+                                                        <%} %>
+                                                    <% } %>  
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">       <!--Thương hiệu-->
+                                            <div class="label"> 
+                                                <label for="brand"><b>#Thương hiệu:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input  id="brand" type="text" name="brand" value="<%-product[i].brand_name%>" onchange="update()" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">       <!--serie-->
+                                            <div class="label"> 
+                                                <label for="serie"><b>#Serie:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="serie" type="text" name="serie" value="<%-product[i].serie%>" onchange="update()" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="ma_sku"><b>#Mã máy:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="ma_sku" type="text" name="ma_sku" value="<%-product[i].ma_sku%>" onchange="update()" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="price"><b>#Giá gốc:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="price" type="number" name="price" value="<%-product[i].price%>" onchange="update()" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="dis_price"><b>#Giá khuyến mại:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="dis_price" type="number" name="dis_price" value="<%-product[i].discount_price%>" onchange="update()" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="cpu"><b>#CPU:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="cpu" type="text" name="cpu" value="<%-product[i].cpu%>" onchange="update()" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="gpu"><b>#GPU:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="gpu" type="text" name="gpu" value="<%-product[i].gpu%>" onchange="update()" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="ram"><b>#RAM:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="ram" type="text" name="ram" value="<%-product[i].ram%>" onchange="update()" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="ssd"><b>#SSD:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="ssd" type="text" name="ssd" value="<%-product[i].ssd%>" onchange="update()">
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="hdd"><b>#HDD:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="hdd" type="text" name="hdd" value="<%-product[i].hdd%>" onchange="update()">
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="monitor"><b>#Màn hình:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="monitor" type="text" name="monitor" value="<%-product[i].monitor%>" onchange="update()" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="webcam"><b>#Webcam:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="webcam" type="text" name="webcam" value="<%-product[i].webcam%>" onchange="update()">
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="interface"><b>#Cổng kết nối:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="interface" type="text" name="interface" value="<%-product[i].interface%>" onchange="update()">
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="bluetooth"><b>#Bluetooth:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="bluetooth" type="text" name="bluetooth" value="<%-product[i].bluetooth%>" onchange="update()">
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="connect"><b>#Kết nối:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="connect" type="text" name="connect" value="<%-product[i].connect%>" onchange="update()">
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="os"><b>#Hệ điều hành:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="os" type="text" name="os" value="<%-product[i].os%>" onchange="update()">
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="pin"><b>#Pin:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="pin" type="text" name="pin" value="<%-product[i].pin%>" onchange="update()">
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="color"><b>#Màu sắc:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="color" type="text" name="color" value="<%-product[i].color%>" onchange="update()">
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="weight"><b>#Trọng lượng:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="weight" type="number" step ="any" name="weight" value="<%-product[i].weight%>" onchange="update()">
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="size"><b>#Kích thước:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <input id="size" type="text" name="size" value="<%-product[i].size%>" onchange="update()">
+                                            </div>
+                                        </div>
+                                        <div class="row">       
+                                            <div class="label"> 
+                                                <label for="status"><b>#Status:</b></label>
+                                            </div>
+                                            <div class="input" >
+                                                <select id="status" name="status" required onchange="update()">
+                                                    <option><%-product[i].product_status%></option>
+                                                    <% if(product[i].product_status == 'active') {%>
+                                                        <option>inactive</option>
+                                                        <% } else { %>
+                                                            <option>active</option>
+                                                            <% } %>   
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <script>
+                                            function update(){          // cập nhật sản phẩm
+                                            $(".btn_update").attr("disabled", false);
+                                        }
+                                        </script>
+                                       
+                                    </div>
+                                </form>
+                                
+                            </div>                
+                        <% } %> 
+                         
+                            <script>
+                              
+                                function show_info(ma_sku){     //hiển thị cấu hình sản phẩm
+                                    var id = "#"+ "info_" + ma_sku;
+                                    $(id).slideDown({duration:350});
+                                }
+
+                                function close_info(ma_sku){        // đóng cấu hình sản phẩm
+                                    var id = "#"+ "info_" + ma_sku;
+                                    $(id).fadeOut({duration:350});
+                                }
+
+                            </script>
+                       </table>  
+                     </div>
+                  </td>
+                </tr>
+              </table>
+        </div>
+        
+    </div>
+    
+</body>
+</html>
