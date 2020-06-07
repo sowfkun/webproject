@@ -29,10 +29,11 @@
                                     <li style="margin-right: 15px; ;" id="show_info" class="user_active">Thông tin</li>
                                     <li id="show_pass_change" class="user_inactive" >Đổi mật khẩu</li>
                                     <li style="float: right; opacity: 100%;">
-                                        <a style="font-size: 18px; color: rgb(241, 83, 83); line-height: 1.5; margin-top: 0; padding: 0px; " href="/sign-out">Đăng xuất</a>
+                                        <a style="font-size: 18px; color: rgb(241, 83, 83); line-height: 1.5; margin-top: 0; padding: 0px; " href="user/sign-out">Đăng xuất</a>
                                     </li>
                                 </ul>
                             </div> 
+
                             <form action="/user/update_pass" method="POST" id="change_pass">
                                 <ul>
                                     <input type="hidden" name="user_id" value="<%-user.user_id_%>">
@@ -179,7 +180,8 @@
 
          
         </script>
-        <script>
+
+        <script>        //xóa giỏ hàng khi đăng xuất
             function sign_out(){
                 localStorage.removeItem('cart');
             }

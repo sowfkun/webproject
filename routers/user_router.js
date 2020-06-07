@@ -23,6 +23,11 @@ router.get('/auth/fb/cb', passport.authenticate('facebook', {
     failureRedirect: '/user/sign-in/', successRedirect: '/'
 }) );
 
+router.get('/auth/gg', passport.authenticate('google',{scope: ['profile','email']}));
+router.get('/auth/gg/cb', passport.authenticate('google', {
+    failureRedirect: '/user/sign-in/', successRedirect: '/'
+}) );
+
 
 router.post('/update_user', userController.update_user);
 router.post('/update_pass', userController.update_password);

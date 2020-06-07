@@ -204,7 +204,8 @@ module.exports.update_password = (req,res) => {
 
 }
 module.exports.sign_out= (req, res) => {
-
+    
     res.clearCookie('email');
+    res.clearCookie('connect.sid');
     res.redirect('/user/sign-in');
 }

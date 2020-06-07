@@ -39,6 +39,7 @@ app.set('views', './views');
 const passport = require('passport');
 const passportfb = require('passport-facebook')
 const session = require('express-session')
+const passportgg = require('passport-google-oauth20').Strategy;
 
 const db= require('./database/db')
 
@@ -52,6 +53,46 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+//google login
+passport.use(new passportgg(
+    {
+        clientID: "791603067804-e1ecpn9dnlu5bvqj1ea2dp88ec9j5d3j.apps.googleusercontent.com",
+        clientSecret: "kqJHgImMTNlPjXw4W7O74i9G",
+        callbackURL: "https://localhost:3000/user/auth/gg/cb",
+    },
+    (accessToken, refreshToken, profile, done) => {
+        
+        console.log(profile);
+     
+        let user= {"google_id": profile.id, "name": profile.displayName, "email": profile.emails[0].value};
+        
+        db.query('select * from customer where google_id = ?', user.google_id, function(err, result){	
+            if(err) return done(err);       //nếu lỗi thỉ return
+     
+            if(result[0]) {return done(null, profile)};         //nếu tìm thấy google_id thì trả về profile (chắc chắn email đã được sử dụng)
+            
+            db.query('select * from customer where email = ?', user.email, function(err, result){	//kiểm tra email đã được dùng chưa.
+                if(err) return done(err);       //nếu lỗi thỉ return
+                if(typeof result[0] == "undefined") {    //nếu email chưa được sử dụng thì tạo mới
+              
+                    db.query('insert into customer set ?', user , function(err, result){	
+                        if(err) return done(err);
+                        return done(null, profile);
+
+                    });
+
+                } else {         // nếu rồi thì gán google_id vào để tránh email bị sử dụng 2 lần
+                    db.query('update customer set google_id = ? where email = ?', [user.google_id, user.email] , function(err, result){	
+                        if(err) return done(err);
+                        return done(null, profile)
+                       
+                    });
+                }     
+            });
+        }) 
+    }
+));
 
 //lấy user từ facebook
 passport.use(new passportfb(
@@ -68,7 +109,7 @@ passport.use(new passportfb(
 
         db.query('select * from customer where fb_id = ?', user.fb_id, function(err, result){	
             if(err) return done(err);       //nếu lỗi thỉ return
-
+           
             if(result[0]) {return done(null, profile)};         //nếu tìm thấy fb_id thì trả về profile (chắc chắn email đã được sử dụng)
             
             db.query('select * from customer where email = ?', user.email, function(err, result){	//kiểm tra email đã được dùng chưa.
@@ -77,14 +118,15 @@ passport.use(new passportfb(
                   
                     db.query('insert into customer set ?', user , function(err, result){	
                         if(err) return done(err);
-                       
+                        return done(null, profile);
                     });
 
                 } else {         // nếu rồi thì gán fb_id vào để tránh email bị sử dụng 2 lần
                     db.query('update customer set fb_id = ? where email = ?', [user.fb_id, user.email] , function(err, result){	
                         if(err) return done(err);
-                        return done(null, profile)
                        
+                        return done(null, profile)
+                        
                     });
                 }     
             });
@@ -95,11 +137,13 @@ passport.use(new passportfb(
 
 passport.serializeUser((user, done) => {
     done(null, user.id)
+
 })
 
 passport.deserializeUser((id, done) => {
-    db.query(`select * from customer where fb_id = ${id}` , function(err, result){	
+    db.query(`select * from customer where fb_id = ${id} or google_id = '${id}'` , function(err, result){	
         done(null, result[0]);
+        
     })
 })
 
