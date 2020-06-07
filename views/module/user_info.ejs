@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <base href="/">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
     <link rel="stylesheet" type="text/css" href="CSS/module/user_info.css">
     <title>  </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -77,8 +78,45 @@
 
                             <script>
                                 function updatePass(){
-                                    $("#update_password").attr("disabled",false);
+                                    $("#update_password").attr("disabled",false).css("opacity", "100%");
                                 }
+
+                                $(document).ready(function() {      //validate
+               
+                                    $("#change_pass").validate({
+                                        rules: {
+                                            old_pass:{
+                                                required: true
+                                            },
+                                            new_pass:{
+                                                required: true,
+                                                minlength: 4
+                                            },
+                                            confirm:{
+                                                required: true,
+                                                equalTo: "#new_pass"
+                                            }
+                                        },
+                                        messages: {
+                                            old_pass:{
+                                                required: "Mật khẩu cũ là bắt buộc"   
+                                            },
+                                            new_pass:{
+                                                required: "Vui lòng nhập mật khẩu mới",
+                                                minlength: "Mật khẩu phải dài hơn 4 kí tự"                                                
+                                                },
+                                            confirm:{
+                                                required: "Vui lòng nhập lại mật khẩu",
+                                                equalTo: "Mật khẩu không trùng khớp"
+                                            },  
+                                        }, success: function(label) {
+                                            label.addClass("valid");
+                                        }
+                                    });
+                                    
+                                });
+
+                                
                             </script>
 
                             <form action="/user/update_user" id="info" method="POST">
@@ -132,7 +170,7 @@
                             <script>
                                 function updateInfo(){
 
-                                    $("#update_info").attr("disabled",false);
+                                    $("#update_info").attr("disabled",false).css("opacity", "100%");
                                 }
                             </script>
                             

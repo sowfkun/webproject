@@ -32,6 +32,7 @@ router.get('/auth/gg/cb', passport.authenticate('google', {
 router.post('/update_user', userController.update_user);
 router.post('/update_pass', userController.update_password);
 
+
 router.get('/sign-out', userController.sign_out);
 
 

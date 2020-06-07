@@ -100,6 +100,7 @@ ul#user_menu ul li{
     color: white;
     font-weight: bold;
     margin-top: 10px ;
+    opacity: 30%;
 }
 .btn:hover{
     cursor: pointer;
@@ -126,4 +127,26 @@ ul#user_menu ul li{
 
 .user_inactive{
     opacity: 30%;
+}
+
+label.error{
+    color: red;
+    font-weight: bold;
+    font-size: 15px;
+    position: relative;
+    padding: 0 30px 0 30px;
+    margin-top: 15px;
+    top: 5px;
+}
+
+label.valid{
+    background-image: url(../../Resources/Icon/tick.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    float: right;
+    height: 30px;
+    width: 30px;
+    top: -45px;
+    right: -15px;
+    
 }

@@ -78,15 +78,12 @@ label.error{
     position: relative;
     float: right;
     top: -72px;
-   
 }
 
 label.valid{
-
     background-image: url(../Resources/Icon/tick.png);
     background-size: contain;
     height: 30px;
     width: 30px;
-    top: -30px;
-
+    top: -33px;
 }
