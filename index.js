@@ -7,7 +7,7 @@ const homeRoute= require('./routers/home_router')       //router home
 const productRoute= require('./routers/product_router')     //router product
 const userRoute= require('./routers/user_router')           //router user
 const shoppingRouter = require('./routers/order_router')    //router giỏ hàng
-
+const filterRouter = require('./routers/filter_router')
 
 //import admin router
 const adminRouter = require('./routers/admin_router/admin_router')
@@ -153,6 +153,7 @@ app.use('', userCheck.userCheck, homeRoute);
 app.use('/product', userCheck.userCheck, productRoute);
 app.use('/user', userRoute);
 app.use('/shopping', userCheck.userCheck, shoppingRouter);
+app.use('/filter', userCheck.userCheck, filterRouter);
 
 
 //Admin router

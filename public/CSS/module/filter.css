@@ -1,0 +1,52 @@
+@charset "utf-8";
+
+@font-face{
+    font-family: balootamma2;
+    src: url(../Resources/font/BalooTamma2-Regular.ttf);
+}
+
+#filter_form{
+    height: fit-content;
+    width: fit-content;
+    
+}
+
+#filter_form div{
+    
+    width: 270px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgb(199, 199, 199);
+    border-radius:10px ;
+    margin-bottom: 10px;
+}
+
+#filter_form div h2{
+    font-family: balootamma2;
+    padding: 0px;
+    margin: 0px;
+    font-size: 18px;
+    color: tomato;
+}
+
+#filter_form select{
+    width: 100%;
+    border: none;
+    border-bottom:solid 1px rgb(131, 130, 130) ;
+    font-family: balootamma2;
+   
+}
+
+#btn_filter{
+    padding: 0 20px 0 20px;
+    border: none;
+    background-color: red;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    font-family: balootamma2;
+}
+
+#btn_filter:hover{
+    cursor: pointer;
+    transform: scale(1.1,1.1);
+}

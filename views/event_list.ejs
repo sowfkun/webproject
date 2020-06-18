@@ -91,20 +91,13 @@
             
                     </div>
                 
-                    <div id="filter"> 
-                        <!--drop down các dòng máy Acer-->
-                    <div id="image-filter">
-                        <img src="Resources/Icon/filter.png">
+                     <%#filter%>
+                     <div id="filter"> 
+                        <%- include('module/filter'); -%>
                     </div>
-                    <ul class="sub_menu">
-                        <a href="/giagiam"><li> Giá giảm dần</li></a>
-                        <a href="/giagiam"><li> Giá tăng dần</li></a>
-                    </ul>
-                    <script>
-                        //hiển thị submenu  
-                        $(".sub_menu").hide();           
-                    </script>
-                </div>
+    
+
+                    <!--Giỏ hàng-->
     
                     <div id="shopping-cart">        <!--Giỏ hàng-->
                         <a href="/shopping">

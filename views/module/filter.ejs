@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vie">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <link rel="stylesheet" type="text/css" href="CSS/module/filter.css">
+    <title>  </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div id="image-filter">
+        <img src="Resources/Icon/filter.png">
+    </div>
+
+    <div class="sub_menu">
+        <form id="filter_form" action="/filter" method="POST">
+
+            <div id="filter_brand">
+                <h2>Thương hiệu</h2>
+                <select id="brand_select" name="brand" required >
+                    <% for(var i = 0; i < menu.length; i++){ %>
+                        <option value="<%=menu[i].brand_name%>"><%=menu[i].brand_name%></option>
+                    <% } %>  
+                </select>
+            </div>
+
+            <div id="filter_ram">
+                <h2>Ram</h2>
+                <select id="ram_select" name="ram" required>
+                    <option value="4gb">4 gb</option>
+                    <option value="8gb">8 gb</option>
+                    <option value="16gb">16 gb</option>
+                    <option value="32gb">32 gb</option>
+                </select>
+            </div>
+
+            <div id="filter_cpu">
+                <h2>CPU</h2>
+                <select id="cpu_select" name="cpu" required>
+                    <option value="intel core i3">intel core i3</option>
+                    <option value="intel core i5">intel core i5</option>
+                    <option value="intel core i7">intel core i7</option>
+                    <option value="intel core i9">intel core i9</option>
+                </select>
+            </div>
+            <div style="width:fit-content; margin: auto; padding: 0px; box-shadow: none;">
+                <button id="btn_filter" type="submit">Lọc</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        //hiển thị submenu  
+
+        $("#btn_filter").on("click",function(){
+            localStorage.setItem('active', $("#brand_select").val());
+        })
+        $(".sub_menu").hide();           
+            $(document).ready(function () {
+                $("#image-filter").on('click',function () {
+                    if($(this).siblings("div.sub_menu").is(":hidden")){
+                            $(this).siblings("div.sub_menu").show();
+                            $("#display-content").css("filter","blur(1px)");
+                            $("#page-name").css("filter","blur(1px)");
+                            $("#list-brand").css("filter","blur(1px)");
+                            $("#shopping-cart").css("filter","blur(1px)");
+                            $("#search-bar").css("filter","blur(1px)");
+                           
+                    } else {
+                            $(this).siblings("div.sub_menu").hide();
+                            $("#display-content").css("filter","blur(0px)");
+                            $("#page-name").css("filter","blur(0px)");
+                            $("#list-brand").css("filter","blur(0px)");
+                            $("#shopping-cart").css("filter","blur(0px)");
+                            $("#search-bar").css("filter","blur(0px)");
+                    }
+            });
+        });
+    </script>
+</body>
+
+</html>
+    

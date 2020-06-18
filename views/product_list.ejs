@@ -68,7 +68,8 @@
                     </ul>
         
                     <script>
-        
+                        var brand = "#"+ localStorage.getItem('active');
+                        $(brand).addClass('active');
                         function active(brand_name){
                            localStorage.setItem('active', brand_name);
                         }
@@ -89,28 +90,13 @@
         
                 </div>
             
+                    <%#filter%>
                     <div id="filter"> 
-                        <!--drop down các dòng máy Acer-->
-                    <div id="image-filter">
-                        <img src="Resources/Icon/filter.png">
+                        <%- include('module/filter'); -%>
                     </div>
-                    <ul class="sub_menu">
-                        <a href="/giagiam"><li> Giá giảm dần</li></a>
-                        <a href="/giagiam"><li> Giá tăng dần</li></a>
-                    </ul>
-                    <script>
-                        //hiển thị submenu  
-                        $(".sub_menu").hide();           
-                        $(document).ready(function () {
-                            $("#filter").hover(function () {
-                                    $(this).children("ul.sub_menu").fadeIn({duration:200});
-                                }, function () {
-                                    $(this).children("ul.sub_menu").fadeOut({duration:200});
-                                });
-                                });
-                    </script>
-                </div>
+    
 
+                    <!--Giỏ hàng-->
                 <div id="shopping-cart">        <!--Giỏ hàng-->
                     <a href="/shopping">
                         <div>

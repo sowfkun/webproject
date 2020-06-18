@@ -56,6 +56,7 @@
                                             <div    > 
                                                 <label for="new_pass"><b>Mật khẩu mới:</b></label>
                                             </div>
+                                            </div>
                                             <div class="info_input">
                                                 <input id="new_pass" type="password" name="new_pass" onchange="checkPass()">
                                             </div>
@@ -290,7 +291,6 @@
 
                 $("#btn_close").on("click",function(){
                     $("#hidden").hide();
-                    
                     $("#bottom-field").css("filter","blur(0)");
                     $("#submenu").css("filter","blur(0)");
                     $("#logo").css("filter","blur(0)");
