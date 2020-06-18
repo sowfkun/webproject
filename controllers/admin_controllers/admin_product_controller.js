@@ -237,12 +237,20 @@ module.exports.ad_product_param = (req, res) => {
   SELECT COUNT(order_id) AS count 
   FROM orders 
   WHERE order_status = 'chờ xét duyệt';
+
+  SELECT *
+  FROM product
+  INNER JOIN catalog
+  ON product.catalog_id = catalog.catalog_id
+  GROUP BY ma_sku
+  ORDER BY brand_name;
   `
   db.query(insertsql, function (err, result, fields) {
     if (err) throw err;
     res.render('admin_view/admin_product_create',{
       title: 'Thêm sản phẩm',
       catalog: result[1],
+      product: result[2],
 
       mess: 'Thêm sản phẩm thành công',
       count: (result[2])[0].count   //đếm số giao dịch mới

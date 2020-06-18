@@ -1,12 +1,14 @@
 var mysql = require('mysql');
 
 var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
+  host: "20.43.174.157",
+  user: "sowfkun",
   password: "150577",
   database: "lapcitydb",
+  port: 3306,
   multipleStatements: true,
-  dateStrings: 'date'
+  dateStrings: 'date',
+  
 });
 
   

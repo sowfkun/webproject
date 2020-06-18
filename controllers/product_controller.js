@@ -19,7 +19,7 @@ const sql = `SELECT DISTINCT brand_name, serie
     
     SELECT *
     FROM product
-    WHERE serie = ? AND ma_sku =?
+    WHERE serie = ? AND ma_sku =? AND tinh_trang = 'chưa bán'
     LIMIT 1;
     
     SELECT *

@@ -27,26 +27,28 @@
                     <label for="name"><b>Tên</b></label>
                 </div>
                 <div class="input">
-                    <input id="name" type="text" placeholder="Nhập tên của bạn" name="name" value=<%- values.name_%>>
+                    <input id="name" type="text" placeholder="Nhập tên của bạn" name="name" onchange="checkform()" value=<%- values.name_%>>
                 </div>
             </div>
 
             <div class="row">       <!--số điện thoại-->
                 <div class="label">
-                    <label for="phone"><b>Số điện thoại</b></label>
+                    <label for="sign_up_phone"><b>Số điện thoại</b></label>
                 </div>
                 <div class="input">
-                    <input id="phone" type="number" placeholder="Nhập số điện thoại của bạn" name="phone" value=<%- values.phone_%> >
+                    <input id="sign_up_phone" type="number" placeholder="Nhập số điện thoại của bạn" name="phone" onchange="checkform()" value=<%- values.phone_%> >
                 </div>
+                <label id="phone-error" class="error" ></label>
              </div>
 
              <div class="row">       <!--email-->
                 <div class="label">
-                    <label for="email"><b>Email</b></label>
+                    <label for="sign_up_email"><b>Email</b></label>
                 </div>
                 <div class="input">
-                    <input id="email" type="text" placeholder="Nhập email" name="email" value=<%- values.email_%>>
+                    <input id="sign_up_email" type="text" placeholder="Nhập email" name="email" onchange="checkform()" value=<%- values.email_%> >
                 </div>
+                <label id="email-error" class="error" ></label>
             </div>
                 
             <div class="row">           <!--mật khẩu-->
@@ -54,7 +56,7 @@
                     <label for="password"><b>Nhập mật khẩu </b></label>
                 </div>               
                 <div class="input">
-                    <input id="password" type="password" placeholder="Nhập password" name="password" value=<%- values.password_%>>
+                    <input id="password" type="password" placeholder="Nhập password" onchange="checkform()" name="password" value=<%- values.password_%>>
                 </div>
             </div>
             
@@ -63,18 +65,18 @@
                     <label for="re-password"><b>Nhập lại mật khẩu </b></label>
                 </div>    
                 <div class="input">
-                    <input id="re-password" type="password" placeholder="Nhập lại password" name="re_password" value=<%- values.re_password_%>>
+                    <input id="re-password" type="password" placeholder="Nhập lại password" onchange="checkform()" name="re_password" value=<%- values.re_password_%>>
                 </div>
             </div>
 
             <div >
-                <button  id="btn_sign_up" type="submit" >Đăng kí</button>
+                <button  id="btn_sign_up" disabled type="submit" >Đăng kí</button>
                 <a href="/user/sign-in"> Hoặc đăng nhập! </a>
             </div>
                 
           </form>
 
-          <script>
+          <script type="text/javascript">
             $(document).ready(function() {      //validate
                
                 $("#sign-up").validate({
@@ -82,14 +84,11 @@
                         name:{
                             required:true
                         },
-                        phone:{
-                            required:true,
-                            rangelength: [10, 10],
-                            digits:true
-                        },
                         email:{
-                            required:true,
-                            email:true
+                            required:true
+                        },
+                        phone:{
+                            required: true
                         },
                         password:{
                             required:true,
@@ -101,16 +100,14 @@
                         }
                     },
                     messages: {
-                         name:{
-                            required: "Tên đăng nhập không thể bỏ trống"                            },
-                        phone:{
-                            required: "Số điện thoại không thể bỏ trống",
-                            rangelength: "Số điện thoại không hợp lệ",
-                            digits: "Số điện thoại không hợp lệ"
+                        name:{
+                            required: "Tên không thể bỏ trống"     
                             },
+                        phone:{
+                            required: 'Số điện thoại không được bỏ trống'
+                        },
                         email:{
-                                required: "Email không thể bỏ trống",
-                                email: "Email không hợp lệ"
+                                required: "Email là bắt buộc"
                         },  
                         password:{
                                 required: "Password không thể bỏ trống",
@@ -120,14 +117,68 @@
                             required: "Nhập lại password",
                             equalTo: "Password không trùng khớp"
                         }
-                    },
-                     success: function(label) {
-                        label.addClass("valid");
-                     }
-                     
+                    } 
                 });
+                });  
 
-            });  
+                function checkform(){
+
+                    var valid = $("#sign-up").valid();
+                    var mailvalid = checkmail();
+                    var phonevalid = checkphone();
+
+                    if(valid == true && mailvalid == true && phonevalid && true){
+                        $("#btn_sign_up").attr("disabled",false).css("opacity", "100%")
+                    } else {
+                        $("#btn_sign_up").attr("disabled", true).css("opacity", "40%")
+                    }
+                }
+                
+                function checkmail(){
+                        $("#email-error").attr("style",false);
+                        const mail_regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        var email = $('#sign_up_email').val();
+                        if(email !== ''){
+                            if (mail_regex.test(email) == false) {
+                                document.getElementById("email-error").textContent = "Vui lòng nhập đúng định dạng email";
+                                return false
+                            }else{
+                                document.getElementById("email-error").textContent = '';
+                                return true;
+                            }
+                        }else{
+                            if( document.getElementById("sign_up_email-error").textContent = "Email là bắt buộc"){
+                                $('#email-error').hide();
+                            } else {
+                                document.getElementById("email-error").textContent = "Email là bắt buộc"
+                            }
+                            return false;
+                        }
+                    };     
+
+
+                function checkphone(){
+                    $("#phone-error").attr("style",false);
+                    var phone_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+                    var mobile = $('#sign_up_phone').val();
+                    if(mobile !==''){
+                        if (phone_regex.test(mobile) == false) {
+                            document.getElementById("phone-error").textContent = "Số điện thoại không đúng định dạng";
+                            return false;
+                        }else{
+                            document.getElementById("phone-error").textContent = '';
+                            return true;
+                        }       
+                    } else {
+                        if(document.getElementById("sign_up_phone-error").textContent = 'Số điện thoại không được bỏ trống'){
+                            $("#phone-error").hide();
+                        } else {
+                            document.getElementById("phone-error").textContent = "Số điện thoại không được bỏ trống";
+                        }
+                        return true;
+                                     
+                    }
+                };
             </script>
 
     </div>

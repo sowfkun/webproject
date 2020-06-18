@@ -77,13 +77,10 @@ label.error{
     font-size: 20px;
     position: relative;
     float: right;
-    top: -72px;
+    top: -82px;
 }
 
-label.valid{
-    background-image: url(../Resources/Icon/tick.png);
-    background-size: contain;
-    height: 30px;
-    width: 30px;
-    top: -33px;
+#btn_sign_up {
+    opacity: 40%;
 }
+

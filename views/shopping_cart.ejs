@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <base href="/">
-    <link rel="stylesheet" type="text/css" href="CSS/project.css">
-    <link rel="stylesheet" type="text/css" href="CSS/shopping.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/project.css">
+    <link rel="stylesheet" type="text/css" href="CSS/shopping.css">
     <title> Giỏ hàng của bạn</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -95,7 +95,8 @@
 
             <script>
 
-                var item = JSON.parse(window.localStorage.getItem('cart')) || []; 
+                var item = JSON.parse(window.localStorage.getItem('cart')) || [];
+              
                 show_cart(item);
                 cart_check(item);
               
@@ -166,9 +167,18 @@
                     show_cart(item);
                     cart_check(item)
                     localStorage.setItem('cart', JSON.stringify(item));
+
+                    var final_item = window.localStorage.getItem('cart') || []; 
+                    document.getElementById("input_item").value = final_item;
+
                 }
             </script>
 
+
+            <% if(typeof user == "undefined"){ %>
+                <% user = {name: "", phone : "", email: "", address: ""} %> 
+                <% } %>  
+          
 
             <h2 style="color: tomato; text-align: center; padding: 40px 0 30px 0; border-top: 1px dotted #bb77bb; font-family: balootamma2;">Thông tin giao hàng</h2>
             <form id="cart_submit" method="POST" >
@@ -178,26 +188,29 @@
                         <label for="name"><b>#Họ và tên:</b></label>
                     </div>
                     <div class="input">
-                        <input id="name" type="text" placeholder="Nhập họ và tên" name="name" value>
+                        <input id="name" type="text" placeholder="Nhập họ và tên" name="name" onchange="checkcartform()" value="<%-user.name_%>">
                     </div>
                 </div>
 
                 <div class="row">       <!--số điện thoại-->
                     <div class="label">
-                        <label for="phone"><b>#Số điện thoại:</b></label>
+                        <label for="cart_phone"><b>#Số điện thoại:</b></label>
                     </div>
                     <div class="input">
-                        <input id="phone" type="number" placeholder="Nhập số điện thoại" name="phone" value>
+                        <input id="cart_phone" type="tel" placeholder="Nhập số điện thoại" onchange="checkcartform()" name="phone" value=<%-'0' + user.phone_%> >
+                        <label id="phonecart-error" class="error" ></label>
                     </div>
                 </div>
 
                 <div class="row">       <!--email-->
                     <div class="label">
-                        <label for="email"><b>#Email</b></label>
+                        <label for="cart_email"><b>#Email</b></label>
                     </div>
                     <div class="input">
-                        <input id="email" type="text" placeholder="Nhập email" name="email" value>
+                        <input id="cart_email" type="text" placeholder="Nhập email" name="email" onchange="checkcartform()" value="<%-user.email_%>" >
+                        <label id="emailcart-error" class="error" ></label>
                     </div>
+                    
                 </div>
 
                 <div class="row">       
@@ -205,7 +218,7 @@
                         <label for="address"><b>#Địa chỉ:</b></label>
                     </div>
                     <div class="input">
-                        <input id="address" type="text" placeholder="Nhập địa chỉ giao hàng" name="address" value>
+                        <input id="address" type="text" placeholder="Nhập địa chỉ giao hàng" name="address" onchange="checkcartform()" value="<%-user.address_%>" >
                     </div>
                 </div>
                 
@@ -222,9 +235,8 @@
                 
                 <div style=" width: 100%;">
                     <div style="margin: auto; width: fit-content;">
-                        <button  id="btn_mua" type="submit" >Xác nhận mua hàng</button>
+                        <button  id="btn_mua" disabled type="submit" >Xác nhận mua hàng</button>
                     </div>
-               
                 </div>
                     
             </form>
@@ -256,6 +268,19 @@
 
 
             <script>    //validate thông tin khách hàng
+                $("#btn_mua").css("opacity", "30%");
+                function checkcartform(){
+                    var valid = $("#cart_submit").valid();
+                    var mailvalid = checkcartmail();
+                    var phonevalid = checkcartphone();
+                    if(valid == true && mailvalid == true && phonevalid && true){
+                        $("#btn_mua").attr("disabled",false).css("opacity", "100%");
+                        return true;
+                    } else {
+                        $("#btn_mua").attr("disabled", true).css("opacity", "30%");
+                        return false;
+                    }
+                }
 
             $(document).ready(function() {      //validate
                
@@ -265,13 +290,10 @@
                             required:true,
                         },
                         phone:{
-                            required:true,
-                            rangelength: [10, 10],
-                            digits:true
+                            required:true
                         },
                         email:{
-                            required:true,
-                            email:true
+                            required:true
                         },
                         address:{
                             required:true
@@ -282,28 +304,62 @@
                             required: "Vui lòng không bỏ trống họ và tên"
                             },
                         phone:{
-                            required: "Số điện thoại không thể bỏ trống",
-                            rangelength: "Số điện thoại không hợp lệ",
-                            digits: "Số điện thoại không hợp lệ"
+                            required: "Số điện thoại không được bỏ trống"
                             },
                         email:{
-                            required: "Email không thể bỏ trống",
-                            email: "Email không hợp lệ"
+                            required: "Email là bắt buộc"
                         },
                         address:{
                                 required: "Địa chỉ không thể bỏ trống"
                         },
-                    },
-                    success: function(){
-                        $("#note").addClass("valid");
                     }
-                     
                 });
-
             });  
-            
+            function checkcartmail(){
+                    $("#emailcart-error").attr("style",false);
+                    const mail_regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    var email = $('#cart_email').val();
+                    $('#cart_email-error').hide();
+                    if(email !== ''){
+                        if (mail_regex.test(email) == false) {
+                            document.getElementById("emailcart-error").textContent = "Email không hợp lệ";
+                            return false;                            
+                        }else{
+                            document.getElementById("emailcart-error").textContent = '';
+                            return true;
+                        }
+                    }else{
+                        if( document.getElementById("cart_email-error").textContent = "Email là bắt buộc"){
+                            $('#emailcart-error').hide();
+                        } else {
+                            document.getElementById("emailcart-error").textContent = "Email là bắt buộc"
+                        }
+                        return false;
+                    }
+                };
+                    
+                function checkcartphone(){
+                    $("#phonecart-error").attr("style",false);
+                    var phone_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+                    var mobile = $('#cart_phone').val();
+                    if(mobile !==''){
+                        if (phone_regex.test(mobile) == false) {
+                            document.getElementById("phonecart-error").textContent = "Số điện thoại không đúng định dạng";
+                            return false;   
+                        }else{
+                            document.getElementById("phonecart-error").textContent = '';
+                            return true;   
+                        }       
+                    } else {
+                        if(document.getElementById("cart_phone-error").textContent = 'Số điện thoại không được bỏ trống'){
+                            $("#phonecart-error").hide();
+                        } else {
+                            document.getElementById("phonecart-error").textContent = "Số điện thoại không được bỏ trống";
+                        }
+                        return false;      
+                    }
+                };
             </script>
-
 
              <!--liên kết đến các trang facebook, instagram...-->
              <div id="follow-us" > 
@@ -360,7 +416,6 @@
                                 <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
                             </a>
                         </li>
-
                     </ul>
 
                     <h3 id="contact">

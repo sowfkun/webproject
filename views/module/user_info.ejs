@@ -35,39 +35,39 @@
                                 </ul>
                             </div> 
 
-                            <form action="/user/update_pass" method="POST" id="change_pass">
+                            <form action="/user/update_pass" method="POST" id="change_pass" >
                                 <ul>
                                     <input type="hidden" name="user_id" value="<%-user.user_id_%>">
                                    
                                     <% if(user.password !== null){ %>
                                         <li>
-                                            <div class="row">      
-                                                <div class="label"> 
+                                            <div class="info_row">      
+                                                <div    > 
                                                     <label for="old_pass"><b>Mật khẩu cũ:</b></label>
                                                 </div>
-                                                <div class="input">
-                                                    <input id="old_pass" type="password" name="old_pass" onchange="updatePass()">
+                                                <div class="info_input">
+                                                    <input id="old_pass" type="password" name="old_pass" onchange="checkPass()">
                                                 </div>
                                             </div>
                                         </li>
                                     <% } %>  
                                     <li>
-                                        <div class="row">      
-                                            <div class="label"> 
+                                        <div class="info_row">      
+                                            <div    > 
                                                 <label for="new_pass"><b>Mật khẩu mới:</b></label>
                                             </div>
-                                            <div class="input">
-                                                <input id="new_pass" type="password" name="new_pass" onchange="updatePass()">
+                                            <div class="info_input">
+                                                <input id="new_pass" type="password" name="new_pass" onchange="checkPass()">
                                             </div>
                                         </div>
                                     </li>
                                     <li>
-                                        <div class="row">      
-                                            <div class="label"> 
+                                        <div class="info_row">      
+                                            <div    > 
                                                 <label for="confirm"><b>Nhập lại mật khẩu mới:</b></label>
                                             </div>
-                                            <div class="input">
-                                                <input id="confirm" type="password" name="confirm" onchange="updatePass()">
+                                            <div class="info_input">
+                                                <input id="confirm" type="password" name="confirm" onchange="checkPass()">
                                             </div>
                                         </div>
                                     </li>
@@ -77,8 +77,14 @@
                             </form>
 
                             <script>
-                                function updatePass(){
-                                    $("#update_password").attr("disabled",false).css("opacity", "100%");
+                                 $("#update_password").css("opacity", "40%");
+
+                                function checkPass(){
+                                    if($("#change_pass").valid() == true){
+                                        $("#update_password").attr("disabled",false).css("opacity", "100%");
+                                    } else {
+                                        $("#update_password").attr("disabled",true).css("opacity", "40%");
+                                    }
                                 }
 
                                 $(document).ready(function() {      //validate
@@ -86,7 +92,8 @@
                                     $("#change_pass").validate({
                                         rules: {
                                             old_pass:{
-                                                required: true
+                                                required: true,
+                                                minlength: 4
                                             },
                                             new_pass:{
                                                 required: true,
@@ -99,7 +106,8 @@
                                         },
                                         messages: {
                                             old_pass:{
-                                                required: "Mật khẩu cũ là bắt buộc"   
+                                                required: "Mật khẩu cũ là bắt buộc",
+                                                minlength: "Mật khẩu tối thiểu 4 ký tự" 
                                             },
                                             new_pass:{
                                                 required: "Vui lòng nhập mật khẩu mới",
@@ -109,71 +117,161 @@
                                                 required: "Vui lòng nhập lại mật khẩu",
                                                 equalTo: "Mật khẩu không trùng khớp"
                                             },  
-                                        }, success: function(label) {
-                                            label.addClass("valid");
                                         }
                                     });
                                     
                                 });
 
-                                
                             </script>
 
-                            <form action="/user/update_user" id="info" method="POST">
+                            <form action="/user/update_user" id="info" method="POST" >
                                 <ul>
                                     <li>
                                         <input type="hidden" name="user_id" value="<%-user.user_id_%>">
-                                        <div class="row">      
-                                            <div class="label"> 
-                                                <label for="name"><b>Tên:</b></label>
+                                        <div class="info_row">      
+                                            <div > 
+                                                <label for="info_name"><b>Tên:</b></label>
                                             </div>
-                                            <div class="input">
-                                                <input id="name" type="text" name="name" value= "<%- user.name_%>" onchange="updateInfo()">
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="row">      
-                                            <div class="label"> 
-                                                <label for="phone"><b>Số điện thoại:</b></label>
-                                            </div>
-                                            <div class="input">
-                                                <input id="phone" type="number" name="phone" onchange="updateInfo()" value="<%- user.phone_%>" >
+                                            <div class="info_input">
+                                                <input id="info_name" type="text" name="name" value= "<%- user.name_%>" onchange="checkform()">
                                             </div>
                                         </div>
                                     </li>
                                     <li>
-                                        <div class="row">      
-                                            <div class="label"> 
-                                                <label for="email"><b>Email:</b></label>
+                                        <div class="info_row">      
+                                            <div > 
+                                                <label for="info_phone"><b>Số điện thoại:</b></label>
                                             </div>
-                                            <div class="input">
-                                                <input id="email" type="email"  name="email" value="<%- user.email_%>" onchange="updateInfo()">
+                                            <div class="info_input">
+                                                <input id="info_phone" type="tel" name="phone" onchange="checkform()" value="<%- '0' + user.phone_%>">
                                             </div>
+                                            <label id="phone-error" class="error" ></label>
                                         </div>
                                     </li>
                                     <li>
-                                        <div class="row">      
-                                            <div class="label"> 
-                                                <label for="address"><b>Địa chỉ:</b></label>
+                                        <div class="info_row">      
+                                            <div > 
+                                                <label for="info_email"><b>Email:</b></label>
                                             </div>
-                                            <div class="input">
-                                                <input id="address" type="text" name="address" value="<%- user.address%>" onchange="updateInfo()">
+                                            <div class="info_input">
+                                                <input id="info_email" type="text"  name="email" value="<%- user.email_%>" onchange="checkform()" >
+                                            </div>
+                                            <label id="email-error" class="error" ></label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="info_row">      
+                                            <div > 
+                                                <label for="info_address"><b>Địa chỉ:</b></label>
+                                            </div>
+                                            <div class="info_input">
+                                                <input id="info_address" type="text" name="address" value="<%- user.address%>" onchange="checkform()">
                                             </div>
                                         </div>
                                     </li>
                                     
-                                        <button class="btn" id="update_info" disabled> Cập nhật</button>
+                                        <button class="btn" id="update_info" disabled type="submit"> Cập nhật</button>
                                 </ul>   
                             </form>
 
                             <script>
-                                function updateInfo(){
+                              
+                                $("#update_info").css("opacity", "40%");
 
-                                    $("#update_info").attr("disabled",false).css("opacity", "100%");
+                                $(document).ready(function(){
+                                    $("#info").validate({
+                                        rules:{
+                                            name:{
+                                                required: true
+                                            },
+                                            phone:{
+                                                required: true
+                                            },
+                                            email: {
+                                                required: true
+                                            },
+                                            address:{
+                                                required: true
+                                            }
+                                        },
+                                        messages:{
+                                            name: {
+                                                required: "Tên không được để trống"
+                                            },
+                                            phone: {
+                                                required: "Số điện thoại không được để trống"
+                                            },
+                                            email: {
+                                                required: "Email là bắt buộc"
+                                                
+                                            },
+                                            address:{
+                                                required: "Địa chỉ không được bỏ trống"
+                                            }
+                                        }
+                                    });
+                                });
+
+                                function checkform(){
+                                    var valid = $("#info").valid();
+                                    var mailvalid = checkmail();
+                                    var phonevalid = checkphone();
+
+                                    if(valid == true && mailvalid == true && phonevalid && true){
+                                        $("#update_info").attr("disabled",false).css("opacity", "100%")
+                                    } else {
+                                        $("#update_info").attr("disabled", true).css("opacity", "40%")
+                                    }
                                 }
+
+                                function checkmail(){
+                                    $("#email-error").attr("style",false);
+                                    const mail_regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                                    var email = $('#info_email').val();
+                                    if(email !== ''){
+                                        if (mail_regex.test(email) == false) 
+                                        {
+                                            document.getElementById("email-error").textContent = "Vui lòng nhập đúng định dạng email";
+                                            return false;
+                                        }else{
+                                            document.getElementById("email-error").textContent = '';
+                                            return true;
+                                        }
+                                    }else{
+                                        if(document.getElementById("info_email-error").textContent = 'Email là bắt buộc'){
+                                                $("#email-error").hide();
+                                            } else {
+                                                document.getElementById("email-error").textContent = "Email là bắt buộc";
+                                            }
+                                            return false;
+                                    }
+                                };
+
+                                function checkphone(){
+                                    $("#phone-error").attr("style",false);
+                                    var phone_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+                                    var mobile = $('#info_phone').val();
+                                    if(mobile !==''){
+                                        if (phone_regex.test(mobile) == false) 
+                                        {
+                                            document.getElementById("phone-error").textContent = "Số điện thoại không đúng định dạng";
+                                            return false;
+                                            
+                                        }else{
+                                            document.getElementById("phone-error").textContent = '';
+                                            return true;
+                                        }
+                                    }else{
+                                        if(document.getElementById("info_phone-error").textContent = 'Số điện thoại không được bỏ trống'){
+                                            $("#phone-error").hide();
+                                        } else {
+                                            document.getElementById("phone-error").textContent = "Số điện thoại không được bỏ trống";
+                                        }
+                                        return false;
+                                    }
+                                };
+
                             </script>
-                            
                         </div>
                 <%}%> 
         </div>

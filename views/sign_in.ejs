@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <base href="/">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
     <link rel="stylesheet" type="text/css" href="CSS/user_sign_in.css">
     <title> Đăng nhập </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +12,7 @@
 <body>
     
     <div class=".container">
-        <form id="sign-in" method="POST">
+        <form id="sign-in" method="POST" onsubmit="return checkvalid()">
             <h2>Đăng nhập</h2>
             <% if (mess.length) { %> 
                 <li style="font-weight: bold; color: antiquewhite; margin-bottom: 10px;"> <%- mess %> </li>  
@@ -18,26 +20,29 @@
             
                  <div class="row">       <!--username-->
                       <div class="label">
-                          <label for="email"><b>Email:</b></label>
+                          <label for="sign_in_email"><b>Email:</b></label>
                       </div>
     
                       <div class="input">
-                          <input id="email" type="email" placeholder="Nhập email của bạn" name="email" value="<%-values.email_%>" required>
-                      </div>
+                          <input id="sign_in_email" type="text" placeholder="Nhập email của bạn" name="email" value="<%-values.email_%>" onchange="checkform()">
+                          <label id="sign_in_email-error" class="error" ></label>
+                        </div>
+                      <label id="email-error" class="error" ></label>
                 </div>
     
                 <div class="row">       <!--password-->
                     <div class="label">
-                        <label for="password"><b>Mật khẩu:</b></label>
+                        <label for="sign_in_password"><b>Mật khẩu:</b></label>
                     </div>
     
                     <div class="input">
-                        <input id="password" type="password" placeholder="Nhập password của bạn" name="password" required>
+                        <input id="sign_in_password" type="password" placeholder="Nhập password của bạn" onchange="checkform()" name="password" required>
+                        <label id="sign_in_password-error" class="error" ></label>
                     </div>
                 </div>
     
                   <div>
-                      <button class="btn" id="btn_sign_in" type="submit">Đăng nhập</button>
+                      <button class="btn" id="btn_sign_in" disabled type="submit">Đăng nhập</button>
                  </div>
                  <a href="/user/sign-up"> Hoặc đăng kí</a>
           </form>
@@ -50,5 +55,65 @@
             </a>
         </div>
     </div>
+
+    <script type="text/javascript">
+            $(document).ready(function() {      //validate
+                $("#sign-in").validate({
+                    rules: {
+                        email:{
+                            required:true
+                        },
+                        password:{
+                            required: true,
+                            minlength: 4
+                        }
+                    },
+                    messages: {
+                        email:{
+                                required: "Email không thể bỏ trống"
+                        },  
+                        password:{
+                                required: "Password không thể bỏ trống",
+                                minlength: "Password phải từ 4 kí tự trở lên"
+                        }
+                    } 
+                });
+            });  
+
+            function checkform(){
+                var valid =  $("#sign-in").valid();
+                var mailvalid = checkmail();
+                if(valid == true && mailvalid == true){
+                    $("#btn_sign_in").attr("disabled",false).css("opacity", "100%");
+                } else {
+                    $("#btn_sign_in").attr("disabled",true).css("opacity", "40%");
+                }
+            }
+
+            function checkmail(){
+                $("#email-error").attr("style",false);
+                const mail_regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                var email = $('#sign_in_email').val();
+                $('#sign_in_email-error').hide();
+                if(email !== ''){
+                    if (mail_regex.test(email) == false){
+                        document.getElementById("email-error").textContent = "Email không hợp lệ";
+                        
+                        return false;
+                    }else{
+                        document.getElementById("email-error").textContent = '';
+                        return true;
+                    }
+                }else{
+                    if(document.getElementById("sign_in_email-error").textContent = 'Email không thể bỏ trống'){
+                        $("#email-error").hide();
+                    } else {
+                        document.getElementById("email-error").textContent = "Email không thể bỏ trống";
+                    }
+                    return false;             
+                }
+            };
+
+    </script>
    
 </body>

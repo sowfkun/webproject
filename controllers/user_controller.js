@@ -119,7 +119,7 @@ module.exports.sign_inPost= (req, res) => {
 };
 
 
-
+//cập nhật user
 module.exports.update_user = (req,res) => {
 
     var newuser = req.body;
@@ -163,7 +163,7 @@ module.exports.update_user = (req,res) => {
   
 }
 
-
+//cập nhật mật khẩu
 module.exports.update_password = (req,res) => {
 
     var password = req.body;
@@ -180,27 +180,22 @@ module.exports.update_password = (req,res) => {
             if (err) throw err;
              res.redirect('/');
         });
-    } else {
+    } else {            //đã có pass word
         var oldpassHash= md5(password.old_pass);
         db.query('SELECT password FROM customer where user_id =  ?', password.user_id, function (err, result){
             if (err) throw err;
-            if(oldpassHash === result[0].password){
+            if(oldpassHash === result[0].password){     //mật khẩu cũ đúng, cập nhật mật khẩu mới
                 console.log('password cũ trùng khớp, cập nhật lại')
                 db.query(`UPDATE customer SET password = '${newpassHash}' WHERE user_id =  ?`, password.user_id, function (err, result){
                     if (err) throw err;
                      res.redirect('/');
                 });
-            } else{
+            } else{         //mật khẩu cũ sai
                 console.log('Nhập lại mật khẩu')
                 res.redirect('/');
             }
         });
     }
-   
-   
-  
-    
-
 
 }
 module.exports.sign_out= (req, res) => {
