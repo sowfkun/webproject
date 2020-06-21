@@ -1,6 +1,6 @@
 const md5 =require('md5');
 const db= require('../database/db');
-
+const injection = require("../check_injection/check_injection")
 
 //chuyển tới trang tạo tài khoản
 module.exports.sign_up= (req, res) => {     

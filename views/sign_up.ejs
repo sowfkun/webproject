@@ -159,7 +159,9 @@
 
                 function checkphone(){
                     $("#phone-error").attr("style",false);
+
                     var phone_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+                    
                     var mobile = $('#sign_up_phone').val();
                     if(mobile !==''){
                         if (phone_regex.test(mobile) == false) {

@@ -112,15 +112,24 @@
                     $("#cart-num").text(num.toString());
                 </script>
 
-
                 <div id="page-name">   
-                    <p> <%= pagename %> </p>
+                    <%  %> 
+                    <p><%= pagename %> </p>
                 </div>
                
             </div>
          
 
                 <div id="display-content">     <!-- phần hiển thị nội dung-->
+
+                    <%# search massage%>
+                    <% if(searchMess !== ""){ %>
+                        <div style="box-shadow: 0 0 100px rgb(231, 220, 220); width: fit-content; ;padding: 20px; margin: auto; text-align: center;
+                        margin-top: 25px; border-radius: 20px;">
+                            <h2 style="color: rgb(223, 112, 112);"><%= searchMess %> </h2>
+                        </div>
+                        <% } %>  
+
                     <ul>      <!-- mỗi item gồm ảnh minh họa, giá và thông tin-->
                         <%for(var i=0;i < product.length; i++) { %>
                             <a href="/product/<%= product[i].brand_name%>/<%= product[i].serie%>/<%= product[i].ma_sku %> "> 

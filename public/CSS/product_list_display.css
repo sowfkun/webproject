@@ -4,12 +4,22 @@
     font-family: balootamma2;
     src: url(../Resources/font/BalooTamma2-Regular.ttf);
 }
+#bottom-field{
+    min-height: fit-content; 
+}
+
+#content-field{
+    min-height: 300px;
+    max-height: 1400px;
+    height: fit-content;
+}
 #display-content{
     
     overflow: scroll;
     overflow-x: hidden;
     width: 1000px;
-    min-height: 1400px;
+    height: fit-content;
+  
     border-top: solid #d7d3dc ;
     border-width: 2px;
     font-family: balootamma2;

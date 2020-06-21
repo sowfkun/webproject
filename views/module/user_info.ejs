@@ -144,7 +144,12 @@
                                                 <label for="info_phone"><b>Số điện thoại:</b></label>
                                             </div>
                                             <div class="info_input">
-                                                <input id="info_phone" type="tel" name="phone" onchange="checkform()" value="<%- '0' + user.phone_%>">
+                                                <% if (user.phone == null) { %> 
+                                                    <input id="info_phone" type="tel" name="phone" onchange="checkform()" value=>
+                                                <% } else {%>
+                                                    <input id="info_phone" type="tel" name="phone" onchange="checkform()" value="<%- '0' + user.phone_%>">
+                                                <% } %>  
+                                               
                                             </div>
                                             <label id="phone-error" class="error" ></label>
                                         </div>

@@ -36,9 +36,9 @@ module.exports.product_all =(req, res) => {
       if (err) throw err;
       
       res.render('product_list', {
-        title : 'Tất cả sản phẩm',
+        title : "LapCity",
         pagename: 'Tất cả sản phẩm',
-       
+        searchMess: "",
 
         serie: result[0],       //tìm những dòng sản phẩm khác nhau để truyền vào menu
         menu: result[1],  
@@ -60,9 +60,9 @@ module.exports.product_brand = (req, res) => {
       });
 
       res.render('product_list', {
-        title : brand.toUpperCase(),
+        title : "LapCity",
         pagename: brand.toUpperCase(),
-       
+        searchMess: "",
         serie: result[0],       //tìm những dòng sản phẩm khác nhau để truyền vào menu
         menu: result[1],        // tìm các thương hiệu khác nhau
         product: productbrand   //các sản phẩm cùng thườn hiệu     
@@ -83,9 +83,9 @@ module.exports.product_serie= (req, res) => {
       });
       
       res.render('product_list', {
-        title : brand.toUpperCase() +' '+ serie.toUpperCase(),
+        title : "LapCity",
         pagename: brand.toUpperCase() +' '+ serie.toUpperCase(),
-       
+        searchMess: "",
 
         serie: result[0],       //tìm những dòng sản phẩm khác nhau để truyền vào menu
         menu: result[1],        // tìm các thương hiệu khác nhau
@@ -112,7 +112,7 @@ module.exports.product_serie= (req, res) => {
         });
 
         res.render('product_detail', {
-          title : brand.toUpperCase() + ' ' + serie.toUpperCase(),
+          title : "LapCity",
           pagename: brand.toUpperCase() + ' ' + serie.toUpperCase(),
           
           serie: result[0],       //tìm những dòng sản phẩm khác nhau để truyền vào menu

@@ -1,5 +1,5 @@
 const db= require('../database/db');
-
+const injection = require("../check_injection/check_injection")
 
 const sql = `SELECT DISTINCT brand_name, serie
     FROM product
@@ -20,6 +20,14 @@ const sql = `SELECT DISTINCT brand_name, serie
 module.exports.search= (req, res) => {     
    
     var keyword = req.query.keyword;        //lấy keyword từ search
+
+    //kiểm tra lại dữ liệu nhập vào
+    if(injection.check(keyword) == true){
+       res.redirect('back');
+       console.log("sql injection")
+       return;
+    }
+
     console.log(keyword);
     db.query(sql, function (err, result, fields) {
         if (err) throw err;
@@ -33,8 +41,9 @@ module.exports.search= (req, res) => {
         
         console.log(productSearch);
         res.render('product_list', {
-          title : keyword.toUpperCase(),
+          title : "LapCity: Tìm kíếm",
           pagename: keyword.toUpperCase(),
+          searchMess: "Không tìm thấy sản phẩm",
   
           serie: result[0],       //tìm những dòng sản phẩm khác nhau để truyền vào menu
           menu: result[1],        // tìm các thương hiệu khác nhau

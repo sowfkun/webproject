@@ -29,11 +29,16 @@ module.exports.filter=function(req, res) {
       product.ram.toLowerCase().indexOf(filter.ram.toLowerCase()) !== -1 &&
       product.cpu.toLowerCase().indexOf(filter.cpu.toLowerCase()) !== -1 ;
     });
+    if(productFilter.length == 0){
+      searchMess = "Không tìm thấy sản phẩm"
+    } else {
+      searchMess = ""
+    }
     
     res.render('product_list', {
       title : 'Lapcity',
       pagename: "Kết quả lọc",
-
+      searchMess: searchMess,
       serie: result[0],       //tìm những dòng sản phẩm khác nhau để truyền vào menu
       menu: result[1],        // tìm các thương hiệu khác nhau
       product: productFilter      
