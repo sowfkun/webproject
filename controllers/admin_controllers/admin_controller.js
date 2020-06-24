@@ -1,6 +1,5 @@
 const db= require('../../database/db');
 
-
 var sql = `
 SELECT COUNT(order_id) AS count 
 FROM orders 

@@ -1,5 +1,6 @@
 const db= require('../../database/db');
-
+const injection = require("../../check_injection/check_injection");
+const con = require('../../database/db');
 
 const sql = `
 SELECT DISTINCT brand_name FROM product
@@ -41,6 +42,8 @@ FROM (orderitem
 WHERE tinh_trang = 'chưa bán'
 group by ma_may;
 `
+
+// hiển thị danh sách sản phẩm
 module.exports.ad_product = function(req,res){
     
     db.query(sql, function (err, result, fields) {
@@ -63,10 +66,16 @@ module.exports.ad_product = function(req,res){
     });
 };
 
+
+// sản phẩm theo param
 module.exports.ad_product_param = (req, res) => {     
   
-    var param = req.params.param.toString().toLowerCase();  //route parameter
+    var param = injection.checksql_html(req.params.param.toLowerCase());  //route parameter
     
+    if(param == true){
+       res.redirect('back');
+       return;
+    }
       db.query(sql, function (err, result, fields) {
         if (err) throw err;
         var product =  result[2].filter(function(product) {     // list theo serie
@@ -91,9 +100,17 @@ module.exports.ad_product_param = (req, res) => {
     });
   };
 
+
+  // tìm kiếm sản phẩm ở trang admin
   module.exports.ad_product_search = (req, res) => {
     
-    var keyword = req.query.keyword;        //lấy keyword từ search
+    var keyword = injection.checksql_html(req.query.keyword);        //lấy keyword từ search
+
+    if(keyword == true){
+       res.redirect('back');
+       return;
+    }
+
     db.query(sql, function (err, result, fields) {
         if (err) throw err;
 
@@ -127,7 +144,11 @@ module.exports.ad_product_param = (req, res) => {
   //xóa sản phẩm
   module.exports.ad_product_delete = (req, res) => {
         
-     var ma_sku = req.body.ma_sku;
+     var ma_sku = injection.checksql_html(req.body.ma_sku);
+     if(ma_sku == true){
+        res.redirect('back');
+        return;
+     }
 
      var checkcart = `
       SELECT orders.order_id as order_id
@@ -156,15 +177,42 @@ module.exports.ad_product_param = (req, res) => {
       } else{
         res.redirect('back');
       }
-      
      });
-    
   };
 
     //update sản phẩm
   module.exports.ad_product_update = (req, res) => {
         
    var update = req.body;
+
+   var brand = injection.checksql_html(update.brand);
+   var serie = injection.checksql_html(update.serie);
+   var ma_sku = injection.checksql_html(update.ma_sku);
+   var cpu = injection.checksql_html(update.cpu);
+   var gpu = injection.checksql_html(update.gpu);
+   var ram = injection.checksql_html(update.ram);
+   var ssd = injection.checksql_html(update.ssd);
+   var hdd = injection.checksql_html(update.hdd);
+   var interface = injection.checksql_html(update.interface);
+   var monitor = injection.checksql_html(update.monitor);
+   var webcam = injection.checksql_html(update.webcam);
+   var connect = injection.checksql_html(update.connect);
+   var size = injection.checksql_html(update.size);
+   var pin = injection.checksql_html(update.interface);
+   var os = injection.checksql_html(update.interface);
+   var color = injection.checksql_html(update.interface);
+   var status = injection.checksql_html(update.interface);
+   var change = injection.checksql_html(update.interface);
+   
+   //check if injection == true => return
+   if( isNaN(update.catalog) == true || isNaN(update.price) == true || isNaN(update.dis_price) == true|| brand == true || 
+   serie == true || ma_sku == true || cpu == true || gpu == true || ram == true || ssd == true || hdd == true || 
+   interface == true || monitor == true || webcam == true || connect == true || size == true || pin == true || os == true || 
+   color == true || status == true || change == true ){
+
+     res.redirect('back');
+     return;
+   }
   
    if(typeof req.file !== "undefined"){
      update.img = req.file.filename;
@@ -172,7 +220,6 @@ module.exports.ad_product_param = (req, res) => {
      update.img = req.body.old_img;
    }
    
-   console.log(update);
    var updatesql = `
     SET SQL_SAFE_UPDATES=0;
 
@@ -222,6 +269,47 @@ module.exports.ad_product_param = (req, res) => {
   var insert = req.body;
   insert.img = req.file.filename;
 
+  var brand = injection.checksql_html(insert.brand);
+   var serie = injection.checksql_html(insert.serie);
+   var ma_sku = injection.checksql_html(insert.ma_sku);
+   var cpu = injection.checksql_html(insert.cpu);
+   var gpu = injection.checksql_html(insert.gpu);
+   var ram = injection.checksql_html(insert.ram);
+   var ssd = injection.checksql_html(insert.ssd);
+   var hdd = injection.checksql_html(insert.hdd);
+   var interface = injection.checksql_html(insert.interface);
+   var monitor = injection.checksql_html(insert.monitor);
+   var webcam = injection.checksql_html(insert.webcam);
+   var connect = injection.checksql_html(insert.connect);
+   var size = injection.checksql_html(insert.size);
+   var pin = injection.checksql_html(insert.interface);
+   var os = injection.checksql_html(insert.interface);
+   var color = injection.checksql_html(insert.interface);
+   var status = injection.checksql_html(insert.interface);
+   var change = injection.checksql_html(insert.interface);
+
+     //check if injection == true => return
+     if( isNaN(insert.catalog) == true || isNaN(insert.price) == true || isNaN(insert.dis_price) == true|| brand == true || 
+     serie == true || ma_sku == true || cpu == true || gpu == true || ram == true || ssd == true || hdd == true || 
+     interface == true || monitor == true || webcam == true || connect == true || size == true || pin == true || os == true || 
+     color == true || status == true || change == true ){
+  
+       res.redirect('back');
+       return;
+     }
+
+
+  var checkexist = ` SELECT * FROM product WHERE ma_sku = ?;`
+  db.query(checkexist, ma_sku, function (err, result, fields) {
+    if (err) throw err;
+    
+    if(result !== null){
+       res.redirect('back');
+       console.log("đã tồn tại sản phẩm này")
+       return;
+    }
+  });
+
   var insertsql = `
   INSERT INTO product (img, catalog_id, brand_name, serie, ma_sku, price, discount_price, 
   cpu, gpu, ram, ssd, hdd, monitor, webcam, interface, connect, bluetooth, pin, os, color, 
@@ -262,9 +350,13 @@ module.exports.ad_product_param = (req, res) => {
 //thêm sản phẩm cố sẵn
 module.exports.ad_product_create_exist = (req, res) => {
         
-  var insert = req.body.product;
+  var insert = injection.checksql_html(req.body.product);
+  if(insert == true || isNaN(req.body.quantity) == true){
+     res.redirect('back');
+     return;
+  }
+
   var quant = parseInt(req.body.quantity);
-  
   if(quant < 1 ) return;
 
   var insertsql = `
@@ -278,8 +370,6 @@ module.exports.ad_product_create_exist = (req, res) => {
     WHERE ma_sku = ?
   LIMIT 1;
   `
-
-
   for (let i = 0; i < quant; i++) {
     db.query(insertsql, insert, function (err, result, fields) {
       if (err) throw err;

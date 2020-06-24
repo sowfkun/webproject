@@ -1,9 +1,7 @@
 const db= require('../database/db');
-
+const injection = require("../check_injection/check_injection");
 
 module.exports.view= (req, res) => {
-    
-  
     res.render('shopping_cart',{
         mess: ''
     });
@@ -12,22 +10,34 @@ module.exports.view= (req, res) => {
 
 module.exports.buy= (req, res) => {     
 
-    var name = req.body.name;
-    var phone = req.body.phone;
-    var email = req.body.email;
-    var address = req.body.address;
-    var note = req.body.note;
-    var item = JSON.parse(req.body.item);
+    var name = injection.checksql_html(req.body.name);
+    var phone = injection.checkphone(req.body.phone);
+    var email = injection.checkemail(req.body.email);
+    var address = injection.checksql_html(req.body.address);
+    if(req.body.note == "") {
+        var note = false
+    } else {
+        var note = injection.checksql_html(req.body.note);
+    }
+  
+    var item = injection.checksql_html(req.body.item);
+
+    //check if injection == true => return
+    if( name == true || phone == true || email == true || address ==true || note == true || item == true){
+         res.redirect('back');
+         return;
+    }
+
+    var item = JSON.parse(item);
     var total_price = getprice(item);
 
-        function getprice(item){
+        function getprice(item){        // tính tổng giá trị đơn hàng
             var total_price = 0;
             for(let i = 0; i < item.length; i++){
                 total_price += item[i].price * item[i].quantity
             }
             return total_price;
         };
-
 
     var insertOrders;
     if(res.locals.user_id>0){       // nếu là đã đăng kí tài khoản thì có userid
@@ -44,15 +54,15 @@ module.exports.buy= (req, res) => {
     
     db.query(insertOrders, function (err, result, fields) {
         if (err) throw err;
-        var orderId = result.insertId;
+        var orderId = result.insertId;      // tạo order và get id order
         
         for(let i = 0; i < item.length; i++){
             
-            var insertOrderitem=`
+            var insertOrderitem=`               
             INSERT INTO orderitem (order_id, ma_may, quantity, price)
             VALUES('${orderId}','${item[i].ma_may}','${item[i].quantity}','${item[i].price * item[i].quantity}')
             `
-            db.query(insertOrderitem, function (err, result, fields) {
+            db.query(insertOrderitem, function (err, result, fields) {      // tạo orderitem
                 if (err) throw err;
                 console.log('mua hàng thành công');
                 res.render('shopping_cart',{
@@ -77,11 +87,16 @@ INNER JOIN orders
 ON orderitem.order_id = orders.order_id) 
 INNER JOIN product 
 ON orderitem.id = product.orderitem_id)
-where user_id = ? AND orders.order_status = ?;`
+where user_id = ? AND orders.order_status = ? AND tinh_trang = "chưa bán";`
 
 module.exports.history= (req, res) => {
   
     var user_id = res.locals.user_id;
+
+    if((user_id == "" || isNaN(user_id) == true ) && user_id !== 0){
+         res.redirect('/');
+         return;
+    }
     var status = 'giao dịch hoàn tất';
    
     if(user_id >0){
@@ -122,11 +137,16 @@ FROM ((orderitem
       ON orderitem.order_id = orders.order_id) 
          INNER JOIN product 
          ON orderitem.ma_may = product.ma_sku)
-WHERE user_id = ? AND (orders.order_status = 'Chờ xét duyệt' OR orders.order_status = 'Đang giao hàng') ;
+WHERE user_id = ? AND (orders.order_status = 'Chờ xét duyệt' OR orders.order_status = 'Đang giao hàng') AND tinh_trang = "chưa bán" ;
 `
 module.exports.dealing= (req, res) => {
   
     var user_id = res.locals.user_id;
+
+    if((user_id == "" || isNaN(user_id) == true ) && user_id !== 0){
+        res.redirect('/');
+        return;
+    }
     if(user_id >0){
         db.query(userdealing,[user_id, user_id], function (err, result, fields) {
             if (err) throw err;
@@ -165,7 +185,10 @@ WHERE order_id = ?;
 module.exports.dealingPost= (req, res) => {     //xóa đơn hàng
   
     var order_id = req.body.orderid
-    
+    if( order_id == "" || isNaN(order_id) == true){
+        res.redirect('/');
+        return;
+    }
         db.query(deleteOrder,[order_id, order_id], function (err, result, fields) {
             if (err) throw err;
              res.redirect('/shopping/dealing');

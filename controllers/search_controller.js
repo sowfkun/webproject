@@ -22,10 +22,8 @@ module.exports.search= (req, res) => {
     var keyword = req.query.keyword;        //lấy keyword từ search
 
     //kiểm tra lại dữ liệu nhập vào
-    if(injection.check(keyword) == true){
+    if(injection.checksql_html(keyword) == true){
        res.redirect('back');
-       console.log("sql injection")
-       return;
     }
 
     console.log(keyword);

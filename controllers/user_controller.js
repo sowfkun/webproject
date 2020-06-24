@@ -14,12 +14,18 @@ module.exports.sign_up= (req, res) => {
 // gửi thông tin tạo tài khoản
 module.exports.sign_upPost= (req, res) => {     
   
-  var name = req.body.name;
-  console.log(name);
-  var phone= req.body.phone;
-  var email= req.body.email;
-  var passwordHash= md5(req.body.password); 
+  var name = injection.checksql_html(req.body.name);
+  var phone = injection.checkphone(req.body.phone);
+  var email = injection.checkemail(req.body.email);
+  var pass = injection.checksql_html(req.body.password);
+  var passConfirm = injection.checksql_html(req.body.re_password);
 
+  // check injection
+  if(name == true || phone == true || email == true || pass.length < 4 || pass !== passConfirm){
+         res.redirect('back');
+  }
+
+  var passwordHash= md5(req.body.password); 
   var sqlsign_up=`
   SELECT email FROM customer where email = ?;
   SELECT phone FROM customer where phone = ?;
@@ -66,9 +72,8 @@ module.exports.sign_upPost= (req, res) => {
 });
 }
 
-
 //Đăng nhập
-var sqlsignin=`SELECT password FROM customer where email = ?;`
+
 
 module.exports.sign_in= (req, res) => {     
   
@@ -83,13 +88,18 @@ module.exports.sign_in= (req, res) => {
     });
 };
   
-
+var sqlsignin=`SELECT password FROM customer where email = ?;`
 module.exports.sign_inPost= (req, res) => {     
   
-    var email =req.body.email;
-    var passwordHash = md5(req.body.password);
- 
-    
+    var email = injection.checkemail(req.body.email);
+    var pass = injection.checksql_html(req.body.password);
+
+    //check injection 
+    if(email == true || pass == true){
+         res.redirect('back');
+    }
+
+    var passwordHash = md5(pass);
     db.query(sqlsignin,[email], function (err, result) {
         if (err) throw err;
         if(!result.length){
@@ -122,25 +132,32 @@ module.exports.sign_inPost= (req, res) => {
 //cập nhật user
 module.exports.update_user = (req,res) => {
 
-    var newuser = req.body;
+    var user_id = req.body.user_id;
+    var name = injection.checksql_html(req.body.name);
+    var email = injection.checkemail(req.body.email);
+    var phone = injection.checkphone(req.body.phone);
+    var address = injection.checksql_html(req.body.address);
 
-    console.log(newuser);
-    db.query('Select * from customer where user_id = ?', newuser.user_id, function (err, result){
+    if(isNaN(user_id) == true || name == true || email == true || phone == true | address == true){
+         res.redirect('back');
+    }
+    console.log(isNaN(""));
+    db.query('Select * from customer where user_id = ?', user_id, function (err, result){
         if (err) throw err;
                                                  //kiểm tra xem người dùng có thay đổi email không
-        if(newuser.email == result[0].email){      //nếu không thì cập nhật bình thường nhưng ko cần cập nhật mail
+        if(email == result[0].email){      //nếu không thì cập nhật bình thường nhưng ko cần cập nhật mail
             console.log(' không thay đổi email')
             var updatesql = `
             UPDATE customer 
-            SET name = '${newuser.name}', phone = ${newuser.phone}, address = '${newuser.address}'
-            WHERE user_id = ${newuser.user_id};
+            SET name = '${name}', phone = ${phone}, address = '${address}'
+            WHERE user_id = ${user_id};
             `
             db.query(updatesql, function (err, result){
                 if (err) throw err;
                  res.redirect('/');
             });
         } else {                //nếu có thì kiểm tra email mới đã được sử dụng hay chưa
-            db.query('SELECT count(email) AS count FROM customer where email =  ?', newuser.email, function (err, result){
+            db.query('SELECT count(email) AS count FROM customer where email =  ?', email, function (err, result){
                 console.log('có thay đổi email')
                 if (result[0].count == 1) {     // nếu rồi thì không cho cập nhật
                     console.log('email bị trùng, hủy cập nhật')
@@ -149,8 +166,8 @@ module.exports.update_user = (req,res) => {
                     console.log(' email không bị trùng, cập nhật')
                     var updatesql = `
                     UPDATE customer 
-                    SET name = '${newuser.name}', email = '${newuser.email}', phone = ${newuser.phone}, address = '${newuser.address}'
-                    WHERE user_id = ${newuser.user_id};
+                    SET name = '${name}', email = '${email}', phone = ${phone}, address = '${address}'
+                    WHERE user_id = ${user_id};
                     `
                     db.query(updatesql, function (err, result){
                         if (err) throw err;
@@ -160,33 +177,47 @@ module.exports.update_user = (req,res) => {
             });
         }
     });
-  
+
+    res.clearCookie('email');
+
+    res.cookie('email', email,{
+        signed: true
+    });
+
 }
 
 //cập nhật mật khẩu
 module.exports.update_password = (req,res) => {
 
-    var password = req.body;
-    if(password.new_pass !== password.confirm)  {
-        console.log('password mới không trùng khớp')
+    var user_id = req.body.user_id;
+    var newpass = injection.checksql_html(req.body.new_pass);
+    var passConfirm = injection.checksql_html(req.body.confirm);
+    
+
+    //check injection = true => return
+    if( isNaN(user_id) == true || user_id == "" || newpass !== passConfirm || newpass == true || passConfirm == true)  {
         res.redirect('/')
     };
 
-    var newpassHash = md5(password.new_pass);
+    var newpassHash = md5(newpass);
 
-    if(typeof password.old_pass == "undefined") {   //người dùng chưa đk tài khoản mà đăng nhập bàng facebook thì khong có password
-        db.query(`UPDATE customer SET password = '${newpassHash}' WHERE user_id =  ?`, password.user_id, function (err, result){
+    if(typeof req.body.old_pass == "undefined") {   //người dùng chưa đk tài khoản mà đăng nhập bàng facebook thì khong có password
+        db.query(`UPDATE customer SET password = '${newpassHash}' WHERE user_id =  ?`, user_id, function (err, result){
             console.log('thêm mới mật khẩu thành công')
             if (err) throw err;
              res.redirect('/');
         });
     } else {            //đã có pass word
-        var oldpassHash= md5(password.old_pass);
-        db.query('SELECT password FROM customer where user_id =  ?', password.user_id, function (err, result){
+        var old_pass = injection.checksql_html(req.body.old_pass);
+        if(old_pass == true){
+             res.redirect('back');
+        }
+        var oldpassHash= md5(old_pass);
+        db.query('SELECT password FROM customer where user_id =  ?', user_id, function (err, result){
             if (err) throw err;
             if(oldpassHash === result[0].password){     //mật khẩu cũ đúng, cập nhật mật khẩu mới
                 console.log('password cũ trùng khớp, cập nhật lại')
-                db.query(`UPDATE customer SET password = '${newpassHash}' WHERE user_id =  ?`, password.user_id, function (err, result){
+                db.query(`UPDATE customer SET password = '${newpassHash}' WHERE user_id =  ?`, user_id, function (err, result){
                     if (err) throw err;
                      res.redirect('/');
                 });

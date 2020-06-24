@@ -1,5 +1,5 @@
 const db= require('../database/db');
-
+const injection = require("../check_injection/check_injection");
 
 const sql = `SELECT DISTINCT brand_name, serie
     FROM product
@@ -20,14 +20,17 @@ const sql = `SELECT DISTINCT brand_name, serie
 
 
 module.exports.filter=function(req, res) {
-  var filter = req.body;
-  console.log(filter);
+  
+  var brand = injection.checksql_html(req.body.brand);
+  var cpu = injection.checksql_html(req.body.cpu);
+  var ram = injection.checksql_html(req.body.ram);
+ 
   db.query(sql, function (err, result, fields) {
     if (err) throw err;
     var productFilter =  result[2].filter(function(product) {  //lọc những product theo serie
-      return product.brand_name.toLowerCase().indexOf(filter.brand.toLowerCase()) !== -1 &&
-      product.ram.toLowerCase().indexOf(filter.ram.toLowerCase()) !== -1 &&
-      product.cpu.toLowerCase().indexOf(filter.cpu.toLowerCase()) !== -1 ;
+      return product.brand_name.toLowerCase().indexOf(brand.toLowerCase()) !== -1 &&
+      product.ram.toLowerCase().indexOf(ram.toLowerCase()) !== -1 &&
+      product.cpu.toLowerCase().indexOf(cpu.toLowerCase()) !== -1 ;
     });
     if(productFilter.length == 0){
       searchMess = "Không tìm thấy sản phẩm"

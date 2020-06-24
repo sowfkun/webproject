@@ -1,5 +1,5 @@
 const db= require('../database/db');
-
+const injection = require("../check_injection/check_injection");
 
 // biến lưu các query
 const sql = `SELECT DISTINCT brand_name, serie
@@ -52,7 +52,15 @@ module.exports.product_all =(req, res) => {
 //sản phẩm theo thương hiệu
 module.exports.product_brand = (req, res) => {     
   
-  var brand = req.params.brand.toString().toLowerCase();  //route parameter
+  
+  var brand = injection.checksql_html(req.params.brand.toLowerCase());  //route parameter
+
+  //check injection == true => return
+  if( brand == true ){
+     res.redirect('back');
+     return;
+  }
+
     db.query(sql,[0,1,2,3], function (err, result, fields) {
       if (err) throw err;
       var productbrand =  result[2].filter(function(product) {  //lọc những product theo serie
@@ -74,8 +82,13 @@ module.exports.product_brand = (req, res) => {
 //sản phẩm theo serie
 module.exports.product_serie= (req, res) => {     
   
-  var brand= req.params.brand.toString().toLowerCase()
-  var serie = req.params.serie.toString().toLowerCase();  //route parameter
+  var brand= injection.checksql_html(req.params.brand.toLowerCase());
+  var serie = injection.checksql_html(req.params.serie.toLowerCase());  //route parameter
+
+  if( brand == true || serie == true){
+     res.redirect('back');
+     return;
+  }
     db.query(sql,[0,1,2,3], function (err, result, fields) {
       if (err) throw err;
       var productSerie =  result[2].filter(function(product) {  //lọc những product theo serie
@@ -97,9 +110,14 @@ module.exports.product_serie= (req, res) => {
   //thông tin một máy cụ thể
   module.exports.product_detail= (req, res) => { 
 
-    var brand= req.params.brand.toString().toLowerCase();
-    var serie = req.params.serie.toString().toLowerCase();
-    var ma_sku = req.params.ma_sku.toString().toLowerCase();  //route parameter
+    var brand= injection.checksql_html(req.params.brand.toLowerCase());
+    var serie = injection.checksql_html(req.params.serie.toLowerCase());
+    var ma_sku = injection.checksql_html(req.params.ma_sku.toLowerCase());  //route parameter
+
+    if( brand == true || serie == true || ma_sku == true){
+       res.redirect('back');
+       return;
+    }
   
       db.query(sql,[serie,ma_sku,serie,brand], function (err, result, fields) {
         if (err) throw err;
@@ -123,8 +141,6 @@ module.exports.product_serie= (req, res) => {
           event: result[4]
           
         });
-
-        console.log(res.locals.orderid);
     });
   };
 

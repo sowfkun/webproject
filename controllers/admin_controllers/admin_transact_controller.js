@@ -1,5 +1,5 @@
 const db= require('../../database/db');
-
+const injection = require("../../check_injection/check_injection");
 
 var sql = `
 SELECT COUNT(order_id) AS count 
@@ -43,7 +43,14 @@ module.exports.new_transact = function(req,res){
 
 module.exports.new_confirm = function(req,res){
 
-    var input = JSON.parse(req.body.final_input);
+    var input = injection.checksql_html(req.body.final_input);
+
+    if(input == true){
+         res.redirect('back');
+         return;
+    }
+
+    input = JSON.parse(input);
 
     for (let i = 0; i < input.length; i++) {
         var item = JSON.parse(input[i]);

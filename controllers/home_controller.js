@@ -38,14 +38,12 @@ WHERE status='Đang diễn ra' OR status="sắp diễn ra";
 
 module.exports.index=function(req, res) {
     
-  var s = 'or 1=1'
 
     db.query(sql, function (err, result, fields) {
       if (err) throw err;
       res.render('home', {
         title : 'LapCity Trang Chủ',
         pagename: 'Trang chủ',
-       
         
         gaming: result[0],        //query list laptop gaming
         vanphong: result[1],      //query list laptop vanphong
