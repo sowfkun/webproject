@@ -27,7 +27,7 @@ GROUP BY ma_sku;
 
 `
 
-
+//hiển thị giao dịch mới
 module.exports.new_transact = function(req,res){
     var status = 'chờ xét duyệt'
     db.query(sql, [status,status], function (err, result, fields) {
@@ -41,6 +41,7 @@ module.exports.new_transact = function(req,res){
     });
 };
 
+// xác nhận giao dịch mới
 module.exports.new_confirm = function(req,res){
 
     var input = injection.checksql_html(req.body.final_input);
@@ -79,7 +80,7 @@ module.exports.new_confirm = function(req,res){
 
 
 
-
+// hiển thị giao dịch đang giao hàng
 module.exports.confirm_transact = function(req,res){
     
     var confirmsql = `

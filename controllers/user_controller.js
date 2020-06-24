@@ -23,6 +23,7 @@ module.exports.sign_upPost= (req, res) => {
   // check injection
   if(name == true || phone == true || email == true || pass.length < 4 || pass !== passConfirm){
          res.redirect('back');
+         return;
   }
 
   var passwordHash= md5(req.body.password); 
@@ -32,10 +33,7 @@ module.exports.sign_upPost= (req, res) => {
   `
   db.query(sqlsign_up,[email,phone], function (err, result) {
       if (err) throw err;
-     
       var err = [];
-     
-      console.log(result[0].length,result[1].length)
       if(result[0].length){          // email trùng
             if(result[1].length){       // email trùng, phone trùng
                 err = ['Email đã được sử dụng', 'Số điện thoại đã được sử dụng'];
@@ -63,7 +61,6 @@ module.exports.sign_upPost= (req, res) => {
 
       db.query(insert, function (err, result) {             // nếu không thì thêm user vào database
             if (err) throw err;
-            
             res.cookie('mess', 'Bạn đã đăng kí thành công, hãy đăng nhập!')
             res.redirect('/user/sign-in');
             
@@ -73,8 +70,6 @@ module.exports.sign_upPost= (req, res) => {
 }
 
 //Đăng nhập
-
-
 module.exports.sign_in= (req, res) => {     
   
     var mess="";
@@ -97,6 +92,7 @@ module.exports.sign_inPost= (req, res) => {
     //check injection 
     if(email == true || pass == true){
          res.redirect('back');
+         return;
     }
 
     var passwordHash = md5(pass);
@@ -140,6 +136,7 @@ module.exports.update_user = (req,res) => {
 
     if(isNaN(user_id) == true || name == true || email == true || phone == true | address == true){
          res.redirect('back');
+         return;
     }
     console.log(isNaN(""));
     db.query('Select * from customer where user_id = ?', user_id, function (err, result){
@@ -192,11 +189,11 @@ module.exports.update_password = (req,res) => {
     var user_id = req.body.user_id;
     var newpass = injection.checksql_html(req.body.new_pass);
     var passConfirm = injection.checksql_html(req.body.confirm);
-    
 
     //check injection = true => return
     if( isNaN(user_id) == true || user_id == "" || newpass !== passConfirm || newpass == true || passConfirm == true)  {
-        res.redirect('/')
+        res.redirect('/');
+        return;
     };
 
     var newpassHash = md5(newpass);
@@ -211,6 +208,7 @@ module.exports.update_password = (req,res) => {
         var old_pass = injection.checksql_html(req.body.old_pass);
         if(old_pass == true){
              res.redirect('back');
+             return;
         }
         var oldpassHash= md5(old_pass);
         db.query('SELECT password FROM customer where user_id =  ?', user_id, function (err, result){

@@ -24,6 +24,7 @@ module.exports.search= (req, res) => {
     //kiểm tra lại dữ liệu nhập vào
     if(injection.checksql_html(keyword) == true){
        res.redirect('back');
+       return;
     }
 
     console.log(keyword);

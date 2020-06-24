@@ -25,8 +25,6 @@ const sql = `SELECT DISTINCT brand_name, serie
     LIMIT 6;
     
 `
-
-
 module.exports.list=function(req, res) {
     
 
