@@ -143,94 +143,43 @@
                    </script>
                         
 
-
-                        <div id="gaming" class="show_laptop">
-                            <h2> Laptop Gaming</h2>
-                            <div>
-                                <ul id=" list" >
-
-                                    <!-- truyền dữ liệu từ database-->
-
-                                    <% for (var i=0;i<gaming.length;i++) {    %>
+                <% for (let i = 0; i< catalog.length; i++){ %>
+                    <div id="gaming" class="show_laptop">
+                        <h2> Laptop <%= catalog[i].name%> </h2>
+                        <div>
+                            <ul id=" list" >
+                                <% for (var j=0; j<product.length; j++) { %>
+                                    <% if(product[j].catalog_id == catalog[i].catalog_id){ %>
 
                                         <li class=" w3-center w3-animate-right">
-                                            <a href="/product/<%-gaming[i].brand_name_%>/<%-gaming[i].serie_%>/<%-gaming[i].ma_sku_%>">
-                                            
-                                                    <img src="upload/images/<%= gaming[i].img %>">
-                                                    <p id="brand"> <%= gaming[i].brand_name %> </p>
-                                                    <p id="ma_sku"> <%= gaming[i].ma_sku %> </p>
-                                                    <p id="cpu"><%= gaming[i].cpu %></p>
-                                                    <p id="gpu"><%= gaming[i].gpu %></p>
-                                                    <p id="ram"><%= gaming[i].ram %></p>
-                                                    <p id="ssd"><%= gaming[i].ssd %></p>
-                                                    <p id="HDD"><%= gaming[i].hdd %></p>
-                                                    <p id="gia"><span style="color: tomato; font-weight: bold;"><%= gaming[i].discount_price.toLocaleString() %> đ</span></p>
+                                            <a href="/product/<%-product[j].brand_name_%>/<%-product[j].serie_%>/<%-product[j].ma_sku_%>">
+        
+                                                <% var cpu = product[j].cpu.split(" ") %>
+                                                <% cpu = cpu[2] + " " + cpu[3]  %>  
+                                                <% var gpu = product[j].gpu.split(" ") %>
+                                                <% gpu = gpu[0] + " " + gpu[2] + " " + gpu[3]  %>  
+                                                <% var ram = product[j].ram.split(" ") %>
+                                                <% ram = ram[0] + " " + ram[1]%>
+                                                <% var hdd = product[j].hdd.split(" ") %>
+                                                <% hdd = hdd[0] + " HDD"%>
+                                                <% var ssd = product[j].ssd.split(" ") %>
+                                                <% ssd = ssd[0] + " SSD"%>
+                                                
+                                                <img src="upload/images/<%= product[j].img %>">
+                                                <p id="name" style="font-weight: bold; color: tomato;"> <%= product[j].brand_name%> <%-product[j].serie%> <%= product[j].ma_sku %> </p>
+                                                <p> <%=cpu %> | <%=gpu %> | <%=ram%> | <%=hdd%> | <%= ssd%> </p>
+                                                <p id="gia"><span style="color: tomato; font-weight: bold;"><%= product[j].discount_price.toLocaleString() %> đ</span></p>
                                             </a> 
                                         </li >
-                                   <% } %>
-                                            
-                                </ul>    
-
-                              
-                            </div>
+                                    <% } %>  
+                                <% } %> 
+                               
+                            </ul>
                         </div>
-                                           
-
-                        <div id="van_phong" class="show_laptop">
-                            <h2> Laptop văn phòng</h2>
-
-                            <div>
-                                <ul id=" list" >
-                                   
-                                    <% for (var i=0;i<vanphong.length;i++) {    %>
-                                       
-                                            <li class=" w3-center w3-animate-right">
-                                                <a href="/product/<%-vanphong[i].brand_name_%>/<%-vanphong[i].serie_%>/<%-vanphong[i].ma_sku_%>">
-                                                    <img src="upload/images/<%= vanphong[i].img %>">
-                                                    <p id="brand"> <%= vanphong[i].brand_name %> </p>
-                                                    <p id="ma_sku"> <%= vanphong[i].ma_sku %> </p>
-                                                    <p id="cpu"><%= vanphong[i].cpu %></p>
-                                                    <p id="gpu"><%= vanphong[i].gpu %></p>
-                                                    <p id="ram"><%= vanphong[i].ram %></p>
-                                                    <p id="ssd"><%= vanphong[i].ssd %></p>
-                                                    <p id="HDD"><%= vanphong[i].hdd %></p>
-                                                    <p id="gia"><span style="color: tomato; font-weight: bold;"><%= vanphong[i].discount_price.toLocaleString() %> đ</span></p>
-                                                </a>
-                                            </li >
-                                   <% } %>
-                                             
-                                             
-                                </ul>    
-
-                              
-                            </div>
-                        </div>
-
-                        <div id="sinh_vien" class="show_laptop">
-                            <h2> Laptop sinh viên</h2>
-                            <div>
-                                <ul id=" list" >
-                                    <% for (var i=0;i<sinhvien.length;i++) {    %>
-                                      
-                                        <li class=" w3-center w3-animate-right">
-                                            <a href="/product/<%-sinhvien[i].brand_name_%>/<%-sinhvien[i].serie_%>/<%-sinhvien[i].ma_sku_%>">
-                                                <img src="upload/images/<%= sinhvien[i].img %>">
-                                                <p id="brand"> <%= sinhvien[i].brand_name %> </p>
-                                                <p id="ma_sku"> <%= sinhvien[i].ma_sku %> </p>
-                                                <p id="cpu"><%= sinhvien[i].cpu %></p>
-                                                <p id="gpu"><%= sinhvien[i].gpu %></p>
-                                                <p id="ram"><%= sinhvien[i].ram %></p>
-                                                <p id="ssd"><%= sinhvien[i].ssd %></p>
-                                                <p id="HDD"><%= sinhvien[i].hdd %></p>
-                                                <p id="gia"><span style="color: tomato; font-weight: bold;"><%= sinhvien[i].discount_price.toLocaleString() %> đ</span></p>
-                                            </a>
-                                        </li >
-                                   <% } %>                                        
-                                </ul>                         
-                            </div>
-                        </div>
-
-                                
+                        
+                    </div>
+                <% } %>         
+                       
                         <div id="event">     <!-- phần hiển thị nội dung-->
                             <ul>     
                                 <% for(var i=0; i<event.length; i++) {%> 
@@ -299,10 +248,6 @@
                   
                 </ul>
                 
-
-                    
-               
-               
             </div>
 
 

@@ -69,7 +69,7 @@
 
                 <tr>
                     <th > Hình ảnh</th>
-                    <th style="width : 30%;"> Tên sản phẩm </th>
+                    <th style="width : 30%;"> Thông tin sản phẩm </th>
                     <th style="width : 15%;"> Đơn giá</th>
                     <th style="width : 10%;"> Số lượng </th>
                     <th style="width : 15%;"> Thành tiền</th>
@@ -133,7 +133,9 @@
                                 <td id="name">
                                     <a href="/product/${item[i].brand}/${item[i].serie}/${item[i].ma_may}" 
                                     style="text-decoration: none; color: #4b4b4b;">
-                                        ${item[i].brand} | ${item[i].serie} | ${item[i].ma_may} | 
+                                    <span style="font-weight: bold; color: tomato;">${item[i].brand}</span> | 
+                                    <span style="font-weight: bold; color: tomato;">${item[i].serie}</span> | 
+                                    <span style="font-weight: bold; color: tomato;">${item[i].ma_may}</span> | 
                                         ${item[i].cpu} | ${item[i].gpu} |${item[i].ram} | ${item[i].ssd} | ${item[i].hdd}
                                     </a>  
                                 </td>1
@@ -269,6 +271,7 @@
 
             <script>    //validate thông tin khách hàng
                 $("#btn_mua").css("opacity", "30%");
+                checkcartform();
                 function checkcartform(){
                     var valid = $("#cart_submit").valid();
                     var mailvalid = checkcartmail();

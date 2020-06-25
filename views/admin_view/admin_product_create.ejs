@@ -71,8 +71,6 @@
         </script>
         </form>
 
-
-
         <%# list product %>
         <form id="create_form" action="/admin/product_create" method="POST" enctype="multipart/form-data">
             <div id="header" style="width:100%; height: 40px;">
@@ -93,7 +91,7 @@
                              onchange="loadimg(event)">
                         </div>
                     </div>
-                    <img id="choosen_img" src="upload/images/" height="150px" width="150px"
+                    <img id="choosen_img" height="150px" width="150px"
                     style="margin-top: -115px; margin-left: 500px; border: solid 1px #aaaa;">
 
                     <script>
@@ -290,14 +288,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="row">       
-                    <div class="label"> 
-                        <label for="tinh_trang"><b>#Tình trạng:</b></label>
-                    </div>
-                    <div class="input" >
-                        <input id="tinh_trang" type="text" name="tinh_trang" value="chưa bán" required>
-                    </div>
-                </div>
+               
             </div>
         
         </form>

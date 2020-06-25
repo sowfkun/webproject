@@ -317,7 +317,7 @@ module.exports.ad_product_param = (req, res) => {
   VALUES ('${insert.img}', ${insert.catalog}, '${insert.brand}', '${insert.serie}', '${insert.ma_sku}', ${insert.price}, 
   ${insert.dis_price}, '${insert.cpu}', '${insert.gpu}', '${insert.ram}','${insert.ssd}', '${insert.hdd}', '${insert.monitor}', 
   '${insert.webcam}', '${insert.interface}', '${insert.connect}', '${insert.bluetooth}', '${insert.pin}', '${insert.os}', 
-  '${insert.color}', ${insert.weight}, '${insert.size}', '${insert.status}', '${insert.tinh_trang}');
+  '${insert.color}', ${insert.weight}, '${insert.size}', '${insert.status}', 'chưa bán');
 
   SELECT *
   FROM catalog;
@@ -367,7 +367,7 @@ module.exports.ad_product_create_exist = (req, res) => {
     cpu, gpu, ram, ssd, hdd, monitor, webcam, interface, connect, bluetooth, pin, os, color, 
     weight, size, product_status, tinh_trang
   FROM product
-    WHERE ma_sku = ?
+    WHERE ma_sku = ? AND tinh_trang = 'chưa bán'
   LIMIT 1;
   `
   for (let i = 0; i < quant; i++) {

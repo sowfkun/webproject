@@ -52,6 +52,13 @@ module.exports.new_confirm = function(req,res){
     }
 
     input = JSON.parse(input);
+    console.log(input);
+
+     //kiểm tra xem id nhập vào có phải thuộc mã máy cần bán hay không
+    var check_ma_may_id = `
+    select product_id, ma_sku 
+    from product;
+            `
 
     for (let i = 0; i < input.length; i++) {
         var item = JSON.parse(input[i]);
@@ -59,14 +66,14 @@ module.exports.new_confirm = function(req,res){
         var order_id = parseInt(item.order_id);
         var orderitem_id = parseInt(item.orderitem_id);
         var product_id = parseInt(item.product_id);
-
+       
         var confirm = `
         UPDATE product 
         SET orderitem_id =  ${orderitem_id}, tinh_trang = 'đã bán'
         WHERE product_id = ${product_id};
         
         UPDATE orders
-        SET order_status = 'Đang giao hàng'
+        SET order_status = 'Đang giao hàng', finishdate = current_timestamp 
         WHERE order_id = ${order_id};
         `
         db.query(confirm, function (err, result, fields) {
@@ -81,7 +88,7 @@ module.exports.new_confirm = function(req,res){
 
 
 // hiển thị giao dịch đang giao hàng
-module.exports.confirm_transact = function(req,res){
+module.exports.transact_delivering = function(req,res){
     
     var confirmsql = `
     SELECT COUNT(order_id) AS count 
@@ -120,20 +127,144 @@ module.exports.confirm_transact = function(req,res){
     });
 };
 
-module.exports.complete_transact = function(req,res){
-    db.query(sql, function (err, result, fields) {
+// xác nhận đã giao hàng
+module.exports.confirm_delivered = function(req,res){
+
+    var order_id = req.body.order_id;
+    
+    if(isNaN(order_id) == true){
+         res.redirect('back');
+         return;
+    }
+
+    var confirm = `UPDATE orders 
+    SET order_status = "Giao dịch hoàn tất", finishdate = current_timestamp 
+    WHERE order_id = ?`
+    
+    db.query(confirm, order_id, function(err, result, fields) {
         if (err) throw err;
-        res.render('admin_view/admin_transact',{
-            count : result[0].count
+        console.log('đã giao dịch thành công')
+    });
+
+     res.redirect('back');
+};
+
+
+//hiển thị giao dịch đã hoàn tất
+module.exports.complete_transact = function(req,res){
+    
+    var confirmsql = `
+    SELECT COUNT(order_id) AS count 
+    FROM orders 
+    WHERE order_status = 'chờ xét duyệt';
+
+    SELECT * 
+    FROM orders
+    WHERE order_status = 'giao dịch hoàn tất'
+    ORDER BY orderdate DESC;
+
+    SELECT * 
+    FROM orders
+    INNER JOIN orderitem
+    ON orders.order_id = orderitem.order_id
+    WHERE order_status = 'giao dịch hoàn tất'
+    ORDER BY orderdate DESC;
+
+    SELECT id, orders.order_id, ma_may, product.discount_price as price, product_id, brand_name, serie, ma_sku
+    FROM ((orderitem 
+    INNER JOIN orders
+    ON orderitem.order_id = orders.order_id) 
+    INNER JOIN product 
+    ON orderitem.id = product.orderitem_id)
+    where orders.order_status = 'giao dịch hoàn tất'
+    `
+   
+    db.query(confirmsql, function (err, result, fields) {
+        if (err) throw err;
+        res.render('admin_view/admin_transact_confirm',{
+            count: (result[0])[0].count,
+            transact: result[1],
+            transact_item: result[2],
+            item_info: result[3]
         });
     });
 };
 
+//hủy giao dịch
 module.exports.cancel_transact = function(req,res){
-    db.query(sql, function (err, result, fields) {
+
+    var order_id = req.body.order_id;
+    
+    if(isNaN(order_id) == true){
+         res.redirect('back');
+         return;
+    }
+
+    var cancel = `UPDATE orders 
+    SET order_status = "giao dịch bị hủy", finishdate = current_timestamp 
+    WHERE order_id = ?;
+    
+    SELECT id
+    FROM orderitem 
+    WHERE order_id = ?;
+    `
+    
+    db.query(cancel, [order_id, order_id], function(err, result, fields) {
         if (err) throw err;
-        res.render('admin_view/admin_transact',{
-            count : result[0].count
+        console.log('đã hủy giao dịch')
+
+        for(let i = 0; i< result[1].length; i++){
+
+            var updateproduct = `
+            UPDATE product
+            SET orderitem_id = null
+            WHERE orderitem_id = ?
+            `
+            db.query(updateproduct, (result[1])[i].id, function(err, result, fields){
+                if(err) throw err;
+                console.log("đã xóa sản phẩm khỏi đơn hàng");
+            });
+        }
+    });
+
+     res.redirect('back');
+};
+
+//hiển thị giao dịch bị hủy
+module.exports.cancel_transact_show = function(req,res){
+    var confirmsql = `
+    SELECT COUNT(order_id) AS count 
+    FROM orders 
+    WHERE order_status = 'chờ xét duyệt';
+
+    SELECT * 
+    FROM orders
+    WHERE order_status = 'giao dịch bị hủy'
+    ORDER BY orderdate DESC;
+
+    SELECT * 
+    FROM orders
+    INNER JOIN orderitem
+    ON orders.order_id = orderitem.order_id
+    WHERE order_status = 'giao dịch bị hủy'
+    ORDER BY orderdate DESC;
+
+    SELECT id, orders.order_id, ma_may, product.discount_price as price, product_id, brand_name, serie, ma_sku
+    FROM ((orderitem 
+    INNER JOIN orders
+    ON orderitem.order_id = orders.order_id) 
+    INNER JOIN product 
+    ON orderitem.id = product.orderitem_id)
+    where orders.order_status = 'giao dịch bị hủy'
+    `
+   
+    db.query(confirmsql, function (err, result, fields) {
+        if (err) throw err;
+        res.render('admin_view/admin_transact_confirm',{
+            count: (result[0])[0].count,
+            transact: result[1],
+            transact_item: result[2],
+            item_info: result[3]
         });
     });
 };

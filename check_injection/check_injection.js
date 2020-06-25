@@ -1,6 +1,6 @@
 module.exports.checksql_html = function(content){
 
-    if(content == "") {
+    if(content == "" || content == "[]") {
         console.log(null);
         return true;                                         // rỗng thì return false
     }

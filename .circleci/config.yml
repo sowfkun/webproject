@@ -1,0 +1,13 @@
+version: 2.1
+jobs:
+  build-web:
+    docker:
+      - image: circleci/node:13
+    steps:
+      - checkout
+      - run:
+        - name: install dependencies
+        - command:
+            npm install
+           
+           

@@ -79,12 +79,19 @@
                         <% for( let i = 0; i< orders.length; i++){ %>
                         <li>
                             <% if(orders[i].order_status.toLowerCase() !== 'giao dịch hoàn tất') {%>
-                                <h2 id="mess"> <%= orders[i].status %> </h2>
                                 <script>
                                     $("#btn_dealing").addClass('active');
                                 </script>
                             <%} else {%>
-                                    <h2 id="mess"> <%= orders[i].status %> vào lúc <%= orders[i].finishdate%> </h2>
+                                <div style="width: 100%; margin-top: 15px;">
+                                    <div id="ex-info" style="color: tomato;  font-family: balootamma2; "> Tình trạng: 
+                                        <span style="font-size: 18px; font-weight: bold;"><%= orders[i].order_status%></span>
+                                    </div>
+                                    <div id="ex-info" style="color: tomato;  font-family: balootamma2; ">
+                                        Mã đơn hàng: <span style="font-size: 18px; font-weight: bold;"><%=orders[i].order_id%></span> , Thời gian đặt hàng: 
+                                        <span style="font-size: 18px; font-weight: bold;"><%= orders[i].orderdate%></span> 
+                                    </div>
+                                </div>
                                     <script>
                                         $("#btn_history").addClass('active');
                                     </script>
@@ -93,22 +100,43 @@
                         
                             <table id="cart">
                                 <% if(orders[i].order_status.toLowerCase() == 'chờ xét duyệt'){ %>    <%# có thể hủy đơn hàng khi chưa xá nhận %> 
-                                    <div style="width: 100%;">
+                                    <div style="width: 100%; margin-top: 15px;">
                                         <form action="", method="POST">
                                             <input type="hidden" name="orderid" value="<%=orders[i].order_id%>">
                                             <button id="btn_cancel" type="submit"> Hủy đơn hàng</button>
+                                            <div id="ex-info" style="color: tomato;  font-family: balootamma2; "> Tình trạng: <span style="font-size: 18px; font-weight: bold;"><%= orders[i].order_status%></span> </div>
+                                            <div id="ex-info" style="color: tomato;  font-family: balootamma2; ">
+                                                Mã đơn hàng: <span style="font-size: 18px; font-weight: bold;"><%=orders[i].order_id%></span> , Thời gian đặt hàng: 
+                                                <span style="font-size: 18px; font-weight: bold;"><%= orders[i].orderdate%></span> 
+                                            </div>
                                         </form>
                                        
                                     </div>
                                 <% } %> 
 
-                                <% if(orders[i].order_status.toLowerCase() == 'Đang giao hàng'){ %>  <%# Không thể hủy dơn hàng khi đã xác nhận %> 
-                                    <div style="width: 100%;">
-                                        <button id="btn_huy" type="submit"> 
+                                <% if(orders[i].order_status.toLowerCase() == 'đang giao hàng'){ %>  <%# Không thể hủy dơn hàng khi đã xác nhận %> 
+                                    <div style="width: 100%; margin-top: 15px;">
+                                        <button id="btn_cancel" class= "dang_giao" type="submit"> 
                                             <span> Hủy đơn hàng </span> 
-                                            <div id="cancel_mess"> Đơn hàng đã được xác nhận. Vui lòng liên hệ Hotline: 098xxxxxxx để hủy đơn hàng</div>
                                         </button>   
+                                        <div id="ex-info" style="color: tomato;  font-family: balootamma2; "> Tình trạng: <span style="font-size: 18px; font-weight: bold;"><%= orders[i].order_status%></span> </div>
+                                            <div id="ex-info" style="color: tomato;  font-family: balootamma2; ">
+                                                Mã đơn hàng: <span style="font-size: 18px; font-weight: bold;"><%=orders[i].order_id%></span> , Thời gian đặt hàng: 
+                                                <span style="font-size: 18px; font-weight: bold;"><%= orders[i].orderdate%></span> 
+                                            </div>
+                                        <div id="cancel_mess" style="float: right; margin-bottom: 20px; margin-top: -25px; font-weight: balootamma2;">
+                                             Đơn hàng đang được vận chuyển. Không thể hủy đơn hàng.</div>
                                     </div>
+
+                                    <script>
+                                         $("#cancel_mess").hide();
+                                        $(document).ready(function(){
+                                            $(".dang_giao").on("click", function(){
+                                                $("#cancel_mess").show();
+                                            });
+                                        });
+                                    </script>
+
                                 <% } %> 
                                 <tr>
                                     <th > Hình ảnh</th>
@@ -128,9 +156,11 @@
                                                             </div>
                                                         </td>
                                                         <td id="name">
-                                                            <a href="/product/<%-item[j].brand_name_%>/<%-item[j].serie_%>/<%-item[j].ma_sku_%>" 
+                                                            <a href="/product/<%-item[j].brand_name_%>/<%-item[j].serie_%>/<%-item[j].ma_may_%>" 
                                                             style="text-decoration: none; color: #4b4b4b;">
-                                                                <%-item[j].brand_name_%> | <%-item[j].serie_%> | <%-item[j].ma_sku_%> | 
+                                                                <span style="font-weight: bold; color: tomato;"><%-item[j].brand_name_%></span> | 
+                                                                <span style="font-weight: bold; color: tomato;"><%-item[j].serie_%></span> | 
+                                                                <span style="font-weight: bold; color: tomato;"><%-item[j].ma_may_%></span> | 
                                                                 <%-item[j].cpu_%> | <%-item[j].gpu_%> | <%-item[j].ram_%> | <%-item[j].ssd_%>| <%-item[j].hdd_%>
                                                             </a>  
                                                         </td>

@@ -15,11 +15,11 @@ module.exports.buy= (req, res) => {
     var email = injection.checkemail(req.body.email);
     var address = injection.checksql_html(req.body.address);
     if(req.body.note == "") {
-        var note = false
+        var note = ""
     } else {
         var note = injection.checksql_html(req.body.note);
     }
-  
+    console.log(req.body.item);
     var item = injection.checksql_html(req.body.item);
 
     //check if injection == true => return
@@ -42,13 +42,13 @@ module.exports.buy= (req, res) => {
     var insertOrders;
     if(res.locals.user_id>0){       // nếu là đã đăng kí tài khoản thì có userid
         insertOrders=`
-        INSERT INTO orders (fullname, user_id, phone, email, address, note, total_price, order_status)
-        VALUES('${name}','${res.locals.user_id}','${phone}','${email}','${address}','${note}','${total_price}','Chờ xét duyệt')
+        INSERT INTO orders (fullname, user_id, phone, email, address, note, total_price, order_status, orderdate )
+        VALUES('${name}','${res.locals.user_id}','${phone}','${email}','${address}','${note}','${total_price}','Chờ xét duyệt', current_timestamp)
         `
     } else{                     //nếu không thì không cho id vào
         insertOrders=`              
-        INSERT INTO orders (fullname, phone, email, address, note, total_price, order_status)
-        VALUES('${name}','${phone}','${email}','${address}','${note}','${total_price}','Chờ xét duyệt')
+        INSERT INTO orders (fullname, phone, email, address, note, total_price, order_status, orderdate )
+        VALUES('${name}','${phone}','${email}','${address}','${note}','${total_price}','Chờ xét duyệt', current_timestamp)
         `
     }
     
@@ -87,7 +87,7 @@ INNER JOIN orders
 ON orderitem.order_id = orders.order_id) 
 INNER JOIN product 
 ON orderitem.id = product.orderitem_id)
-where user_id = ? AND orders.order_status = ? AND tinh_trang = "chưa bán";`
+where user_id = ? AND orders.order_status = ? AND tinh_trang = "đã bán";`
 
 module.exports.history= (req, res) => {
   
