@@ -284,6 +284,7 @@
                         var hdd = document.getElementById('hdd').textContent;
                         var price = document.getElementById('discount_price').textContent;
                         var quntity=1;
+                        var conlai = '<%=conlai%>';
 
                         var item = {
                             'img':img,
@@ -296,7 +297,8 @@
                             'ssd': ssd,
                             'hdd': hdd,
                             'price':price,
-                            'quantity': quntity
+                            'quantity': quntity,
+                            'conlai': conlai
                         }
 
                         var array = JSON.parse(window.localStorage.getItem('cart')) || []; 
@@ -309,7 +311,7 @@
                             } else{
                                 for(let i= 0; i< array.length; i++){        //khi có rồi thì kiểm tra xem có bị trùng không
                                     if(array[i].ma_may === item.ma_may){
-                                        alert('Thêm vào giỏ thành công');   //nếu có thì return
+                                        alert('Sản phẩm đã có trong giỏ hàng');   //nếu có thì return
                                         return;
                                     } 
                                 }

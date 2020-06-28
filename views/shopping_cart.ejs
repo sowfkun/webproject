@@ -240,7 +240,6 @@
                         <button  id="btn_mua" disabled type="submit" >Xác nhận mua hàng</button>
                     </div>
                 </div>
-                    
             </form>
 
             <script>
@@ -248,14 +247,33 @@
                 document.getElementById("input_item").value = final_item; 
             </script> 
 
+        
             
             <script>    //set item và số lượng vào iput item
                     function update(id){
                         new_quantity = $("#quantity_"+id).val();
-                        
+
                         if(new_quantity<=0){
-                        alert('Số lượng sản phẩm tối thiểu là 1');
-                        new_quantity = 1;
+                            alert('Số lượng sản phẩm tối thiểu là 1');
+                            new_quantity = 1;
+                        }
+
+                        var item_conlai = window.localStorage.getItem('cart') || []; 
+                        item_conlai = (JSON.parse(item_conlai))[id].conlai;
+
+                        if(new_quantity >= 10){
+                            if(item_conlai >= 10){
+                                alert("Số lượng tối đa là 10, Vui lòng liên hệ Hotline 098xxxxxx để mua số lượng lớn");
+                                new_quantity = 10;
+                            } else {
+                                alert(`Số lượng sản phẩm tối đa là ${item_conlai}`);
+                                new_quantity = item_conlai;
+                            }
+                        } else {
+                            if(item_conlai <= new_quantity){
+                                alert(`Số lượng sản phẩm tối đa là ${item_conlai}`);
+                                new_quantity = item_conlai;
+                            } 
                         }
 
                         item[id].quantity = new_quantity;

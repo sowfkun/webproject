@@ -217,7 +217,7 @@ module.exports.cancel_transact = function(req,res){
 
             var updateproduct = `
             UPDATE product
-            SET orderitem_id = null
+            SET orderitem_id = null, tinh_trang = "chưa bán"
             WHERE orderitem_id = ?
             `
             db.query(updateproduct, (result[1])[i].id, function(err, result, fields){

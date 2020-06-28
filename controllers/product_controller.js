@@ -19,20 +19,23 @@ const sql = `SELECT DISTINCT brand_name, serie
     
     SELECT *
     FROM product
-    WHERE serie = ? AND ma_sku =? AND tinh_trang = 'chưa bán'
+    WHERE serie = ? AND ma_sku = ? AND tinh_trang = 'chưa bán'
     LIMIT 1;
     
     SELECT *
     FROM event
-    WHERE  (brand_name ='tất cả' OR serie = ? OR brand_name =? ) AND (status='đang diễn ra' OR status='Sắp diễn ra')
+    WHERE  (brand_name ='tất cả' OR serie = ? OR brand_name = ? ) AND (status='đang diễn ra' OR status='Sắp diễn ra')
     ORDER BY date_start DESC;
+
+    SELECT COUNT(ma_sku) AS conlai
+    FROM product
+    WHERE tinh_trang = 'chưa bán' AND ma_sku = ?;
     `
 
 // tất cả sản phẩm
 module.exports.product_all =(req, res) => {     
   
- 
-    db.query(sql,[0,1,2,3], function (err, result, fields) {
+    db.query(sql,[0,1,2,3,4], function (err, result, fields) {
       if (err) throw err;
       
       res.render('product_list', {
@@ -48,10 +51,8 @@ module.exports.product_all =(req, res) => {
   });
 };
 
-
 //sản phẩm theo thương hiệu
 module.exports.product_brand = (req, res) => {     
-  
   
   var brand = injection.checksql_html(req.params.brand.toLowerCase());  //route parameter
 
@@ -61,7 +62,7 @@ module.exports.product_brand = (req, res) => {
      return;
   }
 
-    db.query(sql,[0,1,2,3], function (err, result, fields) {
+    db.query(sql,[0,1,2,3,4], function (err, result, fields) {
       if (err) throw err;
       var productbrand =  result[2].filter(function(product) {  //lọc những product theo serie
         return product.brand_name.toLowerCase() == brand;
@@ -89,7 +90,7 @@ module.exports.product_serie= (req, res) => {
      res.redirect('back');
      return;
   }
-    db.query(sql,[0,1,2,3], function (err, result, fields) {
+    db.query(sql,[0,1,2,3,4], function (err, result, fields) {
       if (err) throw err;
       var productSerie =  result[2].filter(function(product) {  //lọc những product theo serie
         return (product.serie.toLowerCase() == serie & product.brand_name.toLowerCase() == brand);
@@ -119,7 +120,7 @@ module.exports.product_serie= (req, res) => {
        return;
     }
   
-      db.query(sql,[serie,ma_sku,serie,brand], function (err, result, fields) {
+      db.query(sql,[serie, ma_sku, serie, brand, ma_sku], function (err, result, fields) {
         if (err) throw err;
         var productdetail =  result[3].filter(function(product) {  //lọc những product theo serie
           return product.ma_sku.toLowerCase() == ma_sku ;
@@ -128,7 +129,7 @@ module.exports.product_serie= (req, res) => {
         var productSame =  result[2].filter(function(product) {  //lọc những product theo serie
           return (product.serie.toLowerCase() == serie  & product.ma_sku.toLowerCase() !=ma_sku);
         });
-
+        console.log((result[5])[0].conlai);
         res.render('product_detail', {
           title : "LapCity",
           pagename: brand.toUpperCase() + ' ' + serie.toUpperCase(),
@@ -138,7 +139,8 @@ module.exports.product_serie= (req, res) => {
           product: productdetail,
           productSame: productSame,
 
-          event: result[4]
+          event: result[4],
+          conlai: (result[5])[0].conlai
           
         });
     });

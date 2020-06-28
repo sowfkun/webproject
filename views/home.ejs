@@ -167,8 +167,22 @@
                                                 
                                                 <img src="upload/images/<%= product[j].img %>">
                                                 <p id="name" style="font-weight: bold; color: tomato;"> <%= product[j].brand_name%> <%-product[j].serie%> <%= product[j].ma_sku %> </p>
-                                                <p> <%=cpu %> | <%=gpu %> | <%=ram%> | <%=hdd%> | <%= ssd%> </p>
-                                                <p id="gia"><span style="color: tomato; font-weight: bold;"><%= product[j].discount_price.toLocaleString() %> đ</span></p>
+                                                <p id="gia"><span style="color: tomato; margin: 0px ; font-weight: bold;"><%= product[j].discount_price.toLocaleString() %> đ</span></p>
+                                                <table style="margin: auto; margin-top: -10px;">
+                                                    <tr>
+                                                        <td style="width: 30%;">CPU:</td>
+                                                        <td style="text-align: left;"><%=cpu %></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>GPU:</td>
+                                                        <td><%=gpu %></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>RAM:</td>
+                                                        <td style="text-align: left;"><%=ram %></td>
+                                                    </tr>
+                                                </table>
+                                                
                                             </a> 
                                         </li >
                                     <% } %>  
