@@ -253,29 +253,38 @@
                     function update(id){
                         new_quantity = $("#quantity_"+id).val();
 
+                        var item_conlai = window.localStorage.getItem('cart') || []; 
+                        item_conlai = (JSON.parse(item_conlai))[id].conlai;
+                        alert(item_conlai);
+                        alert(new_quantity);
+
                         if(new_quantity<=0){
                             alert('Số lượng sản phẩm tối thiểu là 1');
                             new_quantity = 1;
-                        }
-
-                        var item_conlai = window.localStorage.getItem('cart') || []; 
-                        item_conlai = (JSON.parse(item_conlai))[id].conlai;
-
-                        if(new_quantity >= 10){
-                            if(item_conlai >= 10){
-                                alert("Số lượng tối đa là 10, Vui lòng liên hệ Hotline 098xxxxxx để mua số lượng lớn");
-                                new_quantity = 10;
+                        } else if(new_quantity < 10){
+                            if(item_conlai < new_quantity){
+                                alert(`Chỉ còn lại ${item_conlai} sản phẩm`);
+                                new_quantity = item_conlai;
                             } else {
-                                alert(`Số lượng sản phẩm tối đa là ${item_conlai}`);
-                                new_quantity = item_conlai;
+                                new_quantity = new_quantity;
                             }
-                        } else {
-                            if(item_conlai <= new_quantity){
-                                alert(`Số lượng sản phẩm tối đa là ${item_conlai}`);
+                        } else if(new_quantity > 10){
+                            if(item_conlai <= 10){
+                                alert(`Chỉ còn lại ${item_conlai} sản phẩm`);
                                 new_quantity = item_conlai;
-                            } 
+                            } else {
+                                alert("Số lượng tối đa là 10, Vui lòng liên hệ Hotline 098xxxxxx để mua số lượng lớn");
+                                new_quantity = 10
+                            }
+                        } else if(new_quantity = 10 ){
+                            if(item_conlai < 10 ){
+                                alert(`Chỉ còn lại ${item_conlai} sản phẩm`);
+                                new_quantity = item_conlai;
+                            } else {
+                                new_quantity = 10
+                            }
                         }
-
+                        
                         item[id].quantity = new_quantity;
                         localStorage.setItem('cart', JSON.stringify(item));
                         show_cart(item);
