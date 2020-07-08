@@ -24,9 +24,8 @@ WHERE status='Đang diễn ra' OR status="sắp diễn ra";
 
 
 `
-module.exports.index=function(req, res) {
+module.exports.index = function(req, res) {
     
-
     db.query(sql, function (err, result, fields) {
       if (err) throw err;
       res.render('home', {
@@ -41,6 +40,6 @@ module.exports.index=function(req, res) {
 
         event: result[4]          //chọn các chương trình khuyến mãi đang hoặc sắp diễn ra
       });
-  });
+    });
 }
 
