@@ -16,44 +16,31 @@
     <!-- Phần hình nền, menu-->
         <div id="top-field" class="top-field">
             <div id="menu-bar"> 
-               
                 <ul id="submenu">
-
                     <li> <a href="/" title="Trang chủ"> Trang chủ</a> </li>
                     <li> <a href="/about_us" title="Giới thiệu"> Giới thiệu</a> </li>
                     <li> <a href="/event" title="Khuyến mãi"> Khuyến mãi</a> </li>
                     <li> <a href="/contact" title="Liên hệ"> Liên hệ</a> </li>
                 </ul>
-           
-               
                 <div id="sign-in" > 
                     <%- include('module/user_info'); -%>
                 </div> 
-                
             </div>
-
-                    <div id="logo"> LapCity</div>
-
-                    <div id="search-bar">
-                        <form action="/search" method="GET">
-                            <button></button>
-                            <input type="text" placeholder="Tìm kiếm..." name="keyword">
-                        </form>
-                    </div>
-          
-
+            <div id="logo"> LapCity</div>
+            <div id="search-bar">
+                <form action="/search" method="GET">
+                    <button></button>
+                    <input type="text" placeholder="Tìm kiếm..." name="keyword">
+                </form>
+            </div>
         </div> 
 <!--Hết phần hình nền menu-->
 
 <!-- phần hiển thị nội dung và phần chân trang-->
         <div id="bottom-field" class="bottom-container">
-
-
             
             <div id="content-field" class="content-field-container">
-
                 <div id="top-bar" class="top-bar-container">
-
                     <div id="list_brand">
                         <ul>
                             <% for(var i=0; i<menu.length;i++) { %> 
@@ -71,20 +58,14 @@
                                 </li>
                             <% } %> 
                         </ul>
-            
                         <script>
-                               
                             var brand = "#"+ localStorage.getItem('active');
                             $(brand).addClass('active');
-                            
                             function active(brand_name){
                                localStorage.setItem('active', brand_name);
-                               
                             }
                         </script>
-            
                         <script>
-            
                             //hiển thị submenu  
                             $(".sub_menu").hide();           
                             $(document).ready(function () {
@@ -95,15 +76,12 @@
                                     });
                                     });
                         </script>
-            
                     </div>
-                    
 
                      <%#filter%>
                      <div id="filter"> 
                         <%- include('module/filter'); -%>
                     </div>
-    
                     <!--Giỏ hàng-->
                     <div id="shopping-cart">
                         <a href="/shopping">
@@ -163,19 +141,16 @@
                             <p id="4"> - Bộ vệ sinh Laptop</p>       
                         </div>
                         <div>
-                            <ul>
-                                <% if(event.length>0) {%>
-                                    <h2> Event:</h2>
-                                    <% for(var i=0; i< event.length; i++) {%>
-                                        <a href="/event/<%=event[i].url%>" style="text-decoration: none;"> <li>- <%=event[i].title.toUpperCase() %>  </li></a>
-                                    <%}%> 
-                                <%}%> 
-                                
-                            </ul>
-                        </div>
                         
+                            <% if(event) {%>
+                                <h2> Event:</h2>
+                                    <p id="event" style="display: none;"><%=event.event_id%>_/<%=event.discount%>_/<%=event.title%> </p>
+                                    <a href="/event/<%=event.url%>" style="text-decoration: none;"> <li>- <%=event.title.toUpperCase() %>  </li></a>
+                            <%} else {%>
+                                <p id="event" style="display: none;"></p>
+                            <% } %>   
+                        </div>
                     </div>
-
                    </div>
 
                    <div id="product-conf">        <!--cấu hình sản phẩm-->
@@ -262,8 +237,6 @@
                             <td id="size" class="value"><%= product[0].size %></td>
                           </tr>
                       </table>
-
-
                   
                       <p id="discount_price" style="display:none"><%- product[0].discount_price_%></p>
                       <%# script thêm vào giỏ hàng%>
@@ -282,6 +255,8 @@
                         var quntity=1;
                         var conlai = '<%=conlai%>';
 
+                        var event = document.getElementById("event").textContent;
+                       
                         var item = {
                             'img':img,
                             'brand': brand,
@@ -294,12 +269,13 @@
                             'hdd': hdd,
                             'price':price,
                             'quantity': quntity,
-                            'conlai': conlai
+                            'conlai': conlai,
+                            'event': event
                         }
-
                         var array = JSON.parse(window.localStorage.getItem('cart')) || []; 
                         var num = array.length;
                         $("#cart-num").text(num.toString());
+
                         $("#cartAdd").click(function(){
                            
                             if(array.length === 0){         // khi chưa có sản phẩm thì thêm vào
@@ -318,11 +294,11 @@
                             $("#cart-num").text(num.toString());
                             alert('Thêm vào giỏ thành công');
                         });
-
-
                       </script>
 
                    </div>
+
+
                    <div id="product-khac">   <!--sản phẩm liên quan-->
                     <h2> Sản phẩm liên quan</h2>
                     <div>
@@ -342,16 +318,9 @@
                                 </li >
                             <% } %> 
                          </ul>    
-                      
                     </div>
-               
-
                 </div>
-
-
-
                 </div>
-              
             </div>
             <!-- hết phần hiển thị nội dung-->
 

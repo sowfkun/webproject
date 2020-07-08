@@ -2,10 +2,10 @@ const db= require('../database/db');
 const injection = require("../check_injection/check_injection");
 
 module.exports.view= (req, res) => {
+  
     res.render('shopping_cart',{
         mess: ''
     });
-
 };
 
 module.exports.buy= (req, res) => {     
@@ -34,7 +34,13 @@ module.exports.buy= (req, res) => {
         function getprice(item){        // tính tổng giá trị đơn hàng
             var total_price = 0;
             for(let i = 0; i < item.length; i++){
-                total_price += item[i].price * item[i].quantity
+                if(item[i].event == ""){
+                    var discount = 0;
+                } else {
+                    var discount = parseInt((item[i].event).split("_/")[1]);
+                }
+         
+                total_price += (item[i].price * item[i].quantity) - (discount * item[i].quantity);
             }
             return total_price;
         };
@@ -51,17 +57,24 @@ module.exports.buy= (req, res) => {
         VALUES('${name}','${phone}','${email}','${address}','${note}','${total_price}','Chờ xét duyệt', current_timestamp)
         `
     }
-    
     db.query(insertOrders, function (err, result, fields) {
         if (err) throw err;
         var orderId = result.insertId;      // tạo order và get id order
         
         for(let i = 0; i < item.length; i++){
             
+            if(item[i].event == ""){
+                var event_id = null;
+                var discount = 0;
+            } else {
+                var event_id = parseInt((item[i].event).split("_/")[0]);
+                var discount = parseInt((item[i].event).split("_/")[1]);
+            }
             var insertOrderitem=`               
-            INSERT INTO orderitem (order_id, ma_may, quantity, price)
-            VALUES('${orderId}','${item[i].ma_may}','${item[i].quantity}','${item[i].price * item[i].quantity}')
+            INSERT INTO orderitem (order_id, ma_may, quantity, price_per_1, event_id, discount_from_event)
+            VALUES('${orderId}','${item[i].ma_may}','${item[i].quantity}',${item[i].price}, ${event_id}, ${discount} )
             `
+            console.log(insertOrderitem)
             db.query(insertOrderitem, function (err, result, fields) {      // tạo orderitem
                 if (err) throw err;
                 console.log('mua hàng thành công');
@@ -130,14 +143,18 @@ SELECT *
 FROM orders
 WHERE user_id = ? AND (order_status = 'Chờ xét duyệt' or order_status = 'Đang giao hàng');
 
-SELECT distinct id, orders.order_id, ma_may, product.discount_price as price, quantity, user_id, fullname, 
-phone, address, orderdate, finishdate, total_price, brand_name, serie, img, cpu, gpu, ram, ssd, hdd
+SELECT distinct id, orders.order_id, ma_may, price_per_1 as price, discount_from_event as discount, event_id, quantity,
+user_id, fullname, phone, address, orderdate, finishdate, total_price, brand_name, serie, img, cpu, gpu, ram, ssd, hdd
 FROM ((orderitem 
       INNER JOIN orders
       ON orderitem.order_id = orders.order_id) 
          INNER JOIN product 
          ON orderitem.ma_may = product.ma_sku)
 WHERE user_id = ? AND (orders.order_status = 'Chờ xét duyệt' OR orders.order_status = 'Đang giao hàng') AND tinh_trang = "chưa bán" ;
+
+SELECT event_id, title 
+FROM event
+WHERE status = "đang diễn ra";
 `
 module.exports.dealing= (req, res) => {
   
@@ -151,6 +168,7 @@ module.exports.dealing= (req, res) => {
         db.query(userdealing,[user_id, user_id], function (err, result, fields) {
             if (err) throw err;
 
+            console.log(result[1]);
             if(result[0].length){
                 var mess = '';
             }else {
@@ -160,7 +178,8 @@ module.exports.dealing= (req, res) => {
                  mess: mess,
                  whichBtn: 'dealing',
                  orders: result[0],
-                 item: result[1]
+                 item: result[1],
+                 event: result[2]
              });
         });
     } else{

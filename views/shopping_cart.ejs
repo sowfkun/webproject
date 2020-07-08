@@ -72,7 +72,7 @@
                     <th style="width : 30%;"> Thông tin sản phẩm </th>
                     <th style="width : 15%;"> Đơn giá</th>
                     <th style="width : 10%;"> Số lượng </th>
-                    <th style="width : 15%;"> Thành tiền</th>
+                    <th style="width : 15%;"> Tạm tính</th>
                     <th style="width : 10%;"> Xóa </th>
                 </tr>
             </table>
@@ -99,7 +99,6 @@
               
                 show_cart(item);
                 cart_check(item);
-              
                 // kiểm tra xem giỏ hàng có sản phẩm hay không
                 function cart_check(item){
                     if(item.length === 0){
@@ -118,10 +117,21 @@
                         for(var i=0; i< item.length; i++){ 
                             var price = item[i].price;
                             var price_format = Number(price).toLocaleString() + ' đ';
+                            
+                            var discount = parseInt((item[i].event).split("_/")[1]);
+                            if(discount){
+                                var temp_price = price * item[i].quantity;
+                                var temp_discount = discount * item[i].quantity;
+                                var total_discount = temp_price - temp_discount;
+                                var total_format = total_discount.toLocaleString() + ' đ';
 
-                            var total = item[i].price * item[i].quantity ;
-                            var total_format = Number(total).toLocaleString() + ' đ';
-
+                            } else {
+                                var temp_price = parseInt(price * item[i].quantity);
+                                var temp_discount = 0;
+                                var total_discount = temp_price;
+                                var total_format = total_discount.toLocaleString() + ' đ';
+                            }
+                           
                             newitem += ` 
                             
                             <tr class = "addItem">
@@ -139,30 +149,67 @@
                                         ${item[i].cpu} | ${item[i].gpu} |${item[i].ram} | ${item[i].ssd} | ${item[i].hdd}
                                     </a>  
                                 </td>1
-                                <td id="price" style=" color: tomato;"> ${price_format} </td>
+                                <td id="price" style=" color: tomato;"> ${price_format}</td>
                                 <td > 
                                     <input id="quantity_${i}" type="number" name="quantity_${i}" style="border-radius: 5px; text-align: center;" 
                                     min="1" value="${item[i].quantity}" onchange="update(${i})" >     
                                 </td>
-                                <td id="total"  style=" color: tomato;"> ${total_format} </td>
+                                
+                                <td id="total"  style=" color: tomato;">  
+                                    <span style="font-weight: bold">${total_format}</span> <br class = "clear_${i}">
+                                    <span id ="temp_${i}" class = "temp_discount">(-${temp_discount.toLocaleString()}) 
+                                        <img src="Resources/Icon/question.svg" height="12px" style = "position: absolute; opacity: 70%">
+                                    </span> <br class = "clear_${i}">
+                                    <span id= "sub_temp_${i}" class ="show_event" style = "position: absolute;width: 150px; background-color: white; border-radius: 10px; margin-top: -12px; margin-left: 35px;">
+                                        <p style ="color: tomato;>${(item[i].event).split("_/")[2]}</p> 
+                                    </span>
+
+                                   
+                                </td>
                                 <td > 
                                     <div style="width: 30px; height: 30px; margin: auto;">
                                         <img id="xoa" src="Resources/Icon/trash.svg" width="100%" height="100%," onclick= "delete_item(${i})">
                                     </div>    
                                 </td>
-                            </tr> `;
+                            </tr> 
+                           `;
                             
-                            final_price += total;
+                              
+                            final_price += total_discount;
                         }
+
                         $(".addItem").remove();
                         $("#cart").append(newitem);
                         $("#final_price_value").text(final_price.toLocaleString() + ' ' + 'đ');
+
+                        show_event_hover();
+                        clear_if_no_event();
                         
                 }
                 
                  //update khi thay đổi số lượng
-               
+               function show_event_hover(){
+                    $(".show_event").hide();           
+                    $(document).ready(function () {
+                        $(".temp_discount").hover(function () {
+                            $(this).siblings(".show_event").fadeIn({duration:200});
+                        }, function () {
+                            $(this).siblings(".show_event").fadeOut({duration:200});
+                        });
+                    });
+                }
 
+                //ẩn phần trừ tiền khi không có giảm giá
+                function clear_if_no_event(){
+                    for(var i=0; i< item.length; i++){ 
+                        if(item[i].event == ""){
+                            $("#temp_" + i ).remove();
+                            $("#sub_temp_" + i).remove();
+                            $(".clear_" + i).remove();
+                        }
+                    }
+                }
+               
                 //xóa sản phẩm khỏi giỏ hàng
                 function delete_item(id){
                     item.splice(id,1);
@@ -180,7 +227,6 @@
             <% if(typeof user == "undefined"){ %>
                 <% user = {name: "", phone : "", email: "", address: ""} %> 
                 <% } %>  
-          
 
             <h2 style="color: tomato; text-align: center; padding: 40px 0 30px 0; border-top: 1px dotted #bb77bb; font-family: balootamma2;">Thông tin giao hàng</h2>
             <form id="cart_submit" method="POST" >
@@ -254,36 +300,6 @@
                         new_quantity = $("#quantity_"+id).val();
 
                         var item_conlai = window.localStorage.getItem('cart') || []; 
-                        item_conlai = (JSON.parse(item_conlai))[id].conlai;
-                        alert(item_conlai);
-                        alert(new_quantity);
-
-                        if(new_quantity<=0){
-                            alert('Số lượng sản phẩm tối thiểu là 1');
-                            new_quantity = 1;
-                        } else if(new_quantity < 10){
-                            if(item_conlai < new_quantity){
-                                alert(`Chỉ còn lại ${item_conlai} sản phẩm`);
-                                new_quantity = item_conlai;
-                            } else {
-                                new_quantity = new_quantity;
-                            }
-                        } else if(new_quantity > 10){
-                            if(item_conlai <= 10){
-                                alert(`Chỉ còn lại ${item_conlai} sản phẩm`);
-                                new_quantity = item_conlai;
-                            } else {
-                                alert("Số lượng tối đa là 10, Vui lòng liên hệ Hotline 098xxxxxx để mua số lượng lớn");
-                                new_quantity = 10
-                            }
-                        } else if(new_quantity = 10 ){
-                            if(item_conlai < 10 ){
-                                alert(`Chỉ còn lại ${item_conlai} sản phẩm`);
-                                new_quantity = item_conlai;
-                            } else {
-                                new_quantity = 10
-                            }
-                        }
                         
                         item[id].quantity = new_quantity;
                         localStorage.setItem('cart', JSON.stringify(item));

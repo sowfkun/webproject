@@ -168,7 +168,34 @@
                                                         <td > 
                                                            <span style="color: #6d4343; text-decoration: underline;"> <%-item[j].quantity%> </span>   
                                                         </td>
-                                                        <td id="total"  style=" color: tomato;"> <%-(item[j].price * item[j].quantity).toLocaleString() %> đ </td>
+                                                        <td id="total"  style=" color: tomato;"> 
+                                                            <span><%-(item[j].price * item[j].quantity).toLocaleString() %> đ </span>   
+                                                            
+                                                            <% if(item[j].event_id !== null){ %>
+                                                                <br>
+                                                                <span class = "temp">(-<%=(item[j].discount * item[j].quantity).toLocaleString()%>) 
+                                                                    <img src="Resources/Icon/question.svg" height="12px" style = "position: absolute; opacity: 70%">
+                                                                </span> <br class = "clear_${i}">
+                                                                <span class = "show_event" style = "position: absolute;width: 150px; background-color: white; border-radius: 10px; margin-top: -5px; margin-left: -75px;">
+                                                                    <%for(let z = 0; z < event.length; z++ ){%>
+                                                                        <% if(event[z].event_id == item[j].event_id) {%>
+                                                                            <p style ="color: tomato;"><%=event[z].title%></p> 
+                                                                            <% break; %> 
+                                                                        <% } %>  
+                                                                    <% } %>  
+                                                                </span>
+                                                            <% } %>  
+                                                            <script>
+                                                                $(".show_event").hide();           
+                                                                $(document).ready(function () {
+                                                                    $(".temp").hover(function () {
+                                                                        $(this).siblings(".show_event").fadeIn({duration:200});
+                                                                    }, function () {
+                                                                        $(this).siblings(".show_event").fadeOut({duration:200});
+                                                                    });
+                                                                });
+                                                            </script>
+                                                        </td>
                                                     </tr> 
                                                 </li>   
                                             <% } %>  

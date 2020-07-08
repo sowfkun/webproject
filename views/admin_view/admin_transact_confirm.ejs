@@ -181,7 +181,7 @@
                     <% } %> 
                 </ul>
 
-                <% if(transact[i].order_status == "Đang giao hàng" ){ %>
+                <% if(transact[i].order_status.toLowerCase() == "đang giao hàng" ){ %>
                     <div style="width: fit-content; margin: auto; ">
                         <form action="/admin/transact/delivering" method="POST">
                             <input type="hidden" name="order_id" value="<%-transact[i].order_id_%> ">
