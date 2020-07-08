@@ -181,7 +181,10 @@ app.use('/admin/transact', ad_transact_router);     //router giao dich
 //     console.log(`Server started on port ${port}`);
 // });
 
-app.listen(8080, () => {
+var server = app.listen(8080, () => {
     console.log(`Server started on port`);
 });
-module.exports = app;
+module.exports = {
+    server : server,
+    app : app
+};
