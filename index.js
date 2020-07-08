@@ -162,23 +162,26 @@ app.use('/admin', adminRouter);     //bao gồm product
 app.use('/admin/transact', ad_transact_router);     //router giao dich
 
 
-const fs = require('fs')
+// const fs = require('fs')
 
-const https = require("https");
+// const https = require("https");
 
-const key = fs.readFileSync("./https/selfsigned.key")
-const cert = fs.readFileSync("./https/selfsigned.crt")
-var options = {
-    key: key,
-    cert: cert
-  };
+// const key = fs.readFileSync("./https/selfsigned.key")
+// const cert = fs.readFileSync("./https/selfsigned.crt")
+// var options = {
+//     key: key,
+//     cert: cert
+//   };
 
-let Server;
+// let Server;
 
-Server =https.createServer(options, app)
+// Server =https.createServer(options, app)
 
-Server.listen(port, () => {
-    console.log(`Server started on port ${port}`);
+// Server.listen(port, () => {
+//     console.log(`Server started on port ${port}`);
+// });
+
+app.listen(8080, () => {
+    console.log(`Server started on port`);
 });
-
 module.exports = app;
