@@ -1,21 +1,19 @@
+var app = require("../").app;
+var server = require("../").server;
+var request = require("supertest").agent(server);
 
-process.env.NODE_ENV = 'test';
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var server = require('../index');
-var should = chai.should();
+describe("GET /", function () {
 
-chai.use(chaiHttp);
-
-describe('test GET /', function() {
-  it('should list catagory of product and some event on / GET', function(done){
-    chai.request(server)
-    .get('/')
-    .end(function(err, res){
-      res.should.have.status(200);
-      done();
+    after(function (done) {
+        server.close();
+        done();
     });
-  });
-});
 
+    it("expect status 200", function (done) {
+        request
+            .get("/")
+            .expect(200)
+            .end(done);
+    });
+});
 
