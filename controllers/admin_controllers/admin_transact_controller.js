@@ -58,6 +58,7 @@ module.exports.new_confirm = function(req,res){
     input = JSON.parse(input);
     console.log(input);
 
+    //kiểm tra id nhập vào có bị trùng không
     var flag = 0;
     for (let i = 0; i < input.length; i++) {
         for(let j = input.length - 1; j > i; j--){
@@ -80,6 +81,7 @@ module.exports.new_confirm = function(req,res){
     // lấy thông tin sản phẩm để so sánh với thông tin nhập vào
     db.query('SELECT ma_sku, product_id FROM product WHERE tinh_trang = "chưa bán"', function(err, result, fields){
         if(err) throw err;
+        
         //kiểm tra xem id nhập vào có phải thuộc mã máy cần bán hay không
         for (let i = 0; i < input.length -1; i++) {
 
