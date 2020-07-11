@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/admin_css/admin_menu.css">
+    <link rel="stylesheet" type="text/css" href="CSS/admin_css/admin_event.css">
+    <title> LapCity Admin </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    
+        <%# menu %> 
+        <div id="menu">
+            <%- include('admin_menu'); -%>
+        </div>
+    
+        <div id="display-content">
+
+            <form id="event_form"  method="POST" enctype="multipart/form-data"
+                <% if(type == "create"){ %>
+                    action="/admin/event/new"
+                <% } else { %>
+                    action="/admin/event/edit_event"
+                <% } %>  
+            >
+                
+            <input type="hidden" name="event_id" value="<%=event.event_id%> ">
+                <h2 style="color: tomato; font-family: balootamma2;">Điền thông tin sự kiện</h2>
+                <div id="image_zone" class="zone">
+                    <div class="row" style="width: 50%;" >       
+                        <div class="label" > 
+                            <label for="img"><b>#Hình ảnh:</b></label>
+                        </div>
+                        
+                        <div class="input" >
+                            <input id="img"  type="file" name="img" style="padding: 40px 0 0 0;"
+                             onchange="loadimg(event)">
+                        </div>
+                    </div>
+                    <img id="choosen_img" src="upload/event_images/<%=event.img%>" height="150px" width="266px">
+
+                    <script>
+                       function loadimg(event){
+                          var reader = new FileReader();
+                          reader.onload = function(){
+                            var img = document.getElementById('choosen_img');
+                            img.src = reader.result;
+                          };
+                          reader.readAsDataURL(event.target.files[0]);
+                        };
+                      </script>
+                </div>
+
+                <div id="title_zone" class="zone">
+                    <div>
+                        <div class="label" > 
+                            <label for="title"><b>#Tiêu đề sự kiện:</b></label>
+                        </div>
+                        
+                        <div class="input" >
+                            <input type="text" id="title" value="<%-event.title%>" name="title" >
+                        </div>
+                    </div>
+                    <div>
+                        <div class="label" > 
+                            <label for="URL"><b>#URL cho sự kiện:</b></label>
+                        </div>
+                        
+                        <div class="input" >
+                            <input type="text" id="URL" name="URL" placeholder="Ví dụ: chao-mung-thong-nhat-dat-nuoc-30-4" value="<%-event.url%>">
+                        </div>
+                    </div>
+                </div>
+                <div id="date_zone" class="zone">
+                    <div style="width: 50%;">
+                        <div class="label" > 
+                            <label for="datestart"><b>#Ngày bắt đầu:</b></label>
+                        </div>
+                        
+                        <div class="input" >
+                            <input style="width: 40%;" type="date" id="datestart" name="datestart" value="<%-event.date_start%>">
+                        </div>
+                    </div>
+                   
+                    <div style="width: 50%;">
+                        <div class="label" > 
+                            <label for="dateend"><b>#Ngày kết thúc:</b></label>
+                        </div>
+                        
+                        <div class="input" >
+                            <input style="width: 40%;" type="date" id="dateend" name="dateend" value="<%-event.date_end%>">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="product_zone" class="zone">
+                    <div style="width: 50%">
+                        <div class="label" > 
+                            <label ><b>#Chọn thương hiệu:</b></label>
+                        </div>
+                        
+                        <div class="input" >
+                            <% brand.forEach(brand => { %>
+                                <input id="<%=brand.brand_name%>" type="checkbox" name="brand" value="<%=brand.brand_name%>">
+                                <label > Laptop <%=brand.brand_name%></label><br>
+                           <% });  %> 
+                        </div>
+
+                        <%# truyền thông tin khi ở trang chỉnh sửa sự kiện %> 
+                        <% if(typeof event.brand_name !== "undefined"){ %> 
+                            <% var brand = (event.brand_name).split("-") %>
+                            <% for(let i = 0; i < brand.length; i++){ %>
+                                <script>
+                                    var id = "#" + '<%=brand[i]%>'
+                                    $(id).attr("checked", true);
+                                </script>    
+                            <%}%>  
+                        <% } %> 
+                    </div>
+                    <div>
+                        <div>
+                            <div class="label" > 
+                                <label><b>#Chọn dòng sản phẩm</b></label>
+                            </div>
+                            
+                            <div class="input" >
+                                <% serie.forEach(serie => { %>
+                                    <input id="<%=serie.serie%>" type="checkbox" name="series" value="<%=serie.serie%>">
+                                    <label> <%=serie.brand_name%> <%=serie.serie%></label><br>
+                                <%});%>
+                            </div>
+
+                             <%# truyền thông tin khi ở trang chỉnh sửa sự kiện %> 
+                            <% if(typeof event.brand_name !== "undefined"){ %> 
+                                <% var serie = (event.serie).split("-") %>
+                                <% for(let i = 0; i < serie.length; i++){ %>
+                                    <script>
+                                        var id = "#" + '<%=serie[i]%>'
+                                        $(id).attr("checked", true);
+                                    </script>    
+                                <%}%> 
+                            <% } %> 
+                        </div>
+                    </div>
+                </div>
+
+                <div id="gift_zone" class="zone">
+                    <div id="gift" style="width: 50%">
+                        <div class="label" > 
+                            <label for="short_content"><b>#Thêm quà tặng:</b></label>
+                        </div>
+
+                        <div class="input" >
+                            <input type="text" id="add_gift" placeholder="Nhập quà tặng" value>
+                            <button type="button" onclick="addgift()"> Thêm</button>
+                            
+                            <%# input để gửi list gift %> 
+                            <input type="hidden" name="final_gift" id="final_gift">
+                           
+                            <ul id="list_gift">
+                            </ul>
+
+                            <script>
+                                var gift = ('<%=event.gift%>').split("-") || [];
+                                gift.pop();
+                                document.getElementById("final_gift").value = gift;
+                                
+                                function addgift(){
+                                    var input_gift = document.getElementById("input_gift");
+                                    var newgift = $("#add_gift").val();
+                                    if(newgift == ""){
+                                        return;
+                                    }
+                                    gift.push(newgift);
+                                    render();
+                                    document.getElementById("final_gift").value = gift;
+                                }
+
+                                function render(){
+                                    var list = document.getElementById("list_gift");
+                                    var content = gift.map(function(item) {
+                                        return `<li> 
+                                            <div id = "gift_name">${item}</div>
+                                            <div><img src="Resources/Icon/close.svg" onclick="delete_gift('${item}')" height="15px" width="15px"></div>
+                                            </li>` 
+                                            ;
+                                    });
+                                    $("#add_gift").val("");
+
+                                    list.innerHTML = content.join('');
+                                }
+
+                                function delete_gift(item){
+                                    for(let i = 0; i < gift.length; i++){
+                                        if(gift[i] == item){
+                                            gift.splice(i,1);
+                                            document.getElementById("final_gift").value = gift;
+                                            render();
+                                            return;
+                                        }
+                                    }
+                                }
+                                render();
+                            </script>
+                        </div>
+                    </div>
+                    
+                    <div id="dis-price" style="width: 50%;">
+                        <div class="label" > 
+                            <label for="short_content"><b>#Giảm giá:</b></label>
+                        </div>
+                        <div class="input" >
+                            <input type="number" id="add_discount" name="discount" placeholder="Nhập số tiền giảm giá" min=0 value=<%=event.discount%> >
+                         </div>
+                    </div>
+                </div>
+
+                <div id="short_content_zone" class="zone">
+                    <div class="label" > 
+                        <label for="short_content"><b>#Nội dung tóm tắt:</b></label>
+                    </div>
+                    
+                    <div class="input" >
+                       <textarea id="short_content" type="text" name="short_content" ><%=event.short_content%></textarea>
+                    </div>
+                </div>
+
+                <div id="main_content_zone" class="zone">
+                    <div class="label" > 
+                        <label for="short_content"><b>#Nội dung đầy đủ:</b></label>
+                    </div>
+                   
+                    <textarea name="main_content" id="main_content" ><%= event.content%></textarea>
+                    <script>
+                        CKEDITOR.replace( 'main_content',{
+                            height : 345  
+                        });
+                        
+                    </script>
+                </div>
+                <div style="width: fit-content; margin: auto;">
+                    
+                    <% if(type == "create"){ %>
+                        <button id="create_event" type="submit">Tạo sự kiện</button>
+                    <% } else { %>
+                        <button id="create_event" type="submit">Chỉnh sửa sự kiện</button>
+                    <% } %>   
+                   
+                </div>
+               
+            </form>
+        </div>
+
+</body> 
+</html>

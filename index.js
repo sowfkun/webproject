@@ -12,6 +12,7 @@ const filterRouter = require('./routers/filter_router')
 //import admin router
 const adminRouter = require('./routers/admin_router/admin_router')
 const ad_transact_router = require('./routers/admin_router/admin_transact_router')
+const ad_event_router = require('./routers/admin_router/admin_event_router')
 
 //import middleware
 const userCheck =require('./middleware/userCheck_middleware')
@@ -160,7 +161,7 @@ app.use('/filter', userCheck.userCheck, filterRouter);
 
 app.use('/admin', adminRouter);     //bao gồm product
 app.use('/admin/transact', ad_transact_router);     //router giao dich
-
+app.use('/admin/event', ad_event_router);     //router giao dich
 
 // const fs = require('fs')
 

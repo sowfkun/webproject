@@ -26,6 +26,7 @@ WHERE status='Đang diễn ra' OR status="sắp diễn ra";
 `
 module.exports.index = function(req, res) {
     
+
     db.query(sql, function (err, result, fields) {
       if (err) throw err;
       res.render('home', {

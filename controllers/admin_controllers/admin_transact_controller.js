@@ -14,17 +14,23 @@ WHERE order_status = ?
 GROUP BY orders.order_id
 ORDER BY orderdate DESC;
 
-SELECT * 
-FROM orders
+SELECT orders.order_id, user_id, fullname, phone, address, note, orderdate, finishdate, 
+price_per_1, id, ma_may, brand_name, serie, product_id, discount_from_event, quantity, event_id
+FROM ((orders
 INNER JOIN orderitem
-ON orders.order_id = orderitem.order_id
+ON orders.order_id = orderitem.order_id)
+INNER JOIN product
+ON orderitem.ma_may = product.ma_sku)
 WHERE order_status = ?
-ORDER BY orderdate DESC;
+GROUP BY ma_may;
 
 SELECT brand_name, serie, ma_sku
 FROM product
 GROUP BY ma_sku;
 
+SELECT event_id, title 
+FROM event
+WHERE status = "đang diễn ra";
 `
 
 //hiển thị giao dịch mới
@@ -36,7 +42,8 @@ module.exports.new_transact = function(req,res){
             count : (result[0])[0].count,
             transact: result[1],
             transact_item: result[2],
-            product_info: result[3]
+            product_info: result[3],
+            event: result[4]
         });
     });
 };
@@ -100,20 +107,27 @@ module.exports.transact_delivering = function(req,res){
     WHERE order_status = 'đang giao hàng'
     ORDER BY orderdate DESC;
 
-    SELECT * 
-    FROM orders
+    SELECT orders.order_id, user_id, fullname, phone, address, note, orderdate, finishdate, 
+    price_per_1, id, ma_may, brand_name, serie, product_id, discount_from_event, quantity, event_id
+    FROM ((orders
     INNER JOIN orderitem
-    ON orders.order_id = orderitem.order_id
-    WHERE order_status = 'đang giao hàng'
-    ORDER BY orderdate DESC;
+    ON orders.order_id = orderitem.order_id)
+    INNER JOIN product
+    ON orderitem.ma_may = product.ma_sku)
+    WHERE order_status = "đang giao hàng"
+    GROUP BY ma_may;
 
-    SELECT id, orders.order_id, ma_may, product.discount_price as price, product_id, brand_name, serie, ma_sku
+    SELECT id, orders.order_id, event_id, discount_from_event, ma_may, price_per_1, product_id, brand_name, serie, ma_sku
     FROM ((orderitem 
     INNER JOIN orders
     ON orderitem.order_id = orders.order_id) 
     INNER JOIN product 
     ON orderitem.id = product.orderitem_id)
-    where orders.order_status = 'đang giao hàng'
+    where orders.order_status = 'đang giao hàng';
+
+    SELECT event_id, title 
+    FROM event
+    WHERE status = "đang diễn ra";
     `
    
     db.query(confirmsql, function (err, result, fields) {
@@ -122,7 +136,8 @@ module.exports.transact_delivering = function(req,res){
             count: (result[0])[0].count,
             transact: result[1],
             transact_item: result[2],
-            item_info: result[3]
+            item_info: result[3],
+            event: result[4]
         });
     });
 };
@@ -163,20 +178,27 @@ module.exports.complete_transact = function(req,res){
     WHERE order_status = 'giao dịch hoàn tất'
     ORDER BY orderdate DESC;
 
-    SELECT * 
-    FROM orders
+    SELECT orders.order_id, user_id, fullname, phone, address, note, orderdate, finishdate, 
+    price_per_1, id, ma_may, brand_name, serie, product_id, discount_from_event, quantity, event_id
+    FROM ((orders
     INNER JOIN orderitem
-    ON orders.order_id = orderitem.order_id
-    WHERE order_status = 'giao dịch hoàn tất'
-    ORDER BY orderdate DESC;
+    ON orders.order_id = orderitem.order_id)
+    INNER JOIN product
+    ON orderitem.ma_may = product.ma_sku)
+    WHERE order_status = "giao dịch hoàn tất"
+    GROUP BY ma_may;
 
-    SELECT id, orders.order_id, ma_may, product.discount_price as price, product_id, brand_name, serie, ma_sku
+    SELECT id, orders.order_id, event_id, discount_from_event, ma_may, price_per_1, product_id, brand_name, serie, ma_sku
     FROM ((orderitem 
     INNER JOIN orders
     ON orderitem.order_id = orders.order_id) 
     INNER JOIN product 
     ON orderitem.id = product.orderitem_id)
-    where orders.order_status = 'giao dịch hoàn tất'
+    where orders.order_status = 'giao dịch hoàn tất';
+
+    SELECT event_id, title 
+    FROM event
+    WHERE status = "đang diễn ra";
     `
    
     db.query(confirmsql, function (err, result, fields) {
@@ -185,7 +207,8 @@ module.exports.complete_transact = function(req,res){
             count: (result[0])[0].count,
             transact: result[1],
             transact_item: result[2],
-            item_info: result[3]
+            item_info: result[3],
+            event: result[4]
         });
     });
 };

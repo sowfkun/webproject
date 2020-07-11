@@ -16,111 +16,34 @@
     <!-- Phần hình nền, menu-->
         <div id="top-field" class="top-field">
             <div id="menu-bar"> 
-               
                 <ul id="submenu">
-
                     <li> <a href="/" title="Trang chủ"> Trang chủ</a> </li>
                     <li> <a href="/about_us" title="Giới thiệu"> Giới thiệu</a> </li>
                     <li> <a href="/event" title="Khuyến mãi"> Khuyến mãi</a> </li>
                     <li> <a href="/contact" title="Liên hệ"> Liên hệ</a> </li>
                 </ul>
-           
-               
                 <div id="sign-in" > 
                     <%- include('module/user_info'); -%>
                 </div> 
-                
             </div>
-
-                    <div id="logo"> LapCity</div>
-
-                    <div id="search-bar">
-                        <form action="/search" method="GET">
-                            <button></button>
-                            <input type="text" placeholder="Tìm kiếm..." name="keyword">
-                        </form>
-                    </div>
-          
-
+            <div id="logo"> LapCity</div>
+            <div id="search-bar">
+                <form action="/search" method="GET">
+                    <button></button>
+                    <input type="text" placeholder="Tìm kiếm..." name="keyword">
+                </form>
+            </div>
         </div> 
 <!--Hết phần hình nền menu-->
 
 <!-- phần hiển thị nội dung và phần chân trang-->
         <div id="bottom-field" class="bottom-container">
-
-
             
             <div id="content-field" class="content-field-container">
-
-                <div id="top-bar" class="top-bar-container">
-
-                    <div id="list_brand">
-                        <ul>
-                            <% for(var i=0; i<menu.length;i++) { %> 
-                                <li id="<%- menu[i].brand_name _%>" onclick="active('<%- menu[i].brand_name _%>')"> 
-                                    <a href="/product/<%- menu[i].brand_name%>" style="text-decoration: none;" >
-                                        <span> <%= menu[i].brand_name %> </span>
-                                    </a>
-                                    <ul class="sub_menu">
-                                        <% for(var j=0; j<serie.length; j++) { %> 
-                                          <%if (serie[j].brand_name == menu[i].brand_name) { %>
-                                             <a href="/product/<%- serie[j].serie%>"> <li> <%= serie[j].serie%></li> </a> 
-                                          <%}%>
-                                        <% } %>
-                                    </ul>    
-                                </li>
-                            <% } %> 
-                        </ul>
-            
-                        <script>
-                               
-                            var brand = "#"+ localStorage.getItem('active');
-                            $(brand).addClass('active');
-                            
-                            function active(brand_name){
-                               localStorage.setItem('active', brand_name);
-                               
-                            }
-                            
-            
-                        </script>
-            
-                        <script>
-            
-                            //hiển thị submenu  
-                            $(".sub_menu").hide();           
-                            $(document).ready(function () {
-                                $("#list_brand li").hover(function () {
-                                        $(this).children("ul.sub_menu").fadeIn({duration:200});
-                                    }, function () {
-                                        $(this).children("ul.sub_menu").fadeOut({duration:200});
-                                    });
-                                    });
-                        </script>
-            
-                    </div>
-                    
-
-                     <%#filter%>
-                     <div id="filter"> 
-                        <%- include('module/filter'); -%>
-                    </div>
-    
-                    <!--Giỏ hàng-->
-                    <div id="shopping-cart">
-                        <a href="/shopping">
-                            <div>
-                                <img src="/Resources/Icon/shopping-cart.png">
-                            </div>
-                        </a>
-                        <p id="cart-num" style="top: -50px; height: 20px;">  </p>
-                        
-                    </div>
-
-                    <div id="page-name">   
-                        <p> <%= pagename%> </p>
-                    </div>
-                </div>
+              
+              <div id="top-bar" class="top-bar-container">
+                <%- include('module/top_bar'); -%>
+            </div>
 
                 <div id="display-content">     <!-- phần hiển thị nội dung-->
 
@@ -145,8 +68,6 @@
 
                              <button id="cartAdd" >Thêm vào giỏ</button>
                     </div>
-                    
-
 
                     <div id="gift" class=" w3-animate-left">
                         <h2> Quà tặng từ nhà sản xuất</h2>
@@ -167,19 +88,16 @@
                             <p id="4"> - Bộ vệ sinh Laptop</p>       
                         </div>
                         <div>
-                            <ul>
-                                <% if(event.length>0) {%>
-                                    <h2> Event:</h2>
-                                    <% for(var i=0; i< event.length; i++) {%>
-                                        <a href="/event/<%=event[i].url%>" style="text-decoration: none;"> <li>- <%=event[i].title.toUpperCase() %>  </li></a>
-                                    <%}%> 
-                                <%}%> 
-                                
-                            </ul>
-                        </div>
                         
+                            <% if(event) {%>
+                                <h2> Event:</h2>
+                                    <p id="event" style="display: none;"><%=event.event_id%>_/<%=event.discount%>_/<%=event.title%> </p>
+                                    <a href="/event/<%=event.url%>" style="text-decoration: none;"> <li>- <%=event.title.toUpperCase() %>  </li></a>
+                            <%} else {%>
+                                <p id="event" style="display: none;"></p>
+                            <% } %>   
+                        </div>
                     </div>
-
                    </div>
 
                    <div id="product-conf">        <!--cấu hình sản phẩm-->
@@ -266,8 +184,6 @@
                             <td id="size" class="value"><%= product[0].size %></td>
                           </tr>
                       </table>
-
-
                   
                       <p id="discount_price" style="display:none"><%- product[0].discount_price_%></p>
                       <%# script thêm vào giỏ hàng%>
@@ -286,6 +202,8 @@
                         var quntity=1;
                         var conlai = '<%=conlai%>';
 
+                        var event = document.getElementById("event").textContent;
+                       
                         var item = {
                             'img':img,
                             'brand': brand,
@@ -298,12 +216,13 @@
                             'hdd': hdd,
                             'price':price,
                             'quantity': quntity,
-                            'conlai': conlai
+                            'conlai': conlai,
+                            'event': event
                         }
-
                         var array = JSON.parse(window.localStorage.getItem('cart')) || []; 
                         var num = array.length;
                         $("#cart-num").text(num.toString());
+
                         $("#cartAdd").click(function(){
                            
                             if(array.length === 0){         // khi chưa có sản phẩm thì thêm vào
@@ -322,11 +241,11 @@
                             $("#cart-num").text(num.toString());
                             alert('Thêm vào giỏ thành công');
                         });
-
-
                       </script>
 
                    </div>
+
+
                    <div id="product-khac">   <!--sản phẩm liên quan-->
                     <h2> Sản phẩm liên quan</h2>
                     <div>
@@ -346,38 +265,15 @@
                                 </li >
                             <% } %> 
                          </ul>    
-                      
                     </div>
-               
-
                 </div>
-
-
-
                 </div>
-              
             </div>
             <!-- hết phần hiển thị nội dung-->
 
             <!--liên kết đến các trang facebook, instagram...-->
             <div id="follow-us" > 
-                <ul>
-
-                    <li> Follow us:</li>
-                    <li><a href="http://www.facebook.com" target="blank">
-                        <img src="Resources/Icon/facebook.png" alt="facebook" width="25" height="25">
-                        </a>
-                    </li>
-                    <li><a href="http://www.instagram.com" target="blank">
-                        <img src="Resources/Icon/instagram.png" alt="instagram" width="25" height="25">
-                        </a>
-                    </li>
-                    <li><a href="http://www.twitter.com" target="blank">
-                        <img src="Resources/Icon/twitter.png" alt="twitter" width="25" height="25">
-                        </a>
-                    </li>
-                  
-                </ul>
+                <%- include('module/follow_us'); -%>
             </div>
 
             <!--hết phần liên kết đến các trang facebook, instagram...-->
@@ -385,58 +281,8 @@
             <!--Phần footer để hiện thị địa chỉ của hàng, hotline ....-->
 
             <div id="footer" class="footer-container">
-
-                <div id="left">
-                    <h2>
-                        CÔNG TY TNHH TM DV VVT <br>
-                        MST: 150577 <br>
-                        Ngày thành lập: 07/07/2020
-                    </h2>
-                    <h3>Danh sách cửa hàng:</h3>
-                    <ul>
-                        <li>
-                            <a href="https://goo.gl/maps/5WiwroZAmKAwU4jE9" target="blank">
-                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
-                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
-                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
-                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
-                            </a>
-                        </li>
-                    </ul>
-                    <h3 id="contact">
-                        <a href="tel:+84981234567">Hotline: 0981234567</a> <br>
-                        <a href="mailto:17521184@gm.uit.edu.vn" target="_top">Mail: 17521184@gm.uit.edu.vn</a></h3>
-                </div>
-
-                <div id="middle">
-                    <h2>Hỗ trợ khách hàng</h2>
-                    <ul>
-                        <li><a href="/tra_gop" title="Trả góp">Chính sách trả góp</a> </li>
-                        <li><a href="/thanh_toan" title="Thanh toán">Phương thức thanh toán</a> </li>
-                        <li><a href="/bao_hanh" title=" Bảo hành">Chính sách bảo hành</a> </li>
-                        <li><a href="/van_chuyen" title="Vận chuyển">Chính sách vận chuyển</a> </li>
-                    </ul>
-                </div>
-
-                <div id="right">
-
-                    <div id="logo"> LapCity</div>
-                    <div id="cong-thuong">
-                            <a href="https://www.moit.gov.vn/" target="blank">
-                                 <img src="Resources/Icon/bo-cong-thuong.png" width="200" height="auto">
-                            </a>
-                    </div>
-                </div>
+                <%- include('module/footer'); -%>
+                
             </div>
         </div>
 </body>

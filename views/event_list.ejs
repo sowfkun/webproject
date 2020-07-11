@@ -49,75 +49,7 @@
             <div id="content-field" class="content-field-container">
 
                 <div id="top-bar" class="top-bar-container">
-
-                    <div id="list_brand">
-                        <ul>
-                            <% for(var i=0; i<menu.length;i++) { %> 
-                                <li id="<%- menu[i].brand_name _%>" onclick="active('<%- menu[i].brand_name _%>')"> 
-                                    <a href="/product/<%- menu[i].brand_name%>" style="text-decoration: none;" >
-                                        <span> <%= menu[i].brand_name %> </span>
-                                    </a>
-                                    <ul class="sub_menu">
-                                        <% for(var j=0; j<serie.length; j++) { %> 
-                                          <%if (serie[j].brand_name == menu[i].brand_name) { %>
-                                            <a href="/product/<%- serie[j].brand_name%>/<%- serie[j].serie%>"> <li> <%= serie[j].serie%></li> </a> 
-                                          <%}%>
-                                        <% } %>
-                                    </ul>    
-                                </li>
-                            <% } %> 
-                        </ul>
-            
-                        <script>
-            
-                            function active(brand_name){
-                               localStorage.setItem('active', brand_name);
-                            }
-                         
-                        </script>
-            
-                        <script>
-            
-                            //hiển thị submenu  
-                            $(".sub_menu").hide();           
-                            $(document).ready(function () {
-                                $("#list_brand li").hover(function () {
-                                        $(this).children("ul.sub_menu").fadeIn({duration:200});
-                                    }, function () {
-                                        $(this).children("ul.sub_menu").fadeOut({duration:200});
-                                    });
-                                    });
-                        </script>
-            
-                    </div>
-                
-                     <%#filter%>
-                     <div id="filter"> 
-                        <%- include('module/filter'); -%>
-                    </div>
-    
-
-                    <!--Giỏ hàng-->
-    
-                    <div id="shopping-cart">        <!--Giỏ hàng-->
-                        <a href="/shopping">
-                            <div>
-                                <img src="/Resources/Icon/shopping-cart.png">
-                            </div>
-                        </a>
-                        <p id="cart-num"> </p>
-                    </div>
-                    
-                    <script>
-                        var array = JSON.parse(window.localStorage.getItem('cart')) || []; 
-                        var num = array.length;
-                        $("#cart-num").text(num.toString());
-                    </script>
-    
-                    <div id="page-name">   
-                        <p> <%= pagename %> </p>
-                    </div>
-                   
+                    <%- include('module/top_bar'); -%>
                 </div>
              
                 <div id="display-content">     <!-- phần hiển thị nội dung-->
@@ -129,7 +61,7 @@
                                 <div id="khuyen_mai"> 
                                     <div id="image">
                                         <div>
-                                            <img src="upload/images/<%- event[i].img  _%> ">
+                                            <img src="upload/event_images/<%- event[i].img  _%> ">
                                         </div>
                                     </div>
                                     
@@ -156,29 +88,7 @@
 
             <!--liên kết đến các trang facebook, instagram...-->
             <div id="follow-us" > 
-               
-                <ul>
-
-                    <li> Follow us:</li>
-                    <li><a href="http://www.facebook.com" target="blank">
-                        <img src="Resources/Icon/facebook.png" alt="facebook" width="25" height="25">
-                        </a>
-                    </li>
-                    <li><a href="http://www.instagram.com" target="blank">
-                        <img src="Resources/Icon/instagram.png" alt="instagram" width="25" height="25">
-                        </a>
-                    </li>
-                    <li><a href="http://www.twitter.com" target="blank">
-                        <img src="Resources/Icon/twitter.png" alt="twitter" width="25" height="25">
-                        </a>
-                    </li>
-                  
-                </ul>
-                
-
-                    
-               
-               
+                <%- include('module/follow_us'); -%>
             </div>
 
             <!--hết phần liên kết đến các trang facebook, instagram...-->
@@ -186,69 +96,7 @@
             <!--Phần footer để hiện thị địa chỉ của hàng, hotline ....-->
 
             <div id="footer" class="footer-container">
-
-                <div id="left">
-
-                
-                    <h2>
-                        CÔNG TY TNHH TM DV VVT <br>
-                        MST: 150577 <br>
-                        Ngày thành lập: 07/07/2020
-
-                    </h2>
-                
-                  
-                    <h3>Danh sách cửa hàng:</h3>
-                   
-
-                    <ul>
-                        <li>
-                            <a href="https://goo.gl/maps/5WiwroZAmKAwU4jE9" target="blank">
-                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
-                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
-                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
-                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
-                            </a>
-                        </li>
-
-                    </ul>
-
-                    <h3 id="contact">
-                        <a href="tel:+84981234567">Hotline: 0981234567</a> <br>
-                        <a href="mailto:17521184@gm.uit.edu.vn" target="_top">Mail: 17521184@gm.uit.edu.vn</a></h3>
-                </div>
-
-                <div id="middle">
-
-                    <h2>Hỗ trợ khách hàng</h2>
-                    <ul>
-                        <li><a href="/tragop" title="Trả góp">Chính sách trả góp</a> </li>
-                        <li><a href="/thanhtoan" title="Thanh toán">Phương thức thanh toán</a> </li>
-                        <li><a href="/baohanh" title=" Bảo hành">Chính sách bảo hành</a> </li>
-                        <li><a href="/vanchuyen" title="Vận chuyển">Chính sách vận chuyển</a> </li>
-                    </ul>
-                </div>
-
-                <div id="right">
-
-                    <div id="logo"> LapCity</div>
-                    <div id="cong-thuong">
-                            <a href="https://www.moit.gov.vn/" target="blank">
-                                 <img src="Resources/Icon/bo-cong-thuong.png" width="200" height="auto">
-                            </a>
-                    </div>
-                </div>
-
+                <%- include('module/footer'); -%>
             </div>
 
 

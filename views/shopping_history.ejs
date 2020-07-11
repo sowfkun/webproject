@@ -168,7 +168,34 @@
                                                         <td > 
                                                            <span style="color: #6d4343; text-decoration: underline;"> <%-item[j].quantity%> </span>   
                                                         </td>
-                                                        <td id="total"  style=" color: tomato;"> <%-(item[j].price * item[j].quantity).toLocaleString() %> đ </td>
+                                                        <td id="total"  style=" color: tomato;"> 
+                                                            <span><%-(item[j].price * item[j].quantity).toLocaleString() %> đ </span>   
+                                                            
+                                                            <% if(item[j].event_id !== null){ %>
+                                                                <br>
+                                                                <span class = "temp">(-<%=(item[j].discount * item[j].quantity).toLocaleString()%>) 
+                                                                    <img src="Resources/Icon/question.svg" height="12px" style = "position: absolute; opacity: 70%">
+                                                                </span> <br class = "clear_${i}">
+                                                                <span class = "show_event" style = "position: absolute;width: 150px; background-color: white; border-radius: 10px; margin-top: -5px; margin-left: -75px;">
+                                                                    <%for(let z = 0; z < event.length; z++ ){%>
+                                                                        <% if(event[z].event_id == item[j].event_id) {%>
+                                                                            <p style ="color: tomato;"><%=event[z].title%></p> 
+                                                                            <% break; %> 
+                                                                        <% } %>  
+                                                                    <% } %>  
+                                                                </span>
+                                                            <% } %>  
+                                                            <script>
+                                                                $(".show_event").hide();           
+                                                                $(document).ready(function () {
+                                                                    $(".temp").hover(function () {
+                                                                        $(this).siblings(".show_event").fadeIn({duration:200});
+                                                                    }, function () {
+                                                                        $(this).siblings(".show_event").fadeOut({duration:200});
+                                                                    });
+                                                                });
+                                                            </script>
+                                                        </td>
                                                     </tr> 
                                                 </li>   
                                             <% } %>  
@@ -191,24 +218,7 @@
 
              <!--liên kết đến các trang facebook, instagram...-->
              <div id="follow-us" > 
-               
-                <ul>
-                    <li> Follow us:</li>
-                    <li><a href="http://www.facebook.com" target="blank">
-                        <img src="Resources/Icon/facebook.png" alt="facebook" width="25" height="25">
-                        </a>
-                    </li>
-                    <li><a href="http://www.instagram.com" target="blank">
-                        <img src="Resources/Icon/instagram.png" alt="instagram" width="25" height="25">
-                        </a>
-                    </li>
-                    <li><a href="http://www.twitter.com" target="blank">
-                        <img src="Resources/Icon/twitter.png" alt="twitter" width="25" height="25">
-                        </a>
-                    </li>
-                </ul>
-             
-               
+                <%- include('module/follow_us'); -%>
             </div>
 
             <!--hết phần liên kết đến các trang facebook, instagram...-->
@@ -216,62 +226,7 @@
             <!--Phần footer để hiện thị địa chỉ của hàng, hotline ....-->
 
             <div id="footer" class="footer-container">
-
-                <div id="left">
-                    <h2>
-                        CÔNG TY TNHH TM DV VVT <br>
-                        MST: 150577 <br>
-                        Ngày thành lập: 07/07/2020
-                    </h2>
-                  
-                    <h3>Danh sách cửa hàng:</h3>
-                    <ul>
-                        <li>
-                            <a href="https://goo.gl/maps/5WiwroZAmKAwU4jE9" target="blank">
-                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
-                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
-                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <img src="Resources/Icon/gps.svg" height="30px" width="30px">
-                                <p>104, ấp Gò Sao, xã Tân Phú, huyện Đức Hòa, tỉnh Long An.</p>
-                            </a>
-                        </li>
-
-                    </ul>
-
-                    <h3 id="contact">
-                        <a href="tel:+84981234567">Hotline: 0981234567</a> <br>
-                        <a href="mailto:17521184@gm.uit.edu.vn" target="_top">Mail: 17521184@gm.uit.edu.vn</a></h3>
-                </div>
-
-                <div id="middle">
-
-                    <h2>Hỗ trợ khách hàng</h2>
-                    <ul>
-                        <li><a href="/tragop" title="Trả góp">Chính sách trả góp</a> </li>
-                        <li><a href="/thanhtoan" title="Thanh toán">Phương thức thanh toán</a> </li>
-                        <li><a href="/baohanh" title=" Bảo hành">Chính sách bảo hành</a> </li>
-                        <li><a href="/vanchuyen" title="Vận chuyển">Chính sách vận chuyển</a> </li>
-                    </ul>
-                </div>
-
-                <div id="right">
-                    <div id="logo"> LapCity</div>
-                    <div id="cong-thuong">
-                            <a href="https://www.moit.gov.vn/" target="blank">
-                                 <img src="Resources/Icon/bo-cong-thuong.png" width="200" height="auto">
-                            </a>
-                    </div>
-                </div>
-
+                <%- include('module/footer'); -%>
             </div>
         </div>
    

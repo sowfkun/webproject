@@ -94,7 +94,7 @@
                             </tr>
                             <tr>
                                 <td class="label"> Số điện thoại:</td>
-                                <td> <%- transact[i].phone _%> </td>
+                                <td><%-"0" + transact[i].phone _%> </td>
                             </tr>
                             <tr>
                                 <td class="label"> Email:</td>
@@ -104,25 +104,68 @@
                                 <td class="label"> Địa chỉ:</td>
                                 <td> <%- transact[i].address _%> </td>
                             </tr>
+                          
                             <tr>
                                 <td class="label"> Sản phẩm: </td>
+                                <td style="padding-left: 0; text-align: center;">
+                                    <table style="margin: 0; border: none; width: 100.4%;">
+                                        <tr>
+                                            <th style="width: 23%;">Tên sản phẩm</th>
+                                            <th style="width: 15%;">Số lượng</th>
+                                            <th style="width: 20%;">Đơn giá</th>
+                                            <th style="width: 20%;">Giảm giá</th>
+                                            <th style="width: 22%;">Tạm tính</th>
+                                        </tr>
+                                        <% for(let j=0; j<transact_item.length; j++) { %>
+                                            <% if(transact_item[j].order_id == transact[i].order_id) {%>
 
+                                                <tr>
+                                                    <td style="color: tomato;">
+                                                        <%- transact_item[j].brand_name + " "_%> <%- transact_item[j].serie _%> <br>
+                                                        (<%- transact_item[j].ma_may_%>)</td>
+                                                    <td><%- transact_item[j].quantity_%></td>
+                                                    <td><%- transact_item[j].price_per_1.toLocaleString()_%></td>
+                                                    <td style="color: tomato;">
+                                                        <% if(transact_item[j].event_id !== null){ %>
+                                                            <p class="temp" 
+                                                            title=" <%for(let z = 0; z < event.length; z++ ){%>
+                                                                        <% if(event[z].event_id == transact_item[j].event_id) {%>
+                                                                        <%=event[z].title%>
+                                                                            <% break; %>
+                                                                        <% } %>  
+                                                                    <% } %>  ">
+                                                                <%=transact_item[j].discount_from_event.toLocaleString()%> (x<%- transact_item[j].quantity_%>)
+                                                                <img src="Resources/Icon/question.svg" height="12px" style = "margin-top: -20px; opacity: 70%">
+                                                            </p>
+                                                            
+                                                        <% } else { %>
+                                                            0
+                                                            <% } %>  
 
-                    <td>
-                        <ul>
-                            <% for(let j=0; j<transact_item.length; j++) { %>
-                                <% if(transact_item[j].order_id == transact[i].order_id) {%>
-                                        <li> <div style="width: 260px; float: left;">Tên sản phẩm: &ensp;  <span style="color: tomato;"><%- transact_item[j].ma_may_%> </span></div>       
-                                            &emsp;&emsp; Số lượng: &ensp; <span style="color: tomato;"> <%- transact_item[j].quantity_%></span>
-                                            &emsp;&emsp; Thành tiền: &ensp; <span style="color: tomato;"> <%- transact_item[j].price.toLocaleString()_%></span> &ensp; đồng
-                                        </li>
-                                        <% } %>  
-                                <% } %>  
-                        </ul>
-                    </td>         
-                    
-                    
-                            </tr>
+                                                            <script>
+                                                                $(".show_event").hide();           
+                                                                $(document).ready(function () {
+                                                                    $(".temp").hover(function () {
+                                                                        $(this).siblings(".show_event").fadeIn({duration:200});
+                                                                    }, function () {
+                                                                        $(this).siblings(".show_event").fadeOut({duration:200});
+                                                                    });
+                                                                });
+                                                            </script>
+                                                    </td>
+                                                    <td style="color: tomato;">
+                                                        <% if(transact_item[j].event_id !== null){ %>
+                                                            <%=((transact_item[j].price_per_1 * transact_item[j].quantity) - (transact_item[j].discount_from_event * transact_item[j].quantity)).toLocaleString() %>
+                                                        <% } else { %>
+                                                            <%=(transact_item[j].price_per_1 * transact_item[j].quantity).toLocaleString()%>
+                                                            <% } %>  
+                                                    </td>
+                                                </tr>
+                                                
+                                            <% } %>  
+                                        <% } %> 
+                                    </table>
+                                </td>         
                             <tr>
                                 <td class="label"> Tổng tiền:</td>
                                 <td style="color: tomato;"> <%- transact[i].total_price.toLocaleString() _%> &ensp;đồng</td>
@@ -130,6 +173,8 @@
                             <tr>
                                 <td class="label"> Ghi chú:</td>
                                 <td> <%- transact[i].note _%></td>
+                            </tr>
+                    
                             </tr>
                         </table>
                        

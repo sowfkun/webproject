@@ -1,6 +1,5 @@
 const db= require('../../database/db');
 const injection = require("../../check_injection/check_injection");
-const con = require('../../database/db');
 
 const sql = `
 SELECT DISTINCT brand_name FROM product

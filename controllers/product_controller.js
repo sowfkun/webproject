@@ -1,5 +1,6 @@
 const db= require('../database/db');
 const injection = require("../check_injection/check_injection");
+const con = require('../database/db');
 
 // biến lưu các query
 const sql = `SELECT DISTINCT brand_name, serie
@@ -24,7 +25,7 @@ const sql = `SELECT DISTINCT brand_name, serie
     
     SELECT *
     FROM event
-    WHERE  (brand_name ='tất cả' OR serie = ? OR brand_name = ? ) AND (status='đang diễn ra' OR status='Sắp diễn ra')
+    WHERE (status='đang diễn ra')
     ORDER BY date_start DESC;
 
     SELECT COUNT(ma_sku) AS conlai
@@ -129,7 +130,34 @@ module.exports.product_serie= (req, res) => {
         var productSame =  result[2].filter(function(product) {  //lọc những product theo serie
           return (product.serie.toLowerCase() == serie  & product.ma_sku.toLowerCase() !=ma_sku);
         });
-        console.log((result[5])[0].conlai);
+
+        //search event for product
+        var event = result[4];
+        var final_event = [];
+        for(let i=0; i< event.length; i++){
+          var brandlist = event[i].brand_name.split("-");
+          var serielist = event[i].serie.split("-");
+
+          if(brandlist.indexOf(req.params.brand) !== -1 || serielist.indexOf(req.params.serie) !== -1){
+            final_event.push(event[i]);
+          };
+        }
+
+        //tìm event giảm giá cao nhất
+        if(final_event.length != 0){
+          var max_event = final_event[0].discount;
+          var index = 0;
+  
+          for(let i = 1; i<final_event.length; i++){
+            if(max_event < final_event[i].discount){
+              max_event = final_event[i].discount;
+              index = i;
+            }
+          }
+        }
+
+
+        console.log(final_event[index]);
         res.render('product_detail', {
           title : "LapCity",
           pagename: brand.toUpperCase() + ' ' + serie.toUpperCase(),
@@ -139,7 +167,7 @@ module.exports.product_serie= (req, res) => {
           product: productdetail,
           productSame: productSame,
 
-          event: result[4],
+          event: final_event[index],
           conlai: (result[5])[0].conlai
           
         });

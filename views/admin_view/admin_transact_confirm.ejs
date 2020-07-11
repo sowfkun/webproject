@@ -93,7 +93,7 @@
                                     <tr>
                                         <% if(transact[i].order_status == "giao dịch bị hủy"){ %>
                                             <td  class="label"> Thời gian hủy:</td>
-                                        <% } else if (transact[i].order_status == "giao dịch hoàn tất"){%>
+                                        <% } else if (transact[i].order_status.toLowerCase() == "giao dịch hoàn tất"){%>
                                             <td  class="label"> Thời gian hoàn tất:</td>
                                         <% } else {%>
                                             <td  class="label"> Thời gian xác nhận:</td>
@@ -107,93 +107,87 @@
                                         </tr>
                                             <tr>
                                                 <td class="label"> Số điện thoại:</td>
-                                                <td> <%- transact[i].phone _%> </td>
+                                                <td> <%-"0"+ transact[i].phone _%> </td>
                                             </tr>
                                     <tr>
                                         <td class="label"> Email:</td>
                                         <td> <%- transact[i].email _%> </td>
                                     </tr>
-                                <tr>
-                                    <td class="label"> Địa chỉ:</td>
-                                    <td> <%- transact[i].address _%> </td>
-                                </tr>
+                                    <tr>
+                                        <td class="label"> Địa chỉ:</td>
+                                        <td> <%- transact[i].address _%> </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Chi tiết sản phẩm</th>
+                                        <td>
+                                            <% for(let j = 0; j< transact_item.length; j++){ %> 
+                                                <% if(transact_item[j].order_id == transact[i].order_id){ %>
+                                                    <tr>
+                                                        <td style="width: 20%; font-weight: bold; color: tomato; text-align: center;">
+                                                            <%=transact_item[j].brand_name + " "%> <%=transact_item[j].serie %> <br>
+                                                            (<%=transact_item[j].ma_may %>)
+                                                        </td>
+                                                        <td style="padding-left:0 ;">
+                                                            <table style="border-radius: 0; margin: 0; border: none; width: 100.5%; text-align: center;">
+                                                                <tr>
+                                                                    <th>ID máy</th>
+                                                                    <th>Giá</th>
+                                                                    <th>Giảm giá</th>
+                                                                    <th>Tạm tính</th>
+                                                                </tr>
+                                                                <% for(let z = 0; z< item_info.length; z++){ %> 
+                                                                    <% if(item_info[z].id == transact_item[j].id){ %>
+                                                                            <tr>
+                                                                                <td style="width: 25%;">
+                                                                                    <%=item_info[z].product_id%>
+                                                                                </td>
+                                                                                <td style="width: 25%; color: tomato;"><%=(item_info[z].price_per_1).toLocaleString()%></td>
+
+                                                                                <td style="width: 25%;" 
+                                                                                    title=" <%for(let k = 0; z < event.length; k++ ){%>
+                                                                                                <% if(event[k].event_id == item_info[z].event_id) {%>
+                                                                                                <%=event[k].title%>
+                                                                                                    <% break; %>
+                                                                                                <% } %>  
+                                                                                            <% } %>  ">
+                                                                                    <%=(item_info[z].discount_from_event).toLocaleString()%>
+                                                                                    <img src="Resources/Icon/question.svg" height="12px" style = "margin-top: -20px; opacity: 70%">
+                                                                                </td>
+
+
+                                                                                <td style="width: 25%; color: tomato;"><%=(item_info[z].price_per_1 - item_info[z].discount_from_event).toLocaleString() %></td>
+                                                                            </tr>
+                                                                    <% } %>
+                                                                <% } %> 
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                <% } %>  
+                                            <% } %> 
+                                        </td>
+                                    </tr>
                            
-                            <tr>
-                                <td class="label"> Tổng tiền:</td>
-                                <td style="color: tomato;"> <%- transact[i].total_price.toLocaleString() _%> &ensp;đồng</td>
-                            </tr>
-                    <tr>
-                        <td class="label"> Ghi chú:</td>
-                        <td> <%- transact[i].note _%></td>
-                    </tr>
-            </table>
-                       
-        <div style="width: 100%; padding: 20px; box-shadow: 0 0 40px rgb(235, 233, 233); border-radius: 10px;">
-            <div class="sub_transact" id="sub_<%=transact[i].order_id%>">
-
-                <ul >
-                    <% for(let j=0; j<transact_item.length; j++) { %>
-                        <% if(transact_item[j].order_id == transact[i].order_id){ %>
-                            <li style="height: fit-content; margin-bottom: 15px; list-style: circle;">
-                               
-                                <% for(let z = 0; z < item_info.length; z++){ %> 
-                                    <% if((item_info[z].id == transact_item[j].id)) { %> 
-                                        <h2><%=item_info[z].brand_name%>&ensp;<%=item_info[z].serie%>&ensp;<%=item_info[z].ma_sku%></h2>
-                                        <% break; %> 
-                                    <% } %> 
-                                <% } %>    
-                               
-                                <div style="font-family: balootamma2; font-size: 20px; display: flex; flex-direction: row;">
-                                    <div style="width: 15%"><b > Số lượng: &ensp;</b></div>
-                                    <div style="width: 75%;"><b style="color: tomato;"><%=transact_item[j].quantity%>&ensp;máy</b></div>
-                                </div>
-                                 
-                               
-                                <ul>
-                                    <% for(let z = 0; z < item_info.length; z++){ %> 
-                                        <% if((item_info[z].order_id == transact[i].order_id) && (item_info[z].id == transact_item[j].id)) { %> 
-                                            <li>
-                                                <div class="label">
-                                                    <div style="font-family: balootamma2; font-size: 20px; display: flex; flex-direction: row;">
-                                                        <div style="width: 15%"><b>ID máy: &ensp;</b></div>
-                                                        <div style="width: 75%;"><b style="color: tomato; font-weight: bold;"><%= item_info[z].product_id %> </b></div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        <% } %> 
-                                    <% } %> 
-                                </ul>
-                                <div style="font-family: balootamma2; font-size: 20px;">
-                                    <div style="display: flex; flex-direction: row;">
-                                        <div style="width: 15%"> <b> Đơn giá: &ensp;</b> </div>
-                                        <div style="width: 75%;"> <b style="color: tomato;"><%=(transact_item[j].price/transact_item[j].quantity).toLocaleString()%> &ensp;đồng</b></div>
-                                    </div>
-
-                                    <div style="display: flex; flex-direction: row;">
-                                        <div style="width: 15%"> <b> Thành tiền: &ensp;</b> </div>
-                                        <div style="width: 75%;"> <b style="color: tomato;"><%=(transact_item[j].price).toLocaleString()%> &ensp;đồng</b></div>
-                                    </div>
-                                        
-                                </div>
-                              
-                            </li>
+                                    <tr>
+                                        <td class="label"> Tổng tiền:</td>
+                                        <td style="color: tomato;"> <%- transact[i].total_price.toLocaleString() _%> &ensp;đồng</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label"> Ghi chú:</td>
+                                        <td> <%- transact[i].note _%></td>
+                                    </tr>
+                        </table>
+                
+                        <% if(transact[i].order_status.toLowerCase() == "đang giao hàng" ){ %>
+                            <div style="width: fit-content; margin: auto; ">
+                                <form action="/admin/transact/delivering" method="POST">
+                                    <input type="hidden" name="order_id" value="<%-transact[i].order_id_%> ">
+                                    <button class="btn_confirm"> Xác nhận đã giao hàng</button>
+                                </form>
+                            </div>
                         <% } %> 
-                    <% } %> 
-                </ul>
-
-                <% if(transact[i].order_status == "Đang giao hàng" ){ %>
-                    <div style="width: fit-content; margin: auto; ">
-                        <form action="/admin/transact/delivering" method="POST">
-                            <input type="hidden" name="order_id" value="<%-transact[i].order_id_%> ">
-                            <button class="btn_confirm"> Xác nhận đã giao hàng</button>
-                        </form>
-                    </div>
-                <% } %> 
                    
-            </div>
-        </div>             
-
-                </li>
+                    </li>
                 
                 <% } %>  
             </ul>
