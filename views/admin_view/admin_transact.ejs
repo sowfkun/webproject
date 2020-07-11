@@ -121,7 +121,12 @@
 
                                                 <tr>
                                                     <td style="color: tomato;">
-                                                        <%- transact_item[j].brand_name + " "_%> <%- transact_item[j].serie _%> <br>
+                                                        <% for(let z= 0 ; z <product_info.length; z++){ %>
+                                                            <% if(product_info[z].ma_sku == transact_item[j].ma_may){ %>
+                                                                <%- product_info[z].brand_name + " "_%> <%- product_info[z].serie _%> <br>
+                                                                <% break; %> 
+                                                            <% } %>  
+                                                        <% } %>  
                                                         (<%- transact_item[j].ma_may_%>)</td>
                                                     <td><%- transact_item[j].quantity_%></td>
                                                     <td><%- transact_item[j].price_per_1.toLocaleString()_%></td>

@@ -125,8 +125,13 @@
                                                 <% if(transact_item[j].order_id == transact[i].order_id){ %>
                                                     <tr>
                                                         <td style="width: 20%; font-weight: bold; color: tomato; text-align: center;">
-                                                            <%=transact_item[j].brand_name + " "%> <%=transact_item[j].serie %> <br>
-                                                            (<%=transact_item[j].ma_may %>)
+                                                            <% for(let z= 0 ; z <product_info.length; z++){ %>
+                                                                <% if(product_info[z].ma_sku == transact_item[j].ma_may){ %>
+                                                                    <%- product_info[z].brand_name + " "_%> <%- product_info[z].serie _%> <br>
+                                                                    <% break; %> 
+                                                                <% } %>  
+                                                            <% } %>  
+                                                            (<%- transact_item[j].ma_may_%>)</td>
                                                         </td>
                                                         <td style="padding-left:0 ;">
                                                             <table style="border-radius: 0; margin: 0; border: none; width: 100.5%; text-align: center;">
@@ -136,6 +141,7 @@
                                                                     <th>Giảm giá</th>
                                                                     <th>Tạm tính</th>
                                                                 </tr>
+
                                                                 <% for(let z = 0; z< item_info.length; z++){ %> 
                                                                     <% if(item_info[z].id == transact_item[j].id){ %>
                                                                             <tr>
@@ -143,18 +149,16 @@
                                                                                     <%=item_info[z].product_id%>
                                                                                 </td>
                                                                                 <td style="width: 25%; color: tomato;"><%=(item_info[z].price_per_1).toLocaleString()%></td>
-
                                                                                 <td style="width: 25%;" 
-                                                                                    title=" <%for(let k = 0; z < event.length; k++ ){%>
+                                                                                    title=" <%for(let k = 0; k < event.length; k++ ){%>
                                                                                                 <% if(event[k].event_id == item_info[z].event_id) {%>
-                                                                                                <%=event[k].title%>
+                                                                                                    <%=event[k].title%>
                                                                                                     <% break; %>
                                                                                                 <% } %>  
                                                                                             <% } %>  ">
                                                                                     <%=(item_info[z].discount_from_event).toLocaleString()%>
                                                                                     <img src="Resources/Icon/question.svg" height="12px" style = "margin-top: -20px; opacity: 70%">
                                                                                 </td>
-
 
                                                                                 <td style="width: 25%; color: tomato;"><%=(item_info[z].price_per_1 - item_info[z].discount_from_event).toLocaleString() %></td>
                                                                             </tr>

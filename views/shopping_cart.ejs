@@ -243,7 +243,12 @@
                         <label for="cart_phone"><b>#Số điện thoại:</b></label>
                     </div>
                     <div class="input">
-                        <input id="cart_phone" type="tel" placeholder="Nhập số điện thoại" onchange="checkcartform()" name="phone" value=<%-'0' + user.phone_%> >
+                        <% if(user.phone == null){ %>
+                            <% var phone = 0 %> 
+                            <% } else {%>
+                                <% var phone = "0" +user.phone %> 
+                                <% } %>   
+                        <input id="cart_phone" type="tel" placeholder="Nhập số điện thoại" onchange="checkcartform()" name="phone" value=<%-phone_%> >
                         <label id="phonecart-error" class="error" ></label>
                     </div>
                 </div>

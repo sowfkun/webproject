@@ -1,5 +1,6 @@
 const db= require('../../database/db');
 const injection = require("../../check_injection/check_injection");
+const con = require('../../database/db');
 
 var sql = `
 SELECT COUNT(order_id) AS count 
@@ -14,15 +15,11 @@ WHERE order_status = ?
 GROUP BY orders.order_id
 ORDER BY orderdate DESC;
 
-SELECT orders.order_id, user_id, fullname, phone, address, note, orderdate, finishdate, 
-price_per_1, id, ma_may, brand_name, serie, product_id, discount_from_event, quantity, event_id
-FROM ((orders
+SELECT orders.order_id, user_id, price_per_1, id, ma_may, discount_from_event, quantity, event_id
+FROM orders
 INNER JOIN orderitem
-ON orders.order_id = orderitem.order_id)
-INNER JOIN product
-ON orderitem.ma_may = product.ma_sku)
-WHERE order_status = ?
-GROUP BY ma_may;
+ON orders.order_id = orderitem.order_id
+WHERE order_status = "chờ xét duyệt";
 
 SELECT brand_name, serie, ma_sku
 FROM product
@@ -61,37 +58,79 @@ module.exports.new_confirm = function(req,res){
     input = JSON.parse(input);
     console.log(input);
 
-     //kiểm tra xem id nhập vào có phải thuộc mã máy cần bán hay không
-    var check_ma_may_id = `
-    select product_id, ma_sku 
-    from product;
-            `
-
+    var flag = 0;
     for (let i = 0; i < input.length; i++) {
-        var item = JSON.parse(input[i]);
-        
-        var order_id = parseInt(item.order_id);
-        var orderitem_id = parseInt(item.orderitem_id);
-        var product_id = parseInt(item.product_id);
-       
-        var confirm = `
-        UPDATE product 
-        SET orderitem_id =  ${orderitem_id}, tinh_trang = 'đã bán'
-        WHERE product_id = ${product_id};
-        
-        UPDATE orders
-        SET order_status = 'Đang giao hàng', finishdate = current_timestamp 
-        WHERE order_id = ${order_id};
-        `
-        db.query(confirm, function (err, result, fields) {
-            if (err) throw err;
-            console.log('đã xác nhận')
-        });
-        
-    }
-    res.redirect('/admin/transact/new');
-};
+        for(let j = input.length - 1; j > i; j--){
+            var a = JSON.parse(input[i]);
+            var b = JSON.parse(input[j]);
+            console.log(a);
+            console.log(b);
+            if(a.product_id == b.product_id ){
+                flag = 1;
+                break;
+            }
+        }
+    };
+    if(flag == 1){
+        console.log("Có 2 id nhập vào bị trùng");
+        res.redirect('back');
+        return;
+    } 
+    
+    // lấy thông tin sản phẩm để so sánh với thông tin nhập vào
+    db.query('SELECT ma_sku, product_id FROM product WHERE tinh_trang = "chưa bán"', function(err, result, fields){
+        if(err) throw err;
+        //kiểm tra xem id nhập vào có phải thuộc mã máy cần bán hay không
+        for (let i = 0; i < input.length -1; i++) {
 
+            var item = JSON.parse(input[i]);
+
+            var product_id = parseInt(item.product_id);
+            var ma_may = item.ma_may;
+
+            var flag = 0; //không tìm thấy
+            for(let j =0; j < result.length; j++){
+                if(product_id == result[j].product_id && ma_may == result[j].ma_sku){
+                    flag = 1; //tìm thấy
+                    break;
+                } 
+            }
+
+            // nếu có một input không hợp lệ thì báo lỗi
+            if(flag == 0){
+                console.log(`id thứ ${i} không khớp`);
+                res.redirect('back');
+                return;
+            } else{
+                console.log(`id thứ ${i} trùng khớp`);
+            }
+        }
+
+        //các input đã hợp lệ
+        for (let i = 0; i < input.length; i++) {
+            var item = JSON.parse(input[i]);
+            
+            var order_id = parseInt(item.order_id);
+            var orderitem_id = parseInt(item.orderitem_id);
+            var product_id = parseInt(item.product_id);
+            
+            var confirm = `
+            UPDATE product 
+            SET orderitem_id =  ${orderitem_id}, tinh_trang = 'đã bán'
+            WHERE product_id = ${product_id};
+            
+            UPDATE orders
+            SET order_status = 'Đang giao hàng', finishdate = current_timestamp 
+            WHERE order_id = ${order_id};  `
+
+            db.query(confirm,function( err, result, fields){
+                if(err) throw err;
+                console.log("Giao dịch được xác nhận")
+            });
+        }
+        res.redirect('back');
+    });
+};
 
 
 // hiển thị giao dịch đang giao hàng
@@ -107,15 +146,11 @@ module.exports.transact_delivering = function(req,res){
     WHERE order_status = 'đang giao hàng'
     ORDER BY orderdate DESC;
 
-    SELECT orders.order_id, user_id, fullname, phone, address, note, orderdate, finishdate, 
-    price_per_1, id, ma_may, brand_name, serie, product_id, discount_from_event, quantity, event_id
-    FROM ((orders
+    SELECT * 
+    FROM orders
     INNER JOIN orderitem
-    ON orders.order_id = orderitem.order_id)
-    INNER JOIN product
-    ON orderitem.ma_may = product.ma_sku)
-    WHERE order_status = "đang giao hàng"
-    GROUP BY ma_may;
+    ON orders.order_id = orderitem.order_id
+    WHERE order_status = "đang giao hàng";
 
     SELECT id, orders.order_id, event_id, discount_from_event, ma_may, price_per_1, product_id, brand_name, serie, ma_sku
     FROM ((orderitem 
@@ -124,6 +159,10 @@ module.exports.transact_delivering = function(req,res){
     INNER JOIN product 
     ON orderitem.id = product.orderitem_id)
     where orders.order_status = 'đang giao hàng';
+
+    SELECT brand_name, serie, ma_sku
+    FROM product
+    GROUP BY ma_sku;
 
     SELECT event_id, title 
     FROM event
@@ -137,7 +176,8 @@ module.exports.transact_delivering = function(req,res){
             transact: result[1],
             transact_item: result[2],
             item_info: result[3],
-            event: result[4]
+            product_info: result[4],
+            event: result[5]
         });
     });
 };
@@ -178,15 +218,11 @@ module.exports.complete_transact = function(req,res){
     WHERE order_status = 'giao dịch hoàn tất'
     ORDER BY orderdate DESC;
 
-    SELECT orders.order_id, user_id, fullname, phone, address, note, orderdate, finishdate, 
-    price_per_1, id, ma_may, brand_name, serie, product_id, discount_from_event, quantity, event_id
-    FROM ((orders
+    SELECT * 
+    FROM orders
     INNER JOIN orderitem
-    ON orders.order_id = orderitem.order_id)
-    INNER JOIN product
-    ON orderitem.ma_may = product.ma_sku)
-    WHERE order_status = "giao dịch hoàn tất"
-    GROUP BY ma_may;
+    ON orders.order_id = orderitem.order_id
+    WHERE order_status = "giao dịch hoàn tất";
 
     SELECT id, orders.order_id, event_id, discount_from_event, ma_may, price_per_1, product_id, brand_name, serie, ma_sku
     FROM ((orderitem 
@@ -195,6 +231,10 @@ module.exports.complete_transact = function(req,res){
     INNER JOIN product 
     ON orderitem.id = product.orderitem_id)
     where orders.order_status = 'giao dịch hoàn tất';
+
+    SELECT brand_name, serie, ma_sku
+    FROM product
+    GROUP BY ma_sku;
 
     SELECT event_id, title 
     FROM event
@@ -208,7 +248,8 @@ module.exports.complete_transact = function(req,res){
             transact: result[1],
             transact_item: result[2],
             item_info: result[3],
-            event: result[4]
+            product_info: result[4],
+            event: result[5]
         });
     });
 };
@@ -278,7 +319,11 @@ module.exports.cancel_transact_show = function(req,res){
     ON orderitem.order_id = orders.order_id) 
     INNER JOIN product 
     ON orderitem.id = product.orderitem_id)
-    where orders.order_status = 'giao dịch bị hủy'
+    where orders.order_status = 'giao dịch bị hủy';
+    
+    SELECT brand_name, serie, ma_sku
+    FROM product
+    GROUP BY ma_sku;
     `
    
     db.query(confirmsql, function (err, result, fields) {
@@ -287,7 +332,8 @@ module.exports.cancel_transact_show = function(req,res){
             count: (result[0])[0].count,
             transact: result[1],
             transact_item: result[2],
-            item_info: result[3]
+            item_info: result[3],
+            product_info: result[4]
         });
     });
 };
