@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/admin_css/admin_event_list.css">
+    <title> LapCity: Danh sách sự kiện</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head> 
+<body>
+
+    <%# menu %> 
+    <div id="menu">
+        <%- include('admin_menu'); -%>
+    </div>
+  
+
+    <%# content %>  
+
+    <div id="display-content">
+        <ul>     
+            <% for(var i=0; i<event.length; i++) {%> 
+                <li>
+                    <div id="status"> <%- event[i].status.toUpperCase() %> (<%=event[i].date_start%> đến <%=event[i].date_end%>) </div>
+
+                    <div id="khuyen_mai"> 
+                        <div id="image">
+                            <div>
+                                <img src="upload/event_images/<%- event[i].img  _%> ">
+                            </div>
+                        </div>
+                        
+                        <div id="khuyenmai_info">
+                            <div id="title"> <%- event[i].title.toUpperCase()  _%></div>
+                            <div id="content"><%- event[i].short_content _%></div>
+                            
+                            <div style="display: flex;">
+                                <a href="/admin/event/<%- event[i].event_id  _%>"><button class="btn" style="background-color: rgb(36, 199, 36);">Chỉnh sửa</button></a>
+                                
+                                <form action="/admin/event/delete" method="POST">
+                                    <input type="hidden" name="event_id" value="<%=event[i].event_id%>">
+                                    <button type="submit" class="btn" style="background-color: rgb(214, 43, 43);">Xóa</button>
+                                </form>
+                                
+                            </div>
+                            
+                        </div>
+                    </div>
+                </li >
+            <% } %> 
+        </ul>
+        
+    </div>
+    
+</body>
+</html>

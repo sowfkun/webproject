@@ -93,14 +93,20 @@ module.exports.buy= (req, res) => {
  WHERE user_id = ? AND order_status = ?
  ORDER BY finishdate DESC;
  
-SELECT id, orders.order_id, orders.order_status as status, ma_may, product.discount_price as price, quantity, user_id, 
+SELECT id, orders.order_id, ma_may, price_per_1 as price, discount_from_event as discount, event_id, quantity, user_id, 
 fullname, phone, address, orderdate, finishdate, total_price, brand_name, serie, img, cpu, gpu, ram, ssd, hdd
 FROM ((orderitem 
 INNER JOIN orders
 ON orderitem.order_id = orders.order_id) 
 INNER JOIN product 
 ON orderitem.id = product.orderitem_id)
-where user_id = ? AND orders.order_status = ? AND tinh_trang = "đã bán";`
+WHERE user_id = ? AND orders.order_status = ? AND tinh_trang = "đã bán"
+GROUP BY id;
+
+SELECT event_id, title 
+FROM event
+WHERE status = "đang diễn ra";
+`
 
 module.exports.history= (req, res) => {
   
@@ -124,7 +130,8 @@ module.exports.history= (req, res) => {
                 mess: mess,  
                 whichBtn: 'history',
                 orders: result[0],
-                item: result[1]
+                item: result[1],
+                event: result[2]
              });
         });
     } else {

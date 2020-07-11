@@ -20,8 +20,15 @@
     
         <div id="display-content">
 
-            <form id="event_form" action="/admin/event/new" method="POST" enctype="multipart/form-data">
+            <form id="event_form"  method="POST" enctype="multipart/form-data"
+                <% if(type == "create"){ %>
+                    action="/admin/event/new"
+                <% } else { %>
+                    action="/admin/event/edit_event"
+                <% } %>  
+            >
                 
+            <input type="hidden" name="event_id" value="<%=event.event_id%> ">
                 <h2 style="color: tomato; font-family: balootamma2;">Điền thông tin sự kiện</h2>
                 <div id="image_zone" class="zone">
                     <div class="row" style="width: 50%;" >       
@@ -30,11 +37,11 @@
                         </div>
                         
                         <div class="input" >
-                            <input id="img" type="file" name="img" style="padding: 40px 0 0 0;"
+                            <input id="img"  type="file" name="img" style="padding: 40px 0 0 0;"
                              onchange="loadimg(event)">
                         </div>
                     </div>
-                    <img id="choosen_img" height="150px" width="266px">
+                    <img id="choosen_img" src="upload/event_images/<%=event.img%>" height="150px" width="266px">
 
                     <script>
                        function loadimg(event){
@@ -55,7 +62,7 @@
                         </div>
                         
                         <div class="input" >
-                            <input type="text" id="title" name="title">
+                            <input type="text" id="title" value="<%-event.title%>" name="title" >
                         </div>
                     </div>
                     <div>
@@ -64,7 +71,7 @@
                         </div>
                         
                         <div class="input" >
-                            <input type="text" id="URL" name="URL" placeholder="Ví dụ: chao-mung-thong-nhat-dat-nuoc-30-4">
+                            <input type="text" id="URL" name="URL" placeholder="Ví dụ: chao-mung-thong-nhat-dat-nuoc-30-4" value="<%-event.url%>">
                         </div>
                     </div>
                 </div>
@@ -75,7 +82,7 @@
                         </div>
                         
                         <div class="input" >
-                            <input style="width: 40%;" type="date" id="datestart" name="datestart">
+                            <input style="width: 40%;" type="date" id="datestart" name="datestart" value="<%-event.date_start%>">
                         </div>
                     </div>
                    
@@ -85,7 +92,7 @@
                         </div>
                         
                         <div class="input" >
-                            <input style="width: 40%;" type="date" id="dateend" name="dateend">
+                            <input style="width: 40%;" type="date" id="dateend" name="dateend" value="<%-event.date_end%>">
                         </div>
                     </div>
                 </div>
@@ -98,11 +105,21 @@
                         
                         <div class="input" >
                             <% brand.forEach(brand => { %>
-                                <input type="checkbox" name="brand" value="<%=brand.brand_name%>">
+                                <input id="<%=brand.brand_name%>" type="checkbox" name="brand" value="<%=brand.brand_name%>">
                                 <label > Laptop <%=brand.brand_name%></label><br>
                            <% });  %> 
                         </div>
-                        
+
+                        <%# truyền thông tin khi ở trang chỉnh sửa sự kiện %> 
+                        <% if(typeof event.brand_name !== "undefined"){ %> 
+                            <% var brand = (event.brand_name).split("-") %>
+                            <% for(let i = 0; i < brand.length; i++){ %>
+                                <script>
+                                    var id = "#" + '<%=brand[i]%>'
+                                    $(id).attr("checked", true);
+                                </script>    
+                            <%}%>  
+                        <% } %> 
                     </div>
                     <div>
                         <div>
@@ -110,16 +127,23 @@
                                 <label><b>#Chọn dòng sản phẩm</b></label>
                             </div>
                             
-                           
                             <div class="input" >
                                 <% serie.forEach(serie => { %>
-                                    <script>
-                                        console.log(serie)
-                                    </script>
-                                    <input type="checkbox" name="series" value="<%=serie.serie%>">
+                                    <input id="<%=serie.serie%>" type="checkbox" name="series" value="<%=serie.serie%>">
                                     <label> <%=serie.brand_name%> <%=serie.serie%></label><br>
                                 <%});%>
                             </div>
+
+                             <%# truyền thông tin khi ở trang chỉnh sửa sự kiện %> 
+                            <% if(typeof event.brand_name !== "undefined"){ %> 
+                                <% var serie = (event.serie).split("-") %>
+                                <% for(let i = 0; i < serie.length; i++){ %>
+                                    <script>
+                                        var id = "#" + '<%=serie[i]%>'
+                                        $(id).attr("checked", true);
+                                    </script>    
+                                <%}%> 
+                            <% } %> 
                         </div>
                     </div>
                 </div>
@@ -141,8 +165,10 @@
                             </ul>
 
                             <script>
-                                var gift = [];
-    
+                                var gift = ('<%=event.gift%>').split("-") || [];
+                                gift.pop();
+                                document.getElementById("final_gift").value = gift;
+                                
                                 function addgift(){
                                     var input_gift = document.getElementById("input_gift");
                                     var newgift = $("#add_gift").val();
@@ -188,7 +214,7 @@
                             <label for="short_content"><b>#Giảm giá:</b></label>
                         </div>
                         <div class="input" >
-                            <input type="number" id="add_discount" name="discount" placeholder="Nhập số tiền giảm giá" min=0>
+                            <input type="number" id="add_discount" name="discount" placeholder="Nhập số tiền giảm giá" min=0 value=<%=event.discount%> >
                          </div>
                     </div>
                 </div>
@@ -199,7 +225,7 @@
                     </div>
                     
                     <div class="input" >
-                       <textarea id="short_content" type="text" name="short_content"></textarea>
+                       <textarea id="short_content" type="text" name="short_content" ><%=event.short_content%></textarea>
                     </div>
                 </div>
 
@@ -208,7 +234,7 @@
                         <label for="short_content"><b>#Nội dung đầy đủ:</b></label>
                     </div>
                    
-                    <textarea name="main_content" id="main_content"></textarea>
+                    <textarea name="main_content" id="main_content" ><%= event.content%></textarea>
                     <script>
                         CKEDITOR.replace( 'main_content',{
                             height : 345  
@@ -217,7 +243,13 @@
                     </script>
                 </div>
                 <div style="width: fit-content; margin: auto;">
-                    <button id="create_event" type="submit">Tạo sự kiện</button>
+                    
+                    <% if(type == "create"){ %>
+                        <button id="create_event" type="submit">Tạo sự kiện</button>
+                    <% } else { %>
+                        <button id="create_event" type="submit">Chỉnh sửa sự kiện</button>
+                    <% } %>   
+                   
                 </div>
                
             </form>

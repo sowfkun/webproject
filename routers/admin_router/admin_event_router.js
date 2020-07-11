@@ -24,4 +24,10 @@ router.get('/new', adminEventController.new_event);           // hiển thị gi
 router.post('/new', upload.single('img'), adminEventController.event_create);
 
 
+router.get('/list_event', adminEventController.list_event);           // hiển thị list_event
+
+router.get('/:event_id', adminEventController.event_detail);           // hiển thị event cụ thể
+router.post('/edit_event', upload.single('img'), adminEventController.edit_event);           // chỉnh sửa event
+
+router.post('/delete', upload.single('img'), adminEventController.delete_event); 
 module.exports=router; 

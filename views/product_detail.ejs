@@ -40,63 +40,10 @@
         <div id="bottom-field" class="bottom-container">
             
             <div id="content-field" class="content-field-container">
-                <div id="top-bar" class="top-bar-container">
-                    <div id="list_brand">
-                        <ul>
-                            <% for(var i=0; i<menu.length;i++) { %> 
-                                <li id="<%- menu[i].brand_name _%>" onclick="active('<%- menu[i].brand_name _%>')"> 
-                                    <a href="/product/<%- menu[i].brand_name%>" style="text-decoration: none;" >
-                                        <span> <%= menu[i].brand_name %> </span>
-                                    </a>
-                                    <ul class="sub_menu">
-                                        <% for(var j=0; j<serie.length; j++) { %> 
-                                          <%if (serie[j].brand_name == menu[i].brand_name) { %>
-                                             <a href="/product/<%- serie[j].serie%>"> <li> <%= serie[j].serie%></li> </a> 
-                                          <%}%>
-                                        <% } %>
-                                    </ul>    
-                                </li>
-                            <% } %> 
-                        </ul>
-                        <script>
-                            var brand = "#"+ localStorage.getItem('active');
-                            $(brand).addClass('active');
-                            function active(brand_name){
-                               localStorage.setItem('active', brand_name);
-                            }
-                        </script>
-                        <script>
-                            //hiển thị submenu  
-                            $(".sub_menu").hide();           
-                            $(document).ready(function () {
-                                $("#list_brand li").hover(function () {
-                                        $(this).children("ul.sub_menu").fadeIn({duration:200});
-                                    }, function () {
-                                        $(this).children("ul.sub_menu").fadeOut({duration:200});
-                                    });
-                                    });
-                        </script>
-                    </div>
-
-                     <%#filter%>
-                     <div id="filter"> 
-                        <%- include('module/filter'); -%>
-                    </div>
-                    <!--Giỏ hàng-->
-                    <div id="shopping-cart">
-                        <a href="/shopping">
-                            <div>
-                                <img src="/Resources/Icon/shopping-cart.png">
-                            </div>
-                        </a>
-                        <p id="cart-num" style="top: -50px; height: 20px;">  </p>
-                        
-                    </div>
-
-                    <div id="page-name">   
-                        <p> <%= pagename%> </p>
-                    </div>
-                </div>
+              
+              <div id="top-bar" class="top-bar-container">
+                <%- include('module/top_bar'); -%>
+            </div>
 
                 <div id="display-content">     <!-- phần hiển thị nội dung-->
 

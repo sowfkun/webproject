@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vie">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <link rel="stylesheet" type="text/css" href="CSS/module/filter.css">
+    <title>  </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    
+    <div id="list_brand">
+        <ul>
+            <% for(var i=0; i<menu.length;i++) { %> 
+                <li id="<%- menu[i].brand_name _%>" onclick="active('<%- menu[i].brand_name _%>')"> 
+                    <a href="/product/<%- menu[i].brand_name%>" style="text-decoration: none;" >
+                        <span> <%= menu[i].brand_name %> </span>
+                    </a>
+                    <ul class="sub_menu">
+                        <% for(var j=0; j<serie.length; j++) { %> 
+                          <%if (serie[j].brand_name == menu[i].brand_name) { %>
+                            <a href="/product/<%- serie[j].brand_name%>/<%- serie[j].serie%>"> <li> <%= serie[j].serie%></li> </a> 
+                          <%}%>
+                        <% } %>
+                    </ul>    
+                </li>
+            <% } %> 
+        </ul>
+
+        <script>
+
+            function active(brand_name){
+               localStorage.setItem('active', brand_name);
+            }
+        </script>
+
+        <script>
+
+            //hiển thị submenu  
+            $(".sub_menu").hide();           
+            $(document).ready(function () {
+                $("#list_brand li").hover(function () {
+                        $(this).children("ul.sub_menu").fadeIn({duration:200});
+                    }, function () {
+                        $(this).children("ul.sub_menu").fadeOut({duration:200});
+                    });
+                    });
+        </script>
+
+    </div>
+
+
+    <%#filter%>
+    <div id="filter"> 
+        <%- include('filter'); -%>
+    </div>
+
+
+    <!--Giỏ hàng-->
+    <div id="shopping-cart">        
+        <a href="/shopping">
+            <div>
+                <img src="/Resources/Icon/shopping-cart.png">
+                
+            </div>
+        </a>
+        <p id="cart-num"> </p>
+    </div>
+    <script>
+        var array = JSON.parse(window.localStorage.getItem('cart')) || []; 
+        var num = array.length;
+        $("#cart-num").text(num.toString());
+    </script>
+    
+    <div id="page-name">   
+        <p> <%= pagename %> </p>
+    </div>
+   
+</body>
+
+</html>
+    
