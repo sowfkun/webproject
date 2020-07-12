@@ -405,7 +405,7 @@ body{
     #bottom-field #follow-us{
         height: 40px;
         width: 55%;
-        background-image: url(../../../Resources/Images/followus_background.png);
+        background-image: url(../Resources/images/followus_background.png);
         background-repeat: no-repeat;
         margin: 0 auto;
         border-radius: 2px;
