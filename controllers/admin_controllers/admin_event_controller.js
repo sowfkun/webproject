@@ -284,6 +284,42 @@ module.exports.delete_event = function(req,res){
 }
 
 
+
+//set banner
+module.exports.set_banner = function(req,res){
+    var banner = req.body.set_banner;
+
+    var set_banner = `
+    UPDATE event 
+    SET banner = "true"
+    WHERE event_id = ?;
+    `
+    db.query(set_banner, banner, function(err, result, fields){
+        if(err) throw err;
+        console.log(" set banner thành công")
+    });
+
+    res.redirect('back');
+}
+
+//unset_banner
+module.exports.unset_banner = function(req,res){
+    var banner = req.body.unset_banner;
+
+    var unset_banner = `
+    UPDATE event 
+    SET banner = "false"
+    WHERE event_id = ?;
+    `
+    db.query(unset_banner, banner, function(err, result, fields){
+        if(err) throw err;
+        console.log(" unset banner thành công")
+    });
+
+     res.redirect('back');
+}
+
+
 // auto update thời gian diễn ra sự kiện 
 var schedule = require('node-schedule');
 var dateFormat = require('dateformat');
@@ -297,16 +333,18 @@ var j = schedule.scheduleJob(rule, function(){
   var date = dateFormat(getdate, "yyyy-mm-dd");
 
   var update_event =  `
+  SET SQL_SAFE_UPDATES = 0;
+
   UPDATE event 
   SET status = "đang diễn ra" 
-  WHERE date_start < '${date}' AND date_end > '${date}';
+  WHERE date_start <= '${date}' AND date_end >= '${date}';
 
   UPDATE event 
   SET status = "sắp diễn ra" 
   WHERE date_start > '${date}';
 
   UPDATE event 
-  SET status = "đã kết thúc" 
+  SET status = "đã kết thúc", banner = "false"
   WHERE date_end < '${date}';
   `
 
@@ -315,4 +353,3 @@ var j = schedule.scheduleJob(rule, function(){
     console.log("update event time");
   });
 });
-

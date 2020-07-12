@@ -20,9 +20,15 @@
     <%# content %>  
 
     <div id="display-content">
-        <ul>     
+        <ul style="">     
             <% for(var i=0; i<event.length; i++) {%> 
                 <li>
+                    <% if(event[i].banner == "true"){ %>
+                        <div>
+                            <img src="Resources/Icon/banner.png" height="100px" width="100px" style="position: absolute; right: 18px; margin-top: -12px;">
+                        </div>
+                        
+                    <% } %>
                     <div id="status"> <%- event[i].status.toUpperCase() %> (<%=event[i].date_start%> đến <%=event[i].date_end%>) </div>
 
                     <div id="khuyen_mai"> 
@@ -43,9 +49,21 @@
                                     <input type="hidden" name="event_id" value="<%=event[i].event_id%>">
                                     <button type="submit" class="btn" style="background-color: rgb(214, 43, 43);">Xóa</button>
                                 </form>
-                                
+
+                                <% if(event[i].status.toLowerCase() == "đang diễn ra" || event[i].status.toLowerCase() == "sắp diễn ra" ){ %>
+                                    <% if(event[i].banner == "true"){ %>
+                                        <form action="admin/event/unset_banner" method="POST">
+                                            <input id="unset_banner" type="hidden" name="unset_banner" value="<%-event[i].event_id_%>">
+                                            <button id="unset_banner_btn"  class="btn" type="submit" style="background-color: rgb(214, 43, 43); width: 150px;">Hủy đặt banner</button>
+                                        </form>
+                                    <% } else { %>
+                                        <form action="admin/event/set_banner" method="POST">
+                                            <input id="set_banner" type="hidden" name="set_banner" value="<%-event[i].event_id_%>">
+                                            <button id="set_banner_btn" style=" background-color: rgb(81, 81, 168); width: 150px;" class="btn" style="background-color: rgb(214, 43, 43);">Đặt làm banner</button>
+                                        </form>
+                                    <% } %>  
+                                <% } %> 
                             </div>
-                            
                         </div>
                     </div>
                 </li >

@@ -20,7 +20,8 @@ ORDER BY brand_name;
 
 SELECT *
 FROM event
-WHERE status='Đang diễn ra' OR status="sắp diễn ra";
+WHERE status='Đang diễn ra' OR status="sắp diễn ra"
+ORDER BY banner;
 
 
 `

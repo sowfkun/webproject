@@ -52,10 +52,19 @@
                 </div>
              
                 <div id="display-content">    
-
+                    
                     <div class="slide_banner">
-                        <img class="bannerSlides w3-center w3-animate-right" src="upload/images/banner.png">
-                        <img class="bannerSlides w3-center w3-animate-left" src="upload/images/banner2.png" >
+                        <% for(let i =0; i<event.length; i++){ %>
+                            <% if((event[i].banner == "true") && (i % 2 == 0 ) ){ %>
+                                <a href="/event/<%=event[i].url%> ">
+                                    <img class="bannerSlides w3-center w3-animate-right" height="300px" width="700px" src="upload/event_images/<%=event[i].img%> ">
+                                </a>
+                            <% } else if((event[i].banner == "true") && (i % 2 !== 0 )){ %>
+                                <a href="/event/<%=event[i].url%> ">
+                                    <img class="bannerSlides w3-center w3-animate-left" height="300px" width="700px" src="upload/event_images/<%=event[i].img%> ">
+                                </a>
+                            <% } %>   
+                        <% } %> 
                       </div> 
                       
                       <script>    
