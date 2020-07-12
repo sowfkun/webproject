@@ -60,7 +60,7 @@ passport.use(new passportgg(
     {
         clientID: "791603067804-e1ecpn9dnlu5bvqj1ea2dp88ec9j5d3j.apps.googleusercontent.com",
         clientSecret: "kqJHgImMTNlPjXw4W7O74i9G",
-        callbackURL: "https://localhost:3000/user/auth/gg/cb",
+        callbackURL: "https://lapcity.cf/user/auth/gg/cb",
     },
     (accessToken, refreshToken, profile, done) => {
         
@@ -100,7 +100,7 @@ passport.use(new passportfb(
     {
         clientID: "179978530073805",
         clientSecret: "50569e4e5085608a6132e727c3d731a0",
-        callbackURL: "https://localhost:3000/user/auth/fb/cb",
+        callbackURL: "https://lapcity.cf/user/auth/fb/cb",
         profileFields: ['email', 'displayName']
     },
     (accessToken, refreshToken, profile, done) => {
