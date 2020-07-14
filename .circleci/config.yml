@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@1.1.6
+
 jobs:
   build:
     executor:
@@ -9,7 +10,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install npm dependencies
+          name: Install npm Dependencies
           command: |
             npm install --save
       - run:
