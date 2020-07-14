@@ -1,19 +1,14 @@
-var app = require("../").app;
-var server = require("../").server;
-var request = require("supertest").agent(server);
+const app = require("../index");
+const supertest = require("supertest");
 
-describe("GET /", function () {
+describe("Home", () => {
+  after((done) => {
+    app.close(done);
+  });
 
-    after(function (done) {
-        server.close();
-        done();
-    });
-
-    it("expect status 200", function (done) {
-        request
-            .get("/")
-            .expect(200)
-            .end(done);
-    });
+  it("return status code 200", (done) => {
+    supertest(app)
+      .get("/")
+      .expect(200, done);
+  });
 });
-
