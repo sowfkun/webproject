@@ -197,7 +197,7 @@ body{
         
     display: flex;
     max-width: 1000px;
-    height: 1500px;
+    height: fit-content;
     margin: 0 auto;
     margin-top: -200px;
     background-color: white;

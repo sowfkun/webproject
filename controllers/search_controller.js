@@ -37,12 +37,17 @@ module.exports.search= (req, res) => {
           product.serie.toLowerCase().indexOf(keyword.toLowerCase()) !== -1 ||
           (keyword.toLowerCase().indexOf(product.brand_name.toLowerCase()) !== -1 && keyword.toLowerCase().indexOf(product.serie.toLowerCase()) !== -1);
         });
-        
+
+        if(productSearch.length == 0){
+          searchMess = "Không tìm thấy sản phẩm"
+        } else {
+          searchMess = ""
+        }
         console.log(productSearch);
         res.render('product_list', {
           title : "LapCity: Tìm kíếm",
           pagename: keyword.toUpperCase(),
-          searchMess: "Không tìm thấy sản phẩm",
+          searchMess: searchMess,
   
           serie: result[0],       //tìm những dòng sản phẩm khác nhau để truyền vào menu
           menu: result[1],        // tìm các thương hiệu khác nhau

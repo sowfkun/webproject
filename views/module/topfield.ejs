@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vie">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <link rel="stylesheet" type="text/css" href="CSS/module/filter.css">
+    <title>  </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div id="menu-bar"> 
+        <ul id="submenu">
+            <li> <a id="home_page" onclick="add_active('home_page')" href="/" title="Trang chủ"> Trang chủ</a> </li>
+            <li> <a id="about_us_page" onclick="add_active('about_us_page')" href="/about_us" title="Giới thiệu"> Giới thiệu</a> </li>
+            <li> <a id="event_page" onclick="add_active('event_page')" href="/event" title="Khuyến mãi"> Khuyến mãi</a> </li>
+            <li> <a id= "contact_page" onclick="add_active('contact_page')" href="/contact" title="Liên hệ"> Liên hệ</a> </li>
+        </ul>
+        
+        <script >
+            function add_active(page){
+               localStorage.setItem('page_active', page);
+            }
+            var id = "#" +  localStorage.getItem('page_active');
+            $(id).addClass("page_active");
+            $(".page_active").css({"text-decoration": "underline", "color": "rosybrown" })
+        </script>
+        
+       
+        <div id="sign-in" > 
+            <%- include('user_info'); -%>
+        </div> 
+        
+    </div>
+
+    <div id="logo"> LapCity</div>
+
+    <div id="search-bar">
+        <form action="/search" method="GET">
+            <button></button>
+            <input type="text" placeholder="Tìm kiếm..." name="keyword">
+        </form>
+    </div>
+</body>
+
+</html>
+    

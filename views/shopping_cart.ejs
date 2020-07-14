@@ -17,12 +17,20 @@
             <div id="menu-bar"> 
                
                 <ul id="submenu">
-                    <li> <a href="/" title="Trang chủ"> Trang chủ</a> </li>
-                    <li> <a href="/about_us" title="Giới thiệu"> Giới thiệu</a> </li>
-                    <li> <a href="/event" title="Khuyến mãi"> Khuyến mãi</a> </li>
-                    <li> <a href="/contact" title="Liên hệ"> Liên hệ</a> </li>
+                    <li> <a id="home_page" onclick="add_active('home_page')" href="/" title="Trang chủ"> Trang chủ</a> </li>
+                    <li> <a id="about_us_page" onclick="add_active('about_us_page')" href="/about_us" title="Giới thiệu"> Giới thiệu</a> </li>
+                    <li> <a id="event_page" onclick="add_active('event_page')" href="/event" title="Khuyến mãi"> Khuyến mãi</a> </li>
+                    <li> <a id= "contact_page" onclick="add_active('contact_page')" href="/contact" title="Liên hệ"> Liên hệ</a> </li>
                 </ul>
-           
+                
+                <script >
+                    localStorage.setItem('page_active', "");
+                    localStorage.setItem('active', "");
+                    
+                    function add_active(page){
+                       localStorage.setItem('page_active', page);
+                    }
+                </script>
                
                 <div id="sign-in" > 
                     <%- include('module/user_info'); -%>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/admin_css/admin_dashboard.css">
+    <title> LapCity </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head> 
+<body>
+    <%# menu %> 
+        
+    <div id="menu">
+            <%- include('admin_menu'); -%>
+    </div>
+
+    <%# content %>  
+    
+    <div id="display-content">
+        <%Saled_report.forEach(brand_name => { %>
+        <%# hiển thị dashboard %> 
+        <script>
+            alert(brand_name)
+        </script>
+        <div id ="chart" style="width: 350px; height: fit-content; margin-top: 10px; padding: 0px 0 10px 0; background-color:#eaeaea; float:left; margin-right: 20px;">
+            
+            <div id="name_product">
+                <h3><%=brand_name.brand_name%></h3>
+            </div>
+            
+            <canvas id=<%=brand_name.brand_name%>  width="150px" height="150px" ></canvas>
+            <script>
+                var ctx = document.getElementById('<%=brand_name.brand_name%>').getContext('2d');
+                    ctx.height = 100;
+                    var myChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Đã bán (<%=brand_name.total - brand_name.non_saled%>)', 'Chưa Bán (<%=brand_name.non_saled%>)'],
+                            
+                            datasets: [{ 
+                                label: '# of Votes',
+                                
+                                data: ['<%=brand_name.total - brand_name.non_saled%>','<%=brand_name.non_saled%>'],
+                                
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.5)',
+                                    'rgba(54, 162, 235, 0.5)'
+                                    
+                                ],
+                                
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                            
+                        },
+                        
+                        options: {
+                            maintainAspectRatio: false,
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            legend: {
+                                onClick: (e) => e.stopPropagation(),
+                                position: 'bottom',
+                                
+                            }
+                        },
+                    });
+                    
+                    </script>
+              
+            </div>
+            <%});%>
+        </div>
+    
+    </body>
+    </html>

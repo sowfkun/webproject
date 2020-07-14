@@ -12,34 +12,9 @@
 <body>
 
     <!-- Phần hình nền, menu-->
-        <div id="top-field" class="top-field">
-            <div id="menu-bar"> 
-               
-                <ul id="submenu">
-                    <li> <a style=" text-decoration: underline; color: rosybrown;" href="/" title="Trang chủ"> Trang chủ</a> </li>
-                    <li> <a href="/about_us" title="Giới thiệu"> Giới thiệu</a> </li>
-                    <li> <a href="/event" title="Khuyến mãi"> Khuyến mãi</a> </li>
-                    <li> <a href="/contact" title="Liên hệ"> Liên hệ</a> </li>
-                </ul>
-           
-
-
-                <div id="sign-in" > 
-                    <%- include('module/user_info'); -%>
-                </div> 
-            </div>
-
-                    <div id="logo">LapCity</div>
-
-                    <div id="search-bar">
-                        <form action="/search" method="GET">
-                            <button></button>
-                            <input type="text" placeholder="Tìm kiếm..." name="keyword">
-                        </form>
-                    </div>
-          
-
-        </div> 
+    <div id="top-field" class="top-field">
+        <%- include('module/topfield'); -%>
+    </div> 
 <!--Hết phần hình nền menu-->
 
 <!-- phần hiển thị nội dung và phần chân trang-->
@@ -50,7 +25,12 @@
                 <div id="top-bar" class="top-bar-container">
                     <%- include('module/top_bar'); -%>
                 </div>
-             
+                <script>
+                    localStorage.setItem('active', "");
+                </script>
+
+
+
                 <div id="display-content">    
                     
                     <div class="slide_banner">
@@ -95,8 +75,14 @@
                                     <% if(product[j].catalog_id == catalog[i].catalog_id){ %>
 
                                         <li class=" w3-center w3-animate-right">
-                                            <a href="/product/<%-product[j].brand_name_%>/<%-product[j].serie_%>/<%-product[j].ma_sku_%>">
-        
+                                            <a href="/product/<%-product[j].brand_name_%>/<%-product[j].serie_%>/<%-product[j].ma_sku_%>"
+                                                onclick="active('<%-product[j].brand_name_%>')">
+                                                <script>
+                                                    function active(brand_name){
+                                                    localStorage.setItem('active', brand_name);
+                                                 }
+                                                </script>
+                                                
                                                 <% var cpu = product[j].cpu.split(" ") %>
                                                 <% cpu = cpu[2] + " " + cpu[3]  %>  
                                                 <% var gpu = product[j].gpu.split(" ") %>
@@ -125,7 +111,6 @@
                                                         <td style="text-align: left;"><%=ram %></td>
                                                     </tr>
                                                 </table>
-                                                
                                             </a> 
                                         </li >
                                     <% } %>  

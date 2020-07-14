@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vie">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <link rel="stylesheet" type="text/css" href="CSS/project.css">
+    <link rel="stylesheet" type="text/css" href="CSS/other_page.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+    <!-- Phần hình nền, menu-->
+    <div id="top-field" class="top-field">
+        <%- include('module/topfield'); -%>
+    </div> 
+<!--Hết phần hình nền menu-->
+
+<!-- phần hiển thị nội dung và phần chân trang-->
+        <div id="bottom-field" class="bottom-container">
+
+            <div id="content-field" class="content-field-container">
+
+                <div id="top-bar" class="top-bar-container">
+                    <%- include('module/top_bar'); -%>
+                </div>
+                
+                <script>
+                    var page = '<%=pagename%>'
+                    if(page !== "Giới thiệu" && page !== "Liên hệ"){
+                        var id = "#" + localStorage.getItem("page_active");
+                        $(id).removeAttr("style");     
+                   }
+                </script>
+                <div id="display-content" >     <!-- phần hiển thị nội dung-->
+                    <div style="width: 100%; margin: 0 20px 0;">
+                        <%-content%>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- hết phần hiển thị nội dung-->
+
+            <!--liên kết đến các trang facebook, instagram...-->
+            <div id="follow-us" > 
+                <%- include('module/follow_us'); -%>
+            </div>
+
+            <!--hết phần liên kết đến các trang facebook, instagram...-->
+
+            <!--Phần footer để hiện thị địa chỉ của hàng, hotline ....-->
+
+            <div id="footer" class="footer-container">
+                <%- include('module/footer'); -%>
+            </div>
+
+
+        </div>
+   
+</body>
+</html>

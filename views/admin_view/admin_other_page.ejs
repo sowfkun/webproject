@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+    <link rel="stylesheet" type="text/css" href="CSS/admin_css/admin_menu.css">
+    <link rel="stylesheet" type="text/css" href="CSS/admin_css/admin_other_page.css">
+    <title> LapCity Admin </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    
+        <%# menu %> 
+        <div id="menu">
+            <%- include('admin_menu'); -%>
+        </div>
+    
+        <div id="display-content" style="padding: 20px;">
+
+            <div style="display: flex;">
+                <button class="btn" id="newpage" style="background-color: green; margin: 0 0 20px 0; width: 130px;">Tạo trang mới</button>
+               
+                <% if(type == "tragop"){ %> 
+                    <h2>Chính sách trả góp</h2>
+                <%} else if(type == "baohanh"){ %> 
+                    <h2>Chính sách bảo hành</h2>
+                <%} else if(type == "thanhtoan"){ %> 
+                    <h2>Phương thức thanh toán</h2>
+                <%} else if(type == "vanchuyen"){ %> 
+                    <h2>Chính sách vận chuyển</h2>
+                <%} else if(type == "gioithieu") {%> 
+                    <h2>Giới thiệu cửa hàng</h2>
+                <%} else if(type == "lienhe") {%> 
+                    <h2>thông tin liên hệ</h2>
+                <% } %> 
+            </div>
+
+            <form id="other_page_form" action="/admin/other_page_create" method="POST">
+                <div id="main_content_zone" class="zone">
+                    <input type="hidden" value="<%=type%>" name="type">
+                    <textarea name="main_content" id="main_content"></textarea>
+                    <script>
+                        CKEDITOR.replace( 'main_content',{
+                            height : 480  
+                        });
+                    </script>
+                </div>
+                <div style="width: fit-content; margin: auto;">
+                    <button id="create_event" class="btn" type="submit">Tạo</button>
+                </div>
+            </form>
+
+            <script>
+                //hiển thị submenu  
+                $("#other_page_form").hide(); 
+                          
+                $(document).ready(function () {
+                    $("#newpage").on('click',function () {
+                    if($("#other_page_form").is(":hidden")){
+                            $("#other_page_form").show();
+                            $("#list_page").hide();
+                            $("#newpage").text("Đóng");
+                            $("#newpage").css("background-color","red")
+                    } else {
+                            $("#other_page_form").hide();
+                            $("#list_page").show();
+                            $("#newpage").text("Tạo trang mới");
+                            $("#newpage").css("background-color","green")  
+                    }
+                    });
+                })
+            </script>
+
+            <div>
+                <ul id="list_page">
+                    <% for (let i = 0; i < list.length; i++) {%>
+                         <li>
+                             <% if(list[i].status == "active"){ %>
+                                <img src="Resources/Icon/tick.png" height="100px" width="100px" style="position: absolute; right: 27px; background-color: white; border: solid 1px green;">
+                                <% } %>  
+                            
+                            <div class="temp" style="width: 100%; height: 410px; overflow: auto; box-shadow: 0 0 40px rgb(211, 202, 202); 
+                             padding: 10px;">
+                                <%-list[i].content%>
+                            </div>
+                            <form class="form" action="/admin/update_page" method="POST" style="display: none;">
+                                <input type="hidden" name="page_id" value=<%-list[i].id%>>
+                                <textarea  name="update_content" id="content_<%=i%>" class="content"><%-list[i].content%></textarea>
+                                <script>
+                                    CKEDITOR.replace( 'content_<%=i%>',{
+                                        height : 306  
+                                    });
+                                </script>
+                                    <button id="post_update_<%=i%>" class="btn" type="submit" style=" float: left;">Cập nhật</button>
+                            </form>
+
+                            <button id="edit_<%=i%>" class="btn edit"  style="background-color: green; width: 120px; float: right;" type="button">Chỉnh sửa</button>
+                            
+                            <% if(list[i].status !== "active"){ %>
+                                <form action="/admin/active_page" method="POST">
+                                    <input type="hidden" name="page_id" value=<%-list[i].id%>>
+                                    <input type="hidden" name="page_type" value="<%=list[i].page_type%>">
+                                    <button id="" class="btn" type="submit" style="background-color: rgb(95, 153, 219); width: 150px; margin-right: 30px; float: right;" type="button">Đặt hiển thị</button>
+                                </form>
+                            <%}%>  
+                            
+                            
+                        </li>
+
+                        
+                    <%}%>
+
+                    <script>
+                        $(document).ready(function () {
+                                $(".edit").on('click',function () {
+                                    if($(this).siblings("form.form").is(":hidden")){
+                                        $(this).siblings("form.form").show();
+                                        $(this).siblings("div.temp").hide();
+
+                                        $(this).text("Hủy"),
+                                        $(this).css("background-color","red");
+                                   
+                                    } else {
+                                        $(this).siblings("form.form").hide();
+                                        $(this).siblings("div.temp").show();
+                                        $(this).text("Chỉnh sửa"),
+                                        $(this).css("background-color","green");
+
+                                        var content =  $(this).siblings("div.temp").html();
+                                        console.log(content);
+                                        var id = ($(this).siblings("form.form").children("textarea.content")[0]).getAttribute("id");
+                                        console.log(id);
+                                        CKEDITOR.instances[id].setData(content)
+                                    }
+                                });
+                            });
+                    </script>
+                </ul>
+            </div>
+        </div>
+
+</body> 
+</html>

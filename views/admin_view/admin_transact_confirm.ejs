@@ -185,6 +185,11 @@
                         <% if(transact[i].order_status.toLowerCase() == "đang giao hàng" ){ %>
                             <div style="width: fit-content; margin: auto; ">
                                 <form action="/admin/transact/delivering" method="POST">
+                                    <% for(let j = 0; j< transact_item.length; j++){ %> 
+                                        <% if(transact_item[j].order_id == transact[i].order_id){ %>
+                                            <input type="hidden" name="orderitem_id" value="<%-transact_item[j].id_%>">
+                                        <% } %> 
+                                    <% } %> 
                                     <input type="hidden" name="order_id" value="<%-transact[i].order_id_%> ">
                                     <button class="btn_confirm"> Xác nhận đã giao hàng</button>
                                 </form>

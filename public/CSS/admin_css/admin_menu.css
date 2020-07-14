@@ -58,7 +58,7 @@
    
 }
 
-#admin_menu .sub_menu a li{
+#admin_menu .sub_menu li{
    
     margin: 0px;
     padding: 0px;
@@ -68,7 +68,7 @@
     border-top: 1px solid #638aac;
 }
 
-#admin_menu .sub_menu a li:hover{
+#admin_menu .sub_menu li:hover{
     background-color: #3b5064 ;
 }
 

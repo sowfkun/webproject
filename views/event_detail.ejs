@@ -12,35 +12,9 @@
 <body>
 
     <!-- Phần hình nền, menu-->
-        <div id="top-field" class="top-field">
-            <div id="menu-bar"> 
-               
-                <ul id="submenu">
-
-                    <li> <a href="/" title="Trang chủ"> Trang chủ</a> </li>
-                    <li> <a href="/about_us" title="Giới thiệu"> Giới thiệu</a> </li>
-                    <li> <a href="/event" title="Khuyến mãi"> Khuyến mãi</a> </li>
-                    <li> <a href="/contact" title="Liên hệ"> Liên hệ</a> </li>
-                </ul>
-           
-                
-                <div id="sign-in" > 
-                    <%- include('module/user_info'); -%>
-                </div> 
-                 
-            </div>
-
-                    <div id="logo"> LapCity</div>
-
-                    <div id="search-bar">
-                        <form action="/search" method="GET">
-                            <button></button>
-                            <input type="text" placeholder="Tìm kiếm..." name="keyword">
-                        </form>
-                    </div>
-          
-
-        </div> 
+    <div id="top-field" class="top-field">
+        <%- include('module/topfield'); -%>
+    </div> 
 <!--Hết phần hình nền menu-->
 
 <!-- phần hiển thị nội dung và phần chân trang-->
