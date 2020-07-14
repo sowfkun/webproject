@@ -4,7 +4,7 @@ orbs:
   node: circleci/node@1.1.6
 
 jobs:
-  setup:
+  build:
     executor:
       name: node/default
     steps:
@@ -20,4 +20,4 @@ jobs:
 workflows:
   test-ci:
     jobs:
-      - setup
+      - build
