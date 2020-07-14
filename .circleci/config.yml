@@ -4,13 +4,13 @@ orbs:
   node: circleci/node@1.1.6
 
 jobs:
-  build:
+  setup:
     executor:
       name: node/default
     steps:
       - checkout
       - run:
-          name: Install npm Dependencies
+          name: Install npm dependencies
           command: |
             npm install --save
       - run:
@@ -20,4 +20,4 @@ jobs:
 workflows:
   test-ci:
     jobs:
-      - build
+      - setup
