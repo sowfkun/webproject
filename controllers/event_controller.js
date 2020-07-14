@@ -54,8 +54,6 @@ module.exports.event=function(req, res) {
     res.render('event_detail', {
       title : 'Sự kiện',
       pagename: 'SỰ KIỆN' + ' ' + event[0].status.toUpperCase(),
-    
-      
       serie: result[0],       
       menu: result[1],           
 

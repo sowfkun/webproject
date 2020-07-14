@@ -3,6 +3,7 @@ const router = express.Router();
 
 const adminController= require('../../controllers/admin_controllers/admin_controller')  // lấy kết quả từ controller
 const adminProductController = require('../../controllers/admin_controllers/admin_product_controller')
+const other_pageController = require('../../controllers/admin_controllers/admin_other_page')
 
 var multer  = require('multer');        //upload file
 
@@ -41,5 +42,9 @@ router.post('/product_create', upload.single('img'), adminProductController.ad_p
 router.post('/create_exist', adminProductController.ad_product_create_exist);
 
 
+router.get('/:page', other_pageController.other_page);
+router.post('/other_page_create', other_pageController.create);
 
+router.post('/active_page', other_pageController.active_page);
+router.post('/update_page', other_pageController.update_page);
 module.exports=router; 

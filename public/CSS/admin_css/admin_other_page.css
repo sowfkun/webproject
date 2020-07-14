@@ -1,0 +1,78 @@
+@charset "utf-8";
+
+
+@font-face{
+    font-family: balootamma2;
+    src: url(../../Resources/font/BalooTamma2-Regular.ttf);
+}
+
+@font-face {
+    font-family: audiowide;
+    src: url(../../Resources/font/Audiowide-Regular.ttf);
+}
+
+
+body{
+    display: flex;
+    flex-direction: row;
+    font-family: balootamma2;
+}
+
+#menu{
+    height: 100%;
+    position: fixed;
+}
+
+#display-content{
+    width: 80%;
+    margin-left: 300px;
+    font-family: balootamma2;
+}
+#event_form{
+    padding: 20px;
+}
+
+.input textarea{
+    font-size: 20px;
+}
+
+/*nội dung hoàn chỉnh*/
+#main_content_zone{
+    height: fit-content;
+}
+
+#main_content #cke_1_contents{
+    height: 355px;
+}
+
+/*btn tạo event*/
+.btn{
+    font-family: balootamma2;
+    border:none;
+    padding: 0 20px 0 20px;
+    font-weight: bold;
+    color: #ffffff;
+    width: fit-content;
+    height: 40px;
+    font-size: 15px;
+    background-color: #5e5ea7;
+    margin-top: 15px;
+}
+
+#display-content h2{
+    margin:0 50px;
+    color: tomato; 
+    font-family: balootamma2; 
+    font-weight: bold;
+}
+
+#list_page{
+    margin: 0;
+    padding: 0;
+}
+
+#list_page li{
+    margin: 0 0 100px 0;
+    padding: 0;
+    list-style: none;
+}

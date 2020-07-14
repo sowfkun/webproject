@@ -83,21 +83,17 @@ module.exports.new_confirm = function(req,res){
         if(err) throw err;
         
         //kiểm tra xem id nhập vào có phải thuộc mã máy cần bán hay không
-        for (let i = 0; i < input.length -1; i++) {
-
+        for (let i = 0; i < input.length; i++) {
+            var flag = 0; //không tìm thấy
             var item = JSON.parse(input[i]);
-
             var product_id = parseInt(item.product_id);
             var ma_may = item.ma_may;
-
-            var flag = 0; //không tìm thấy
             for(let j =0; j < result.length; j++){
                 if(product_id == result[j].product_id && ma_may == result[j].ma_sku){
                     flag = 1; //tìm thấy
                     break;
                 } 
             }
-
             // nếu có một input không hợp lệ thì báo lỗi
             if(flag == 0){
                 console.log(`id thứ ${i} không khớp`);
@@ -107,7 +103,7 @@ module.exports.new_confirm = function(req,res){
                 console.log(`id thứ ${i} trùng khớp`);
             }
         }
-
+      
         //các input đã hợp lệ
         for (let i = 0; i < input.length; i++) {
             var item = JSON.parse(input[i]);
@@ -118,7 +114,7 @@ module.exports.new_confirm = function(req,res){
             
             var confirm = `
             UPDATE product 
-            SET orderitem_id =  ${orderitem_id}, tinh_trang = 'đã bán'
+            SET orderitem_id =  ${orderitem_id}
             WHERE product_id = ${product_id};
             
             UPDATE orders
@@ -187,23 +183,45 @@ module.exports.transact_delivering = function(req,res){
 // xác nhận đã giao hàng
 module.exports.confirm_delivered = function(req,res){
 
-    var order_id = req.body.order_id;
+    var order_id = parseInt(req.body.order_id);
+    var orderitem_id = req.body.orderitem_id;
     
+    console.log(typeof orderitem_id);
     if(isNaN(order_id) == true){
          res.redirect('back');
          return;
     }
-
-    var confirm = `UPDATE orders 
-    SET order_status = "Giao dịch hoàn tất", finishdate = current_timestamp 
-    WHERE order_id = ?`
     
-    db.query(confirm, order_id, function(err, result, fields) {
+    var confirm = `UPDATE orders 
+    SET order_status = "Giao dịch hoàn tất", finishdate = current_timestamp
+    WHERE order_id = ?;
+    `
+    db.query(confirm, [order_id], function(err, result, fields) {
         if (err) throw err;
         console.log('đã giao dịch thành công')
     });
 
-     res.redirect('back');
+    var confirm_product =`
+    UPDATE product 
+    SET tinh_trang = 'đã bán'
+    WHERE orderitem_id = ?;
+    `
+
+    if(typeof orderitem_id == "object"){
+        for(let i = 0; i<orderitem_id.length; i++){
+            db.query(confirm_product, parseInt(orderitem_id[i]), function(err, result, fields) {
+                if (err) throw err;
+                console.log('update tinh trạng đã bán')
+            });
+        }
+    } else{
+        db.query(confirm_product, parseInt(orderitem_id), function(err, result, fields) {
+            if (err) throw err;
+            console.log('update tinh trạng đã bán')
+        });
+    }
+   
+    res.redirect('back');
 };
 
 

@@ -33,7 +33,6 @@ module.exports.index = function(req, res) {
       res.render('home', {
         title : 'LapCity Trang Chủ',
         pagename: 'Trang chủ',
-        
         catalog: result[0],
         product: result[1],
         
