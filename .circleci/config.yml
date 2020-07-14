@@ -1,13 +1,21 @@
 version: 2.1
+orbs:
+  node: circleci/node@1.1.6
 jobs:
   build:
-    docker:
-      - image: circleci/node:13.12.0
-    
+    executor:
+      name: node/default
     steps:
       - checkout
-      - run: npm install
-      - run: npm test
-
-           
-          
+      - run:
+          name: Install npm dependencies
+          command: |
+            npm install --save
+      - run:
+          name: Run Unit Tests
+          command: |
+            run: npm test
+workflows:
+  test-ci:
+    jobs:
+      - build
