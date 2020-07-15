@@ -21,6 +21,9 @@ jobs:
     executor:
       name: node/default
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "c0:e6:e6:74:ac:0e:ad:1e:9e:cf:b9:78:63:ff:96:1e"
       - checkout
       - run:
           name: Deploy over SSH
