@@ -20,8 +20,8 @@ jobs:
     deployment:
       production:
         branch: master
-          commands:
-            - scp -r sowfkun/webproject sowfkun@13.67.61.14:/home/sowfkun/lapcity/webproject
+          command:  |
+            scp -r sowfkun/webproject sowfkun@13.67.61.14:/home/sowfkun/lapcity/webproject
 workflows:
   test-ci:
     jobs:
