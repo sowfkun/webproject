@@ -19,7 +19,7 @@ jobs:
             npm test
     deployment:
       production:
-        branch: master
+        - branch: master
         - run:
             name: Update code on Server
             command:  |
