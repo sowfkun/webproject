@@ -18,10 +18,9 @@ jobs:
           command: |
             npm test
   deploy:
+    executor:
+      name: node/default
     steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "e9:93:45:b9:d9:88:ae:b7:b3:e3:66:bf:d2:2e:7c:6f"
       - checkout
       - run:
           name: Deploy over SSH
@@ -33,3 +32,6 @@ workflows:
       - deploy:
           requires:
             - build
+          filters:
+            branches:
+              only: master
