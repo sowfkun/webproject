@@ -27,7 +27,7 @@ jobs:
             - "c0:e6:e6:74:ac:0e:ad:1e:9e:cf:b9:78:63:ff:96:1e"
       - run:
           name: Deploy over SSH
-          command: ssh -i sowfkun@13.67.61.14 "cd /home/sowfkun/lapcity/webproject; git fetch; git commit -m 'update code when master change'; git merge ";
+          command: ssh -v sowfkun@13.67.61.14 "cd /home/sowfkun/lapcity/webproject; git fetch; git commit -m 'update code when master change'; git merge ";
 workflows:
   test-ci:
     jobs:
