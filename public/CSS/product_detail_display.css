@@ -224,7 +224,7 @@
 
 #product-khac{
 
-    height: 420px;
+    height: 350px;
     margin: 20px;
     border: 2px solid #b7b7b7;
     padding: 10px;
@@ -257,7 +257,7 @@
 #product-khac ul li{
 
     width: 33.333%;
-    height: 330px;
+    height: 275px;
     list-style: none;
     margin-bottom: 10px;
 }

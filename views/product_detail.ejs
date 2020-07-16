@@ -244,14 +244,34 @@
                             <% for(var i=0; i< productSame.length; i++) { %>
                                 <li class=" w3-center w3-animate-right">
                                     <a href="/product/<%- productSame[i].brand_name_%>/<%- productSame[i].serie_%>/<%- productSame[i].ma_sku _%>" >
-                                        <img src="upload/images/<%=productSame[i].img%>">
-                                        <p id="ma_sku"><%= productSame[i].ma_sku%></p>
-                                        <p id="cpu"><%= productSame[i].cpu%></p>
-                                        <p id="gpu"><%= productSame[i].gpu%></p>
-                                        <p id="ram"><%= productSame[i].ram%></p>
-                                        <p id="ssd"><%= productSame[i].ssd%></p>
-                                        <p id="hdd"><%= productSame[i].hdd%></p>
-                                        <p id="gia"><span style="color: tomato; font-weight: bold;"><%= productSame[i].discount_price.toLocaleString()%> đ</span></p>
+                                        <% var cpu = product[i].cpu.split(" ") %>
+                                        <% cpu = cpu[2] + " " + cpu[3]  %>  
+                                        <% var gpu = product[i].gpu.split(" ") %>
+                                        <% gpu = gpu[0] + " " + gpu[2] + " " + gpu[3]  %>  
+                                        <% var ram = product[i].ram.split(" ") %>
+                                        <% ram = ram[0] + " " + ram[1]%>
+                                        <% var hdd = product[i].hdd.split(" ") %>
+                                        <% hdd = hdd[0] + " HDD"%>
+                                        <% var ssd = product[i].ssd.split(" ") %>
+                                        <% ssd = ssd[0] + " SSD"%>
+                                                
+                                        <img src="upload/images/<%= product[i].img %>">
+                                        <p id="name" style="font-weight: bold; color: tomato;"> <%= product[i].brand_name%> <%-product[i].serie%> <%= product[i].ma_sku %> </p>
+                                        <p id="gia"><span style="color: tomato; margin: 0px ; font-weight: bold;"><%= product[i].discount_price.toLocaleString() %> đ</span></p>
+                                        <table style="margin: auto; margin-top: -10px;">
+                                          <tr>
+                                            <td style="width: 30%;">CPU:</td>
+                                            <td style="text-align: left;"><%=cpu %></td>
+                                          </tr>
+                                          <tr>
+                                            <td>GPU:</td>
+                                              <td><%=gpu %></td>
+                                            </tr>
+                                            <tr>
+                                              <td>RAM:</td>
+                                              <td style="text-align: left;"><%=ram %></td>
+                                            </tr>
+                                          </table>
                                     </a>
                                 </li >
                             <% } %> 
