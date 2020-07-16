@@ -183,6 +183,6 @@ app.use('/admin/event', ad_event_router);     //router giao dich
 // });
 
 var server = app.listen(8080, () => {
-    console.log(`Server started on port`);
+    console.log(`Server started on port ${port}`);
 });
 module.exports = server;

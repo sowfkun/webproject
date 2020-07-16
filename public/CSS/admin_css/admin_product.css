@@ -221,6 +221,16 @@ body{
     text-align: left;
     flex-grow: 14;
 }
+#header h6{
+    margin: 0px;
+    color: rgb(163, 27, 3);
+    font-family: balootamma2;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 40px;
+    text-align: left;
+    flex-grow: 14;
+}
 
 #header button{
     height: 35px;
