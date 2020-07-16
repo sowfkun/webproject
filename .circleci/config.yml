@@ -27,7 +27,7 @@ jobs:
       - run: ssh-keyscan 13.67.61.14 >> ~/.ssh/known_hosts
       - run:
           name: Deploy over SSH
-          command: ssh sowfkun@13.67.61.14 "cd /home/sowfkun/lapcity/webproject; git fetch; git commit -m 'update code when master change'; git merge ";
+          command: ssh sowfkun@13.67.61.14 "cd /home/sowfkun/lapcity/webproject; git fetch; git commit -m 'update code when master change'; git merge; docker restart node;";
 workflows:
   test-ci:
     jobs:
