@@ -5,10 +5,16 @@
     font-family: balootamma2;
     src: url(../Resources/font/BalooTamma2-Regular.ttf);
 }
-#top-field #search-bar button{
 
-    height: 20px;
-    width: 20px;
+#top-field #search-bar input{
+    height: 38px;
+    width: 39%;
+}
+
+#top-field #logo{
+
+    line-height: 85px;
+
 }
 #bottom-field{
 
@@ -20,7 +26,7 @@
 }
 #display-content{
     
-    width: 1000px;
+    width: 100%;
     height: fit-content;
     border-top: solid #d7d3dc ;
     border-width: 2px;
@@ -43,7 +49,6 @@
     margin: 0 auto;
     margin-top: 20px;
  
-
 }
 
 
@@ -82,7 +87,6 @@
 }
 
 .show_laptop ul li{
-
 
     width: 33.333%;
     padding: 0px 30px 0 30px;
@@ -195,14 +199,390 @@
 }
 /*reponsive*/
 
+
+
+@media only screen and (max-width: 360px){
+
+    #top-field{
+        max-width: 360px;
+        height: 128px;
+        background-size: cover;
+    }
+    #top-field #search-bar input{
+        margin-top: 15px;
+        height: 22px;
+        font-size: 8px;
+        padding-left: 30px;
+    }
+    #menu-bar #sign-in{
+        line-height: 30px;
+    }
+    #sign-in #username{
+        font-size: 10px;
+    }
+    #content-field #top-bar{
+        width: 100%;
+        margin-left: 2px;
+        height: 50px;
+    }
+
+    #list_brand{
+        height: 25px;
+        width: 66%;
+    }
+    #list_brand ul li{
+        line-height: 25px;
+        padding: 0 10px 0 10px;
+        font-size: 8px;
+    }
+    #filter{
+        height: 25px;
+        width: 15%;
+    }
+
+    #filter div{
+        padding: 0px;
+    }
+    #filter img {
+        height: 25px;
+        width: 50px;
+        padding: 3px 0 6px 5px;
+    }
+    #shopping-cart{
+        height: 30px;
+        width: 16%;
+    }
+    #shopping-cart div{
+        padding: 0 0 0 7px;
+    }
+    #shopping-cart img {
+        height: 20px;
+        width: 50px;
+    }
+    #cart-num {
+        height: 11px;
+        top: -22px;
+        width: 7px;
+        right: -7px;
+        font-size: 8px;
+    }
+    #top-bar #page-name {
+        height: 25px;
+    }
+    #top-bar #page-name p {
+        line-height: 25px;
+    }
+    .slide_banner{
+        width: 100%;
+        height: 150px;
+    }
+    .slide_banner img{
+        width: 100%;
+        height: 100%;
+    }
+
+    .show_laptop h2{
+        font-size: 10px;
+    }
+    #list_brand ul li {
+        padding: 0 10px 0 10px;
+    }
+    #display-content ul li{
+        height: 225px;
+    }
+    .show_laptop ul li p{
+        font-size: 8px;
+        margin-top: -5px;
+    }
+    .show_laptop td{
+        font-size: 8px;
+    }
+    .show_laptop ul li img {
+        width: 90px;
+    }
+    #display-content ul li {
+        height: 170px;
+    }
+    #status{
+        font-size: 15px;
+    }
+
+    .khuyenmai_slide {
+        height: 200px;
+    }
+    #khuyen_mai {
+        height: fit-content;
+    }
+   
+    #image div {
+        margin: 0px auto;
+        padding: 20px;
+        margin-top: 20px;
+    }
+    #image img {
+        height: 100%;
+    }
+    #title {
+        padding: 0px 10px 0 10px;
+        font-size: 8px;
+        height: fit-content;
+        line-height: 15px;
+    }
+    #content {
+        font-size: 8px;
+        height: fit-content;
+    }
+    #khuyenmai_info{
+        margin: 40px 20px 0 0;
+        max-height: 250px;
+        height: fit-content;
+        margin-bottom: 20px;
+    }
+    #viewmore {
+        height: fit-content;
+    }
+    #viewmore a {
+        font-size: 8px;
+        height: fit-content;
+    }
+
+    #event {
+        height: fit-content;
+    }
+    #event ul li{
+        height: fit-content;
+    }
+    #status {
+        font-size: 10px;
+    }
+    #bottom-field{
+        height: 2302px;
+    }
+
+}
+@media only screen and (max-width: 480px) and (min-width:361px){
+
+    #top-field{
+        max-width: 480px;
+        height: 171px;
+        background-size: cover;
+    }
+    #top-field #search-bar input{
+        margin-top: 15px;
+        height: 18px;
+        font-size: 10px;
+        padding-left: 30px;
+    }
+    #content-field #top-bar{
+        width: 100%;
+        margin-left: 2px;
+        height: 60px;
+    }
+
+    #list_brand{
+        height: 30px;
+    }
+    #list_brand ul li{
+        line-height: 30px;
+        padding: 0 15px 0 15px;
+        font-size: 10px;
+    }
+    #filter{
+        height: 30px;
+        width: 15%;
+    }
+
+    #filter div{
+        padding: 5px;
+    }
+    #filter img {
+        height: 25px;
+        width: 50px;
+        padding: 0 0 7px 5px;
+    }
+    #shopping-cart{
+        height: 30px;
+        width: 16%;
+    }
+    #shopping-cart div{
+        padding: 0 0 0 7px;
+    }
+    #shopping-cart img {
+        height: 20px;
+        width: 50px;
+        margin-left: 5px;
+    }
+    #cart-num{
+        height: 11px;
+        top: -22px;
+        right: -10px;
+        font-size: 10px;
+    }
+    #top-bar #page-name {
+        height: 40px;
+    }
+    .slide_banner{
+        width: 100%;
+        height: 200px;
+    }
+    .slide_banner img{
+        width: 100%;
+        height: 100%;
+    }
+    .show_laptop h2{
+        font-size: 15px;
+    }
+    #list_brand ul li {
+        padding: 0 10px 0 10px;
+    }
+    #display-content ul li{
+        height: 225px;
+    }
+    .show_laptop ul li p{
+        font-size: 12px;
+    }
+    .show_laptop td{
+        font-size: 12px;
+    }
+    .show_laptop ul li img {
+        width: 120px;
+    }
+    #status{
+        font-size: 15px;
+    }
+
+    .khuyenmai_slide {
+        height: 200px;
+    }
+    #khuyen_mai {
+        height: fit-content;
+    }
+   
+    #image div {
+        margin: 0px auto;
+        padding: 20px;
+        margin-top: 20px;
+    }
+    #image img {
+        height: 100%;
+    }
+    #title {
+        font-size: 12px;
+        height: fit-content;
+        line-height: 16px;
+    }
+    #content {
+        font-size: 8px;
+        height: fit-content;
+    }
+    #khuyenmai_info{
+        margin: 40px 20px 0 0;
+        max-height: 250px;
+        height: fit-content;
+        margin-bottom: 20px;
+    }
+    #viewmore {
+        height: fit-content;
+    }
+    #viewmore a {
+        font-size: 8px;
+        height: fit-content;
+    }
+    #event ul li{
+        height: fit-content;
+    }
+    #event {
+        height: fit-content;
+    }
+    #status {
+        font-size: 10px;
+    }
+    #bottom-field{
+        height: 2470px;
+    }
+}
+
+@media only screen and (max-width: 768px) and (min-width:481px){
+    #top-field{
+        max-width: 768px;
+        height: 274px;
+        background-size: cover;
+    }
+    #image-filter {
+        padding: 0px;
+    }
+    .slide_banner{
+        width: 100%;
+    }
+    .slide_banner img{
+        width: 100%;
+    }
+    #shopping-cart div {
+        padding: 5px;
+    }
+
+    #content-field #top-bar{
+        width: 100%;
+        margin-left: 2px;
+        height: 80px;
+    }
+
+    #list_brand{
+        height: 40px;
+      
+    }
+    #list_brand ul li{
+        line-height: 40px;
+        padding: 0 15px 0 15px;
+        font-size: 20px;
+    }
+    #filter{
+        height: 40px;
+        width: 15%;
+    }
+
+    #filter div{
+        padding: 5px;
+    }
+    #filter img {
+        height: 30px;
+        width: 60px;
+    }
+    #shopping-cart{
+        height: 40px;
+        width: 16%;
+    }
+    #shopping-cart img {
+        height: 30px;
+        width: 80px;
+        margin-left: 5px;
+    }
+    #cart-num{
+        height: 20px;
+        top: -40px;
+        right: -10px;
+    }
+
+    .show_laptop ul li {
+        width: 46.333%;
+        margin: 0 10px 20px 10px;
+    }
+
+    #bottom-field{
+        height: 2702px;
+    }
+}
+
+
 @media only screen and (max-width: 1024px) and (min-width:769px){
 
 #display-content{
     max-width: 1024px;
     min-height: 1730px;
 }
-    
+.show_laptop ul li{
+    width: 47.333%;
+    margin: 0 10px 20px 10px;
 
-
-
+}
 }

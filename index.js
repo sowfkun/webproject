@@ -159,9 +159,9 @@ app.use('/filter', userCheck.userCheck, filterRouter);
 
 //Admin router
 
-app.use('/admin', adminRouter);     //bao gồm product
-app.use('/admin/transact', ad_transact_router);     //router giao dich
-app.use('/admin/event', ad_event_router);     //router giao dich
+app.use('/admin', userCheck.adminCheck ,adminRouter);     //bao gồm product
+app.use('/admin/transact', userCheck.adminCheck, ad_transact_router);     //router giao dich
+app.use('/admin/event', userCheck.adminCheck, ad_event_router);     //router giao dich
 
 // const fs = require('fs')
 

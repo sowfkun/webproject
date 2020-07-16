@@ -82,6 +82,7 @@ body{
     width: fit-content;
     float: right;
     margin-top: 10px;
+    line-height: 50px;
     
 }
     
@@ -938,20 +939,14 @@ body{
     }
     #bottom-field #footer #right #cong-thuong img{
     
-    
         width: 80px;
         height: auto;
-      
     }
     
     #bottom-field{
         height: 1700px;
     }
     }
-
-
-
-
     
 @media only screen and (max-width: 480px) and (min-width:361px){
 
@@ -970,18 +965,20 @@ body{
         
     }
     
-    
+    #sign-in #username{
+        font-size: 15px;
+        line-height: 30px;
+    }
     /*search-bar*/
     
     #top-field #search-bar input{
      
         margin-top: 15px;
-        height: 15px;
+        height: 22px;
         font-size: 10px;
         padding-left: 30px;
     
     }
-    
     
     #top-field #search-bar button{
     
@@ -1048,60 +1045,8 @@ body{
         font-size: 10px;
         width: 44px;
         height: 25px;
-      
-       
-    
     }
-    /*bộ lọc*/
-    #content-field #filter{
-       
-        width: 12%;
-        height: 25px;
-        margin: 0px;
-        float: left;
    
-        border-right: 1px solid  #d7d3dc;
-    }
-    #content-field #filter button{
-        padding: 0px;
-    }
-    #content-field #filter button img{
-    
-        margin-left: 1px;
-        margin-top: 7px;
-        height: 10px;
-        width: 10px;
-    }
-    #content-field #filter button p{
-    
-        font-size: 10px;
-        margin-top: 5px;
-    }
-    /*giỏ hàng*/
-    #content-field #shopping-cart{
-    
-        width: 13%;
-        height: 25px;
-        border: none;
-        float: right;
-     
-        border: 1px solid  #d7d3dc;
-    }
-    
-    #top-bar #shopping-cart button p{
-    
-        font-size: 10px;
-        margin-top: 7px;
-        line-height: 10px;
-        
-    }
-    
-    #top-bar #shopping-cart button img{
-        margin-left: 0px;
-        height: 10px;
-        width: 10px;
-        margin-top: 5px;
-    }
     #top-bar #page-name{
     
         height: 25px;
@@ -1270,10 +1215,6 @@ body{
 }
 
 
-
-
-
-
 @media only screen and (max-width: 768px) and (min-width:481px){
 
 
@@ -1283,6 +1224,9 @@ body{
     background-size: cover;
 }
 
+#sign-in #username{
+    font-size: 15px;
+}
 /*logo*/
 
 #top-field #logo{
@@ -1326,11 +1270,7 @@ body{
     margin-top: 0px;
 }
 
-#content-field #top-bar{
-    
-    width: 100%;
-    margin-left: 2px;
-}
+
 
 /*các thương hiệu*/
 #content-field #brand-name{
@@ -1368,14 +1308,7 @@ body{
     margin-top: 12px;
 }
 /*giỏ hàng*/
-#content-field #shopping-cart{
 
-    width: 17%;
-    border: none;
-    float: right;
-    border-right:none;
-    border: 1px solid  #d7d3dc;
-}
 
 #top-bar #shopping-cart button p{
 
@@ -1395,8 +1328,6 @@ body{
 /*nội dung chính*/
 #display-content ul li{
 
-    width: 97%;
-    margin: 0 10px 20px 10px;
    height: 400px;
 }
 
@@ -1432,7 +1363,7 @@ body{
 /*đưa left lên trên*/
 #bottom-field #footer #left{
 
-    width:100%;
+    width: 100%;
     height: 320px;
     text-align: center ;
 }
@@ -1517,14 +1448,10 @@ body{
 }
 
 
-
-
-
 @media only screen and (max-width: 1024px) and (min-width:769px){
 
 
     #top-field{
-        
         max-width: 1024px;
         height: 365px;
         background-size: contain;
@@ -1535,8 +1462,6 @@ body{
         font-size: 50px;
         margin-top: 20px;
     }
-    
-    
      /*search bar*/
     #top-field #search-bar input{
     
@@ -1562,6 +1487,11 @@ body{
     
         width: 98%;
         margin: 0 10px 0 10px;
+    }
+
+
+    #cart-num{
+        top: -50px;
     }
     #content-field #brand-name{
         width: 65%;
@@ -1589,7 +1519,7 @@ body{
     /*giỏ hàng*/
     #content-field #shopping-cart{
     
-        width: 18%;
+        width: 16%;
       
     }
     
@@ -1600,14 +1530,6 @@ body{
     
     #top-bar #shopping-cart button img{
         margin-left: 0px;
-    }
-    
-    
-    /*nội dung sản phẩm*/
-    #display-content ul li{
-    
-        width: 97%;
-        margin: 0 10px 20px 10px;
     }
     
     #display-content ul li #product-info h2{

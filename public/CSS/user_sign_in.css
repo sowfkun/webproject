@@ -5,7 +5,10 @@
     src: url(../Resources/font/BalooTamma2-Regular.ttf);
 }
 
-
+@font-face{
+    font-family: audiowide;
+    src: url(../Resources/font/Audiowide-Regular.ttf);
+}
 html{
     
     background-image: url("../Resources/images/background_sign_in.png");
