@@ -83,7 +83,7 @@ module.exports.sign_in= (req, res) => {
     });
 };
   
-var sqlsignin=`SELECT password FROM customer where email = ?;`
+var sqlsignin=`SELECT password, usertype FROM customer where email = ?;`
 module.exports.sign_inPost= (req, res) => {     
   
     var email = injection.checkemail(req.body.email);
@@ -114,12 +114,20 @@ module.exports.sign_inPost= (req, res) => {
             return;
         }
 
-        res.cookie('email', email,{
-            signed: true
-        });
-
-        res.clearCookie('mess')     //xóa mess thông báo đăng kí tài khoản thành công
-        res.redirect('/');
+        if(result[0].usertype == "admin"){
+            res.cookie('ad_email', email,{
+                signed: true
+            });
+            res.clearCookie('mess')     //xóa mess thông báo đăng kí tài khoản thành công
+            res.redirect('/admin/');
+        } else {
+            console.log(1);
+            res.cookie('email', email,{
+                signed: true
+            });
+            res.clearCookie('mess')     //xóa mess thông báo đăng kí tài khoản thành công
+            res.redirect('/');
+        }
     });
 
 };
@@ -176,6 +184,7 @@ module.exports.update_user = (req,res) => {
     });
 
     res.clearCookie('email');
+    res.clearCookie('ad_email');
 
     res.cookie('email', email,{
         signed: true
@@ -230,6 +239,11 @@ module.exports.update_password = (req,res) => {
 module.exports.sign_out= (req, res) => {
     
     res.clearCookie('email');
+    res.clearCookie('ad_email');
     res.clearCookie('connect.sid');
     res.redirect('/user/sign-in');
 }
+
+
+//admin login
+

@@ -27,7 +27,7 @@ ORDER BY banner;
 `
 module.exports.index = function(req, res) {
     
-
+    res.clearCookie('mess')   
     db.query(sql, function (err, result, fields) {
       if (err) throw err;
       res.render('home', {

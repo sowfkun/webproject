@@ -16,7 +16,7 @@ router.get('/event/:url', eventController.event);
 
 router.get('/search/', searchController.search);         //tìm kiếm sản phẩm
 
-
+//các trang phụ
 router.get('/about_us', other_pageController.about_us);
 router.get('/contact', other_pageController.contact);
 router.get('/tragop', other_pageController.tragop);

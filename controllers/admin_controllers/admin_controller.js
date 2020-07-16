@@ -23,7 +23,6 @@ module.exports.admin_home = (req,res) => {
         result[1].forEach(element => {
             sum_money += element.sum;
         });
-        console.log(result);
         res.render('admin_view/admin_dashboard',{
             count : (result[0])[0].count,
             Saled_report: (result[1]),
