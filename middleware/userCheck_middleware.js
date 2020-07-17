@@ -34,7 +34,11 @@ module.exports.userCheck= function(req,res,next){
 
     if(!req.signedCookies.email && req.user){
         
-        if(req.user.usertype == "admin") next();
+        if(req.user.usertype !== "admin") {
+            res.locals.user = req.user;
+            res.locals.user_id = req.user.user_id;
+            next();
+        }
     }
 }
 
@@ -57,9 +61,16 @@ module.exports.adminCheck= function(req,res,next){
                 return;
             }
     
-            res.locals.user = user;
-            res.locals.user_id = user.user_id;
             next();
         });
+    }
+
+    if(!req.signedCookies.email && req.user){
+        
+        if(req.user.usertype == "admin") {
+            res.locals.user = "";
+            res.locals.user_id = "";
+            next();
+        }
     }
 }
