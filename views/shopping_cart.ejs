@@ -308,10 +308,25 @@
             
             <script>    //set item và số lượng vào iput item
                     function update(id){
-                        new_quantity = $("#quantity_"+id).val();
+                        new_quantity = $("#quantity_" + id).val();
 
-                        var item_conlai = window.localStorage.getItem('cart') || []; 
-                        
+                        var item_conlai = JSON.parse(window.localStorage.getItem('cart')) || []; 
+
+                        if(new_quantity <= 0){
+                            alert("Số lượng sản phẩm tối thiểu là 1");
+                            new_quantity = 1;
+                        } else if(new_quantity > 10){
+                            alert("Vui lòng liên hệ Hotline: 098xxxxx để mua hàng số lượng lớn");
+                            new_quantity = 1;
+                        } else {
+                            if(new_quantity > item_conlai[id].conlai && item_conlai[id].conlai < 10){
+                                alert("Số lượng máy còn lại là: " + item_conlai[id].conlai + " máy");
+                                new_quantity = item_conlai[id].conlai;
+                            } else {
+                                new_quantity = new_quantity;
+                            }
+                        }
+
                         item[id].quantity = new_quantity;
                         localStorage.setItem('cart', JSON.stringify(item));
                         show_cart(item);
