@@ -68,8 +68,8 @@ module.exports.adminCheck= function(req,res,next){
     if(!req.signedCookies.email && req.user){
         
         if(req.user.usertype == "admin") {
-            res.locals.user = "";
-            res.locals.user_id = "";
+            res.locals.user = {};
+            res.locals.user_id = 0;
             next();
         }
     }
