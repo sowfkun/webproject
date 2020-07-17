@@ -121,7 +121,7 @@ module.exports.product_serie= (req, res) => {
        return;
     }
   
-      db.query(sql,[serie, ma_sku, serie, brand, ma_sku], function (err, result, fields) {
+      db.query(sql,[serie, ma_sku, ma_sku], function (err, result, fields) {
         if (err) throw err;
         var productdetail =  result[3].filter(function(product) {  //lọc những product theo serie
           return product.ma_sku.toLowerCase() == ma_sku ;
@@ -157,7 +157,7 @@ module.exports.product_serie= (req, res) => {
         }
 
 
-        console.log(final_event[index]);
+        console.log((result[5])[0].conlai);
         res.render('product_detail', {
           title : "LapCity",
           pagename: brand.toUpperCase() + ' ' + serie.toUpperCase(),

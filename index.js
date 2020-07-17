@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express()
-const port = 3000;
 
 //import router
 const homeRoute= require('./routers/home_router')       //router home
@@ -181,8 +180,8 @@ app.use('/admin/event', userCheck.adminCheck, ad_event_router);     //router gia
 // Server.listen(port, () => {
 //     console.log(`Server started on port ${port}`);
 // });
-
-var server = app.listen(8080, () => {
+const port = 8080;
+var server = app.listen(port, () => {
     console.log(`Server started on port ${port}`);
 });
 module.exports = server;
