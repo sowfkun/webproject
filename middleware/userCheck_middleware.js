@@ -34,43 +34,9 @@ module.exports.userCheck= function(req,res,next){
 
     if(!req.signedCookies.email && req.user){
         
-        if(req.user.usertype !== "admin") {
-            res.locals.user = req.user;
-            res.locals.user_id = req.user.user_id;
-            next();
-        }
+        res.locals.user = req.user;
+        res.locals.user_id = req.user.user_id;
+        next();
     }
 }
 
-module.exports.adminCheck= function(req,res,next){
-   
-    if(!req.signedCookies.ad_email && !req.user){            // kiểm tra xem người dùng đã đăng nhập chưa, 
-        res.cookie('mess', 'Vui lòng đăng nhập với quyền admin')
-        res.redirect('/user/sign-in')
-        return;
-    }  
-
-    if(req.signedCookies.ad_email && !req.user){
-        db.query(sql,req.signedCookies.ad_email, function (err, result) {
-            if (err) throw err;
-            
-            var user = result[0];
-            if(!user.email.length){
-                res.cookie('mess', 'Vui lòng đăng nhập với quyền admin')
-                res.redirect('/user/sign-in')
-                return;
-            }
-    
-            next();
-        });
-    }
-
-    if(!req.signedCookies.email && req.user){
-        
-        if(req.user.usertype == "admin") {
-            res.locals.user = {};
-            res.locals.user_id = 0;
-            next();
-        }
-    }
-}
