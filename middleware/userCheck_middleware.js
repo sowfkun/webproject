@@ -40,3 +40,30 @@ module.exports.userCheck= function(req,res,next){
     }
 }
 
+
+module.exports.adminCheck= function(req,res,next){
+    
+    if(!req.signedCookies.ad_email && !req.user){            // kiểm tra xem người dùng đã đăng nhập chưa, 
+        res.cookie('mess', "Vui lòng đăng nhập bằng tài khoản admin")
+        res.redirect('/user/sign-in');
+        return;
+    } 
+
+    if(req.signedCookies.ad_email && !req.user){
+        db.query(sql, req.signedCookies.ad_email, function (err, result) {
+            if (err) throw err;
+            
+            var user = result[0];
+    
+            if(!user.email.length){
+              res.cookie('mess', "Vui lòng đăng nhập bằng tài khoản admin")
+              res.redirect('back');
+              return;
+            }
+    
+            res.locals.user = user;
+            res.locals.user_id = user.user_id;
+            next();
+        });
+    }
+}
