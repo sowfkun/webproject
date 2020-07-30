@@ -121,7 +121,6 @@ module.exports.sign_inPost= (req, res) => {
             res.clearCookie('mess')     //xóa mess thông báo đăng kí tài khoản thành công
             res.redirect('/admin/');
         } else {
-            console.log(1);
             res.cookie('email', email,{
                 signed: true
             });
