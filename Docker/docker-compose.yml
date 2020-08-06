@@ -1,0 +1,16 @@
+
+version: "3"
+
+services:
+  #container nodejs
+  s-node:
+    container_name: node
+    build:
+      dockerfile: Dockerfile
+      context: ./nodejs/
+    hostname: nodejs
+    ports:
+      - "8080:8080"
+    restart: always
+    volumes:
+      - /home/sowfkun/lapcity/webproject:/home/myweb        #đường dẫn có thể thay đổi để phù họp với các trường hợp khác nhau

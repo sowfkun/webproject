@@ -16,33 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `customer`
+-- Table structure for table `orderitem`
 --
 
-DROP TABLE IF EXISTS `customer`;
+DROP TABLE IF EXISTS `orderitem`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `customer` (
-  `user_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `phone` int DEFAULT NULL,
-  `address` text,
-  `fb_id` bigint DEFAULT NULL,
-  `password` varchar(100) DEFAULT NULL,
-  `google_id` varchar(25) DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `orderitem` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `order_id` int NOT NULL,
+  `ma_may` varchar(50) DEFAULT NULL,
+  `quantity` int NOT NULL DEFAULT '1',
+  `event_id` int DEFAULT NULL,
+  `price_per_1` int DEFAULT NULL,
+  `discount_from_event` int DEFAULT NULL,
+  PRIMARY KEY (`id`,`order_id`),
+  KEY `FK_orderitem_order` (`order_id`),
+  CONSTRAINT `FK_orderitem_order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `customer`
+-- Dumping data for table `orderitem`
 --
 
-LOCK TABLES `customer` WRITE;
-/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (64,'Trần Thị Hồng Hạnh','honghanhtran058@gmail.com',981341899,'ST',1093380437699644,'4297f44b13955235245b2497399d7a93',NULL),(70,'Hạnh Hạnh','hanh.tth15577@gmail.com',981321324,'ST',NULL,NULL,'116017223322474848883'),(71,'Đang Trường Nguyễn','17521184@gm.uit.edu.vn',NULL,NULL,NULL,NULL,'106097174891813047071'),(73,'trường','truongwv19@gmail.com',981234567,NULL,NULL,'827ccb0eea8a706c4c34a16891f84e7b',NULL),(74,'Trường Nguyễn','truongwv1999@gmail.com',981341899,'LA',923331904755981,NULL,NULL),(75,'hanh','hanh.tth@gmail.com',981341897,'ST',NULL,'c315e0bd179e6ca190b04ef1c1a485b0',NULL);
-/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
+LOCK TABLES `orderitem` WRITE;
+/*!40000 ALTER TABLE `orderitem` DISABLE KEYS */;
+INSERT INTO `orderitem` VALUES (89,68,'AN515-54-59WX',1,NULL,23990000,0),(90,69,'AN515-54-59WX',1,NULL,23990000,0),(91,70,'Strix-G-TTHH-2020',1,NULL,18900000,0),(92,71,'AN515-54-59WX',1,NULL,23990000,0),(93,72,'AN515-54-59WX',1,NULL,23990000,0);
+/*!40000 ALTER TABLE `orderitem` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-30 16:33:47
+-- Dump completed on 2020-07-31 20:12:01
