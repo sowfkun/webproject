@@ -38,7 +38,7 @@ CREATE TABLE `orders` (
   KEY `FK_orders_customer` (`user_id`),
   CONSTRAINT `FK_orders_customer` FOREIGN KEY (`user_id`) REFERENCES `customer` (`user_id`),
   CONSTRAINT `CHK_status_order` CHECK ((`order_status` in (_utf8mb4'Chờ xét duyệt',_utf8mb4'Đang giao hàng',_utf8mb4'Giao dịch hoàn tất',_utf8mb4'Giao dịch bị hủy')))
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,7 +47,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (62,64,'Trần Thị Hồng Hạnh',981341899,'honghanhtran058@gmail.com','ST','','2020-07-11 14:46:02','2020-07-11 15:00:59',23990000,'giao dịch bị hủy'),(63,64,'Trần Thị Hồng Hạnh',981341899,'honghanhtran058@gmail.com','ST','','2020-07-11 14:46:49','2020-07-11 15:00:28',58970000,'Giao dịch hoàn tất'),(64,64,'Trần Thị Hồng Hạnh',981341899,'honghanhtran058@gmail.com','ST','','2020-07-11 14:56:57','2020-07-11 15:00:12',64970000,'Giao dịch hoàn tất'),(65,64,'Trần Thị Hồng Hạnh',981341899,'honghanhtran058@gmail.com','ST','','2020-07-11 15:06:20','2020-07-11 15:49:57',47980000,'Đang giao hàng'),(66,64,'Trần Thị Hồng Hạnh',981341899,'honghanhtran058@gmail.com','ST','','2020-07-11 15:12:12','2020-07-11 23:56:59',44480000,'Đang giao hàng'),(67,75,'hanh',981341897,'hanh.tth@gmail.com','ST','','2020-07-11 23:59:17',NULL,21990000,'Chờ xét duyệt');
+INSERT INTO `orders` VALUES (68,NULL,'Trường',981341899,'truongwv1999@gmail.com','Long An','','2020-07-30 11:09:57','2020-07-30 11:19:46',23990000,'giao dịch bị hủy'),(69,74,'Trường Nguyễn',981341899,'truongwv1999@gmail.com','LA','','2020-07-30 11:15:01','2020-07-30 11:19:33',23990000,'Giao dịch hoàn tất'),(70,NULL,'Hoang Gia Vuong',846123123,'giavuong99@gmail.com','Phuoc Long B','','2020-07-31 02:42:01','2020-07-31 02:44:26',18900000,'giao dịch bị hủy'),(71,NULL,'Hoang Gia Vuong',845123123,'giavuong99@gmail.com','Phuoc Long B','','2020-07-31 02:45:39','2020-07-31 02:49:36',23990000,'Đang giao hàng'),(72,NULL,'Hoang Gia Vuong',845123123,'giavuong99@gmail.com','Phuoc Long B','','2020-07-31 03:02:30',NULL,23990000,'Chờ xét duyệt');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -60,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-30 16:33:58
+-- Dump completed on 2020-07-31 20:12:07
